@@ -9,21 +9,27 @@ def import_data():
     print('got to starting importing data')  # Press ⌘F8 to toggle the breakpoint.
 
     #jjj
+    import pandas as pd
+    import numpy as np
+    import matplotlib as mpl
+
     from pandas_ods_reader import read_ods
 
-    path = "../aoi_tracker.ods"
+    #path = "../aoi_tracker.ods"
+    path = "aoi_tracker_copy.ods"
 
     # by default the first sheet is imported
     df = read_ods(path)
 
     # load a sheet based on its index (1 based)
-    sheet_idx = 2
-    df = read_ods(path, sheet_idx)
+    #sheet_idx = 2
+    #df = read_ods(path, sheet_idx)
 
     # load a sheet based on its name
-    sheet_name = "actions"
-    df = read_ods(path, sheet_name)
+    #sheet_name = "actions"
+    #df = read_ods(path, sheet_name)
 
+    df
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
