@@ -16,6 +16,7 @@ def import_data():
     from pandas_ods_reader import read_ods
 
     path = "../aoi_tracker.ods"
+    #path = "../ooo_shiny_urls.ods"
     #path = "aoi_tracker_copy.ods"
 
     # by default the first sheet is imported
@@ -26,6 +27,7 @@ def import_data():
     #df = read_ods(path, sheet_idx)
 
     # load a sheet based on its name
+    #sheet_name = "urls"
     sheet_name = "actions"
     df = read_ods(path, sheet_name)
 
