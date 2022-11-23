@@ -4,6 +4,27 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 
+def import_data():
+    # Use a breakpoint in the code line below to debug your script.
+    print('got to starting importing data')  # Press ⌘F8 to toggle the breakpoint.
+
+    #jjj
+    from pandas_ods_reader import read_ods
+
+    path = "../aoi_tracker.ods"
+
+    # by default the first sheet is imported
+    df = read_ods(path)
+
+    # load a sheet based on its index (1 based)
+    sheet_idx = 2
+    df = read_ods(path, sheet_idx)
+
+    # load a sheet based on its name
+    sheet_name = "actions"
+    df = read_ods(path, sheet_name)
+
+
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
@@ -12,5 +33,5 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
-
+    import_data()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
