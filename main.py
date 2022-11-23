@@ -4,11 +4,11 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 
+
 def import_data():
     # Use a breakpoint in the code line below to debug your script.
     print('got to starting importing data')  # Press ⌘F8 to toggle the breakpoint.
 
-    #jjj
     import pandas as pd
     import numpy as np
     import matplotlib as mpl
