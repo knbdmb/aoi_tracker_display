@@ -15,21 +15,23 @@ def import_data():
 
     from pandas_ods_reader import read_ods
 
-    #path = "../aoi_tracker.ods"
-    path = "aoi_tracker_copy.ods"
+    path = "../aoi_tracker.ods"
+    #path = "aoi_tracker_copy.ods"
 
     # by default the first sheet is imported
-    df = read_ods(path)
+    #df = read_ods(path)
 
     # load a sheet based on its index (1 based)
     #sheet_idx = 2
     #df = read_ods(path, sheet_idx)
 
     # load a sheet based on its name
-    #sheet_name = "actions"
-    #df = read_ods(path, sheet_name)
+    sheet_name = "actions"
+    df = read_ods(path, sheet_name)
 
-    df
+    print(df)
+
+    print("got to here")
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
