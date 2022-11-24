@@ -31,7 +31,18 @@ def import_data():
     sheet_name = "actions"
     df = read_ods(path, sheet_name)
 
-    print(df)
+    # remove rows without dates
+    df = df[df['date'].notna()]
+
+    # Using the sorting function
+    df.sort_values(["date", "types_of_thought", "project"],
+                   axis=0, ascending=[True, True, True],
+                   inplace=True)
+
+    pd.set_option('display.max_columns', 10)
+    #print(df)
+    print(df.tail(10))
+    #print(df.date, df.types_of_thought)
 
     print("got to here")
 
