@@ -15,9 +15,8 @@ def import_data():
 
     from pandas_ods_reader import read_ods
 
-    path = "../aoi_tracker_np3.ods"
+    path = "../aoi_tracker.ods"
     #path = "../ooo_shiny_urls.ods"
-    #path = "aoi_tracker_copy.ods"
 
     # by default the first sheet is imported
     #df = read_ods(path)
@@ -34,6 +33,9 @@ def import_data():
     # remove rows without dates
     df = df[df['date'].notna()]
 
+    # remove rows before 2020-01-01
+    df = df[df['date'] >= "2020-01-01"]
+
     # Using the sorting function
     df.sort_values(["date", "types_of_thought", "project"],
                    axis=0, ascending=[True, True, True],
@@ -41,6 +43,7 @@ def import_data():
 
     pd.set_option('display.max_columns', 10)
     #print(df)
+    print(df.head(10))
     print(df.tail(10))
     #print(df.date, df.types_of_thought)
 
