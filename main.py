@@ -56,6 +56,14 @@ def import_data():
 
     print(pivot)
 
+    pivot_plot = np.round(pd.pivot_table(df, values='amount',
+                                    index='yyyy-mm',
+                                    columns='types_of_thought',
+                                    aggfunc=np.sum), 2).plot.barh()
+
+    fig = pivot_plot.get_figure()
+    fig.savefig("output_pt.png")
+
     #plt.plot(pivot).savefig('pivot_plot.png')
     #pivot_plot = pivot.plot.barh(figsize=(10,7), title='amounts per month')
 
