@@ -31,6 +31,8 @@ def import_data():
     sheet_name = "actions"
     df = read_ods(path, sheet_name)
 
+    #print(df.columns)
+
     # remove rows without dates
     df = df[df['date'].notna()]
 
@@ -54,9 +56,11 @@ def import_data():
 
     print(pivot)
 
-    pivot_plot = pivot.plot.barh(figsize=(10,7), title='amounts per month')
+    #plt.plot(pivot).savefig('pivot_plot.png')
+    #pivot_plot = pivot.plot.barh(figsize=(10,7), title='amounts per month')
 
-    print(pivot_plot)
+    #pivot_plot.show()
+    #pivot_plot.savefig('pivot_plot.png')
 
     print("got to here")
 
