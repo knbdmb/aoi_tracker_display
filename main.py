@@ -12,6 +12,7 @@ def import_data():
     import pandas as pd
     import numpy as np
     import matplotlib as mpl
+    import matplotlib.pyplot as plt
 
     from pandas_ods_reader import read_ods
 
@@ -43,9 +44,19 @@ def import_data():
 
     pd.set_option('display.max_columns', 10)
     #print(df)
-    print(df.head(10))
-    print(df.tail(10))
-    #print(df.date, df.types_of_thought)
+    #print(df.head(10))
+    #print(df.tail(10))
+
+    pivot = np.round(pd.pivot_table(df, values='amount',
+                                    index='yyyy-mm',
+                                    columns='types_of_thought',
+                                    aggfunc=np.sum), 2)
+
+    print(pivot)
+
+    pivot_plot = pivot.plot.barh(figsize=(10,7), title='amounts per month')
+
+    print(pivot_plot)
 
     print("got to here")
 
