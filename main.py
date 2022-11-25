@@ -61,6 +61,7 @@ def import_data():
                                     columns='types_of_thought',
                                     aggfunc=np.sum), 2).plot.barh()
 
+
     fig = pivot_plot.get_figure()
     fig.savefig("output_pt.png")
 
