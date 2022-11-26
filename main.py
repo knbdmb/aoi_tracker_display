@@ -95,7 +95,7 @@ def import_data():
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_project_yyyy.plot.barh(figsize=(10,16))
+    pt_plot = pt_project_yyyy.plot.barh(figsize=(10,16), stacked=True)
     fig = pt_plot.get_figure()
     fig.savefig("pt_project_yyyy.png")
 
