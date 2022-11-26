@@ -49,27 +49,71 @@ def import_data():
     #print(df.head(10))
     #print(df.tail(10))
 
-    pivot = np.round(pd.pivot_table(df, values='amount',
+
+
+    # pt_project total for each of the projects
+    pt_project = np.round(pd.pivot_table(df, values='amount',
+                                    index='project',
+                                    aggfunc=np.sum), 2)
+
+    html = pt_project.to_html(classes='table table-stripped')
+    text_file = open("pt_project.html", "w")
+    text_file.write(html)
+    text_file.close()
+
+    pt_plot = pt_project.plot.barh(figsize=(10,16))
+    fig = pt_plot.get_figure()
+    fig.savefig("pt_project.png")
+
+
+
+
+
+    # pt_type_yyyy-mm vert bar chart of total for all catagories
+    pt_yyyy_type = np.round(pd.pivot_table(df, values='amount',
                                     index='yyyy-mm',
                                     columns='types_of_thought',
                                     aggfunc=np.sum), 2)
 
-    print(pivot)
+    html = pt_yyyy_type.to_html(classes='table table-stripped')
+    text_file = open("pt_yyyy_type.html", "w")
+    text_file.write(html)
+    text_file.close()
 
-    pivot_plot = np.round(pd.pivot_table(df, values='amount',
-                                    index='yyyy-mm',
-                                    columns='types_of_thought',
-                                    aggfunc=np.sum), 2).plot.barh()
+    pt_plot = pt_yyyy_type.plot.barh(figsize=(10,16))
+    fig = pt_plot.get_figure()
+    fig.savefig("pt_yyyy_type.png")
 
+    # pt_project_yyyy-mm
+    pt_project_yyyy = np.round(pd.pivot_table(df, values='amount',
+                                    index='project',
+                                    columns='yyyy-mm',
+                                    aggfunc=np.sum), 2)
 
-    fig = pivot_plot.get_figure()
-    fig.savefig("output_pt.png")
+    html = pt_project_yyyy.to_html(classes='table table-stripped')
+    text_file = open("pt_project_yyyy.html", "w")
+    text_file.write(html)
+    text_file.close()
 
-    #plt.plot(pivot).savefig('pivot_plot.png')
-    #pivot_plot = pivot.plot.barh(figsize=(10,7), title='amounts per month')
+    pt_plot = pt_project_yyyy.plot.barh(figsize=(10,16))
+    fig = pt_plot.get_figure()
+    fig.savefig("pt_project_yyyy.png")
 
-    #pivot_plot.show()
-    #pivot_plot.savefig('pivot_plot.png')
+    # pt_task_yyyy-mm stacked vertial bar chart
+    pt_task_yyyy_mm = np.round(pd.pivot_table(df, values='amount',
+                                               index='task',
+                                               columns='yyyy-mm',
+                                               aggfunc=np.sum), 2)
+
+    html = pt_task_yyyy_mm.to_html(classes='table table-stripped')
+    text_file = open("pt_task_yyyy_mm.html", "w")
+    text_file.write(html)
+    text_file.close()
+
+    pt_plot = pt_task_yyyy_mm.plot.barh(figsize=(10,16))
+    fig = pt_plot.get_figure()
+    fig.savefig("pt_task_yyyy_mm.png")
+
 
     print("got to here")
 
