@@ -13,6 +13,7 @@ def import_data():
     import numpy as np
     import matplotlib as mpl
     import matplotlib.pyplot as plt
+    import seaborn as sns
 
     from pandas_ods_reader import read_ods
 
@@ -114,6 +115,11 @@ def import_data():
     fig = pt_plot.get_figure()
     fig.savefig("pt_task_yyyy_mm.png")
 
+    #pt_plot = plt.plot(pt_task_yyyy_m,figsize=(60,100))
+    #pt_plot = sns.heatmap(pt_task_yyyy_mm, square=True)
+    pt_plot = sns.heatmap(pt_task_yyyy_mm)
+    fig = pt_plot.get_figure()
+    fig.savefig("pt_task_yyyy_mm_heat.png")
 
     print("got to here")
 
