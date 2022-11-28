@@ -34,6 +34,16 @@ def create_heatmap():
     fig_h = pt_plot_h.get_figure()
     fig_h.savefig("pt_project_yyyy_mm_h.png")
 
+    pt_type_yyyy_mm_h = np.round(pd.pivot_table(df, values='amount',
+                                            index='types_of_thought',
+                                            columns='yyyy-mm',
+                                            aggfunc=np.sum), 2)
+
+    plt.figure(figsize=(15, 20))
+    pt_plot_h = sns.heatmap(pt_type_yyyy_mm_h )
+    fig_h = pt_plot_h.get_figure()
+    fig_h.savefig("pt_type_yyyy_mm_h.png")
+
     print("done with heat map")
 
 
