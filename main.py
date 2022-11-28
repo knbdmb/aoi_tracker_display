@@ -23,26 +23,17 @@ def create_heatmap():
     df = df[df['date'].notna()]
     # remove rows before 2020-01-01
     df = df[df['date'] >= "2020-01-01"]
+    df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
-    pt_project_yyyy_mm_h = np.round(pd.pivot_table(df, values='amount',
-                                            index='project',
+    pt_tot_proj_yyyy_mm_h = np.round(pd.pivot_table(df, values='amount',
+                                            index='tot_proj',
                                             columns='yyyy-mm',
                                             aggfunc=np.sum), 2)
 
     plt.figure(figsize=(15, 20))
-    pt_plot_h = sns.heatmap(pt_project_yyyy_mm_h )
+    pt_plot_h = sns.heatmap(pt_tot_proj_yyyy_mm_h )
     fig_h = pt_plot_h.get_figure()
-    fig_h.savefig("pt_project_yyyy_mm_h.png")
-
-    pt_type_yyyy_mm_h = np.round(pd.pivot_table(df, values='amount',
-                                            index='types_of_thought',
-                                            columns='yyyy-mm',
-                                            aggfunc=np.sum), 2)
-
-    plt.figure(figsize=(15, 20))
-    pt_plot_h = sns.heatmap(pt_type_yyyy_mm_h )
-    fig_h = pt_plot_h.get_figure()
-    fig_h.savefig("pt_type_yyyy_mm_h.png")
+    fig_h.savefig("pt_tot_proj_yyyy_mm_h.png")
 
     print("done with heat map")
 
@@ -79,9 +70,9 @@ def import_data():
 
     # remove rows without dates
     df = df[df['date'].notna()]
-
     # remove rows before 2020-01-01
     df = df[df['date'] >= "2020-01-01"]
+    df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
     # Using the sorting function
     df.sort_values(["date", "types_of_thought", "project"],
@@ -96,18 +87,18 @@ def import_data():
 
 
     # pt_project total for each of the projects
-    pt_project = np.round(pd.pivot_table(df, values='amount',
-                                    index='project',
+    pt_tot_proj = np.round(pd.pivot_table(df, values='amount',
+                                    index='tot_proj',
                                     aggfunc=np.sum), 2)
 
-    html = pt_project.to_html(classes='table table-stripped')
-    text_file = open("pt_project.html", "w")
+    html = pt_tot_proj.to_html(classes='table table-stripped')
+    text_file = open("pt_tot_proj.html", "w")
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_project.plot.barh(figsize=(10,16))
+    pt_plot = pt_tot_proj.plot.barh(figsize=(10,16))
     fig = pt_plot.get_figure()
-    fig.savefig("pt_project.png")
+    fig.savefig("pt_tot_proj.png")
 
 
 
@@ -129,19 +120,19 @@ def import_data():
     fig.savefig("pt_yyyy_type.png")
 
     # pt_project_yyyy-mm
-    pt_project_yyyy = np.round(pd.pivot_table(df, values='amount',
-                                    index='project',
+    pt_tot_proj_yyyy = np.round(pd.pivot_table(df, values='amount',
+                                    index='tot_proj',
                                     columns='yyyy-mm',
                                     aggfunc=np.sum), 2)
 
-    html = pt_project_yyyy.to_html(classes='table table-stripped')
-    text_file = open("pt_project_yyyy.html", "w")
+    html = pt_tot_proj_yyyy.to_html(classes='table table-stripped')
+    text_file = open("pt_tot_proj_yyyy.html", "w")
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_project_yyyy.plot.barh(figsize=(10,16), stacked=True)
+    pt_plot = pt_tot_proj_yyyy.plot.barh(figsize=(10,16), stacked=True)
     fig = pt_plot.get_figure()
-    fig.savefig("pt_project_yyyy.png")
+    fig.savefig("pt_tot_proj_yyyy.png")
 
     # pt_task_yyyy-mm stacked vertial bar chart
     pt_task_yyyy_mm = np.round(pd.pivot_table(df, values='amount',
