@@ -3,6 +3,39 @@
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
+def create_heatmap():
+    # Use a breakpoint in the code line below to debug your script.
+    print('trying to print out the heat map')  # Press ⌘F8 to toggle the breakpoint.
+
+    import pandas as pd
+    import numpy as np
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    from pandas_ods_reader import read_ods
+
+    path = "../aoi_tracker.ods"
+    sheet_name = "actions"
+    df = read_ods(path, sheet_name)
+
+    # remove rows without dates
+    df = df[df['date'].notna()]
+    # remove rows before 2020-01-01
+    df = df[df['date'] >= "2020-01-01"]
+
+    pt_project_yyyy_mm_h = np.round(pd.pivot_table(df, values='amount',
+                                            index='project',
+                                            columns='yyyy-mm',
+                                            aggfunc=np.sum), 2)
+
+    plt.figure(figsize=(15, 20))
+    pt_plot_h = sns.heatmap(pt_project_yyyy_mm_h )
+    fig_h = pt_plot_h.get_figure()
+    fig_h.savefig("pt_project_yyyy_mm_h.png")
+
+    print("done with heat map")
+
 
 
 def import_data():
@@ -111,15 +144,20 @@ def import_data():
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_task_yyyy_mm.plot.barh(figsize=(60,100), stacked=True)
-    fig = pt_plot.get_figure()
-    fig.savefig("pt_task_yyyy_mm.png")
+    #pt_plot = pt_task_yyyy_mm.plot.barh(figsize=(60,100), stacked=True)
+    #fig = pt_plot.get_figure()
+    #fig.savefig("pt_task_yyyy_mm.png")
 
     #pt_plot = plt.plot(pt_task_yyyy_m,figsize=(60,100))
     #pt_plot = sns.heatmap(pt_task_yyyy_mm, square=True)
-    pt_plot = sns.heatmap(pt_task_yyyy_mm)
-    fig = pt_plot.get_figure()
-    fig.savefig("pt_task_yyyy_mm_heat.png")
+
+    #pt_task_yyyy_mm_h = np.round(pd.pivot_table(df, values='amount',
+    #                                          index='task',
+    #                                          columns='yyyy-mm',
+    #                                          aggfunc=np.sum), 2)
+    #pt_plot_h = sns.heatmap(pt_task_yyyy_mm_h)
+    #fig_h = pt_plot_h.get_figure()
+    #fig_h.savefig("pt_task_yyyy_mm_h.png")
 
     print("got to here")
 
@@ -131,5 +169,6 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
+    create_heatmap()
     import_data()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
