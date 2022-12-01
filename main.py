@@ -26,6 +26,43 @@ def create_monthly_display():
     df = df[df['date'] >= "2020-01-01"]
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
+    paper_offset_x = 1
+    paper_offset_y = 1
+    boarder_offset_x = 1
+    boarder_offset_y = 1
+    chart_offset_x = 1
+    chart_offset_y = 1
+    dow_month_offset_x = 0
+    current_day_postion_x = 0
+    current_day_postion_y = 0
+    day_display_width = 2.4
+    day_dispaly_height = 2.4
+    hour_height = .1
+    date_offset_y = day_dispaly_height - hour_height
+    date_offset_x = .1
+
+    import pysvg.structure
+    import pysvg.builders
+    import pysvg.text
+
+    svg_document = pysvg.structure.svg()
+
+    shape_builder = pysvg.builders.ShapeBuilder()
+
+    svg_document.addElement(shape_builder.createRect(0, 0,
+                                                     "200px", "100px",
+                                                     strokewidth=1,
+                                                     stroke="black",
+                                                     fill="rgb(255, 255, 0)"))
+
+    svg_document.addElement(pysvg.text.text("Hello World",
+                                            x=210, y=110))
+
+    print(svg_document.getXML())
+
+    svg_document.save("test-pysvg.svg")
+
+
 
 
     print("done with month display")
