@@ -3,6 +3,35 @@
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
+
+def create_monthly_display():
+    # Use a breakpoint in the code line below to debug your script.
+    print('trying to print out month display')  # Press ⌘F8 to toggle the breakpoint.
+
+    import pandas as pd
+    import numpy as np
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    from pandas_ods_reader import read_ods
+
+    path = "../aoi_tracker.ods"
+    sheet_name = "actions"
+    df = read_ods(path, sheet_name)
+
+    # remove rows without dates
+    df = df[df['date'].notna()]
+    # remove rows before 2020-01-01
+    df = df[df['date'] >= "2020-01-01"]
+    df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
+
+
+
+    print("done with month display")
+
+
+
 def create_heatmap():
     # Use a breakpoint in the code line below to debug your script.
     print('trying to print out the heat map')  # Press ⌘F8 to toggle the breakpoint.
@@ -30,7 +59,7 @@ def create_heatmap():
                                             columns='yyyy-mm',
                                             aggfunc=np.sum), 2)
 
-    plt.figure(figsize=(15, 20))
+    plt.figure(figsize=(23, 20))
     pt_plot_h = sns.heatmap(pt_tot_proj_yyyy_mm_h )
     fig_h = pt_plot_h.get_figure()
     fig_h.savefig("pt_tot_proj_yyyy_mm_h.png")
@@ -96,7 +125,7 @@ def import_data():
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_tot_proj.plot.barh(figsize=(10,16))
+    pt_plot = pt_tot_proj.plot.barh(figsize=(15,16))
     fig = pt_plot.get_figure()
     fig.savefig("pt_tot_proj.png")
 
@@ -115,7 +144,7 @@ def import_data():
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_yyyy_type.plot.barh(figsize=(10,16), stacked=True)
+    pt_plot = pt_yyyy_type.plot.barh(figsize=(15,16), stacked=True)
     fig = pt_plot.get_figure()
     fig.savefig("pt_yyyy_type.png")
 
@@ -130,7 +159,7 @@ def import_data():
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_tot_proj_yyyy.plot.barh(figsize=(10,16), stacked=True)
+    pt_plot = pt_tot_proj_yyyy.plot.barh(figsize=(15,16), stacked=True)
     fig = pt_plot.get_figure()
     fig.savefig("pt_tot_proj_yyyy.png")
 
@@ -169,7 +198,8 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-    create_heatmap()
-    import_data()
+    #print_hi('PyCharm')
+    create_monthly_display()
+    #create_heatmap()
+    #import_data()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
