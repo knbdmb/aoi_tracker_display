@@ -18,13 +18,12 @@ def create_monthly_display():
 
     path = "../aoi_tracker.ods"
     sheet_name = "actions"
-    df = read_ods(path, sheet_name)
+    ##df = read_ods(path, sheet_name)
 
     # remove rows without dates
-    df = df[df['date'].notna()]
-    # remove rows before 2020-01-01
-    df = df[df['date'] >= "2020-01-01"]
-    df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
+    ##df = df[df['date'].notna()]
+    ##df = df[df['date'] >= "2020-01-01"]
+    ##df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
     paper_offset_x = 1
     paper_offset_y = 1
@@ -43,60 +42,35 @@ def create_monthly_display():
 
     import drawSvg as draw
 
-    d = draw.Drawing(200, 100, origin='center', displayInline=False)
+    d = draw.Drawing(width=740, height=520 )
+     #viewBox="0 0 740 520" )
 
     # Draw an irregular polygon
-    d.append(draw.Lines(-80, -45,
-                        70, -49,
-                        95, 49,
-                        -90, 40,
+    d.append(draw.Lines(80, 45,
+                        170, 49,
+                        195, 20,
+                        90, 40,
                         close=False,
                         fill='#eeee00',
                         stroke='black'))
 
     # Draw a rectangle
-    r = draw.Rectangle(-80, 0, 40, 50, fill='#1248ff')
+    r = draw.Rectangle(80, 210, 40, 50, fill='#1248ff')
     r.appendTitle("Our first rectangle")  # Add a tooltip
     d.append(r)
 
-    # Draw a circle
-    d.append(draw.Circle(-40, -10, 30,
-                         fill='red', stroke_width=2, stroke='black'))
-
-    # Draw an arbitrary path (a triangle in this case)
-    p = draw.Path(stroke_width=2, stroke='lime',
-                  fill='black', fill_opacity=0.2)
-    p.M(-10, 20)  # Start path at point (-10, 20)
-    p.C(30, -10, 30, 50, 70, 20)  # Draw a curve to (70, 20)
-    d.append(p)
+    d.append(draw.Circle(0, -0, 1, fill='red'))
+    d.append(draw.Circle(2, -2, 0.75, fill='green'))
+    d.append(draw.Circle(3, -3, 0.5, fill='green'))
+    d.append(draw.Text('Text at (2,1)', 0.5, 2, -1, text_anchor='middle'))
 
     # Draw text
-    d.append(draw.Text('Basic text', 8, -10, 35, fill='blue'))  # Text with font size 8
-    d.append(draw.Text('Path text', 8, path=p, text_anchor='start', valign='middle'))
-    d.append(draw.Text(['Multi-line', 'text'], 8, path=p, text_anchor='end'))
-
-    # Draw multiple circular arcs
-    d.append(draw.ArcLine(60, -20, 20, 60, 270,
-                          stroke='red', stroke_width=5, fill='red', fill_opacity=0.2))
-    d.append(draw.Arc(60, -20, 20, 60, 270, cw=False,
-                      stroke='green', stroke_width=3, fill='none'))
-    d.append(draw.Arc(60, -20, 20, 270, 60, cw=True,
-                      stroke='blue', stroke_width=1, fill='black', fill_opacity=0.3))
-
-    # Draw arrows
-    arrow = draw.Marker(-0.1, -0.5, 0.9, 0.5, scale=4, orient='auto')
-    arrow.append(draw.Lines(-0.1, -0.5, -0.1, 0.5, 0.9, 0, fill='red', close=True))
-    p = draw.Path(stroke='red', stroke_width=2, fill='none',
-                  marker_end=arrow)  # Add an arrow to the end of a path
-    p.M(20, -40).L(20, -27).L(0, -20)  # Chain multiple path operations
-    d.append(p)
-    d.append(draw.Line(30, -20, 0, -10,
-                       stroke='red', stroke_width=2, fill='none',
-                       marker_end=arrow))  # Add an arrow to the end of a line
+    d.append(draw.Text('Basic text', 8, 10, 35, fill='blue'))  # Text with font size 8
+    d.append(draw.Text('Basic text', 6, 5, 25, fill='red'))  # Text with font size 8
 
     #d.setPixelScale(2)  # Set number of pixels per geometry unit
     # d.setRenderSize(400,200)  # Alternative to setPixelScale
-    d.saveSvg('example.svg')
+    d.saveSvg('monthsdisp.svg')
     #d.savePng('example.png')
 
     # Display in Jupyter notebook
