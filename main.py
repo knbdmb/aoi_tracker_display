@@ -140,8 +140,8 @@ def create_monthly_display():
 
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
-        first_of_month = datetime.datetime(df_date.year, df_date.strftime("%m"), 1).weekday()
-        print(first_of_month)
+        #first_of_month = datetime.datetime(df_date.year, df_date.strftime("%m"), 1).weekday()
+        #print(first_of_month)
         #dow_month_offset_x = datetime.date.fromisoformat(df_date.year, df_date.strftime("%m"), "1").weekday()
         #print(dow_month_offset_x)
         print(df['date'][ind],
