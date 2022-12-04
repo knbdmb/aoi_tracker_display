@@ -18,12 +18,12 @@ def create_monthly_display():
 
     path = "../aoi_tracker.ods"
     sheet_name = "actions"
-    ##df = read_ods(path, sheet_name)
+    df = read_ods(path, sheet_name)
 
     # remove rows without dates
-    ##df = df[df['date'].notna()]
-    ##df = df[df['date'] >= "2020-01-01"]
-    ##df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
+    df = df[df['date'].notna()]
+    df = df[df['date'] >= "2020-01-01"]
+    df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
     paper_to_border_offset_x = 50
     paper_to_border_offset_y = 50
@@ -57,6 +57,7 @@ def create_monthly_display():
     drawing_width =(chart_width + 2*paper_to_border_offset_x + 2*border_to_chart_offset_x)
     drawing_height =(chart_height + 2*paper_to_border_offset_y + 2*border_to_chart_offset_y)
 
+    import datetime
     import drawSvg as draw
 
     d = draw.Drawing(drawing_width, drawing_height, origin=(0,0))
@@ -133,17 +134,28 @@ def create_monthly_display():
                             day_display_width, day_display_height,
                             fill='#0048ff'))
 
-    d.append(draw.Rectangle(200, 375, 200, 8, fill='#1248ff'))
-    d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 377,
+    d.append(draw.Rectangle(200, 75, 200, 8, fill='#1248ff'))
+    d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 77,
                        fill='black'))  # Text with font size 6
-    #d.setPixelScale(2)  # Set number of pixels per geometry unit
-    # d.setRenderSize(400,200)  # Alternative to setPixelScale
-    d.saveSvg('monthsdisp.svg')
-    #d.savePng('example.png')
 
-    # Display in Jupyter notebook
-    #d.rasterize()  # Display as PNG
-    #d  # Display as SVG
+    for ind in df.index:
+        df_date = datetime.date.fromisoformat(df['date'][ind])
+        first_of_month = datetime.datetime(df_date.year, df_date.strftime("%m"), 1).weekday()
+        print(first_of_month)
+        #dow_month_offset_x = datetime.date.fromisoformat(df_date.year, df_date.strftime("%m"), "1").weekday()
+        #print(dow_month_offset_x)
+        print(df['date'][ind],
+              df_date.year,
+              df_date.strftime("%m"),
+              df_date.weekday(),
+              df['types_of_thought'][ind],
+              df['project'][ind],
+              df['task'][ind])
+
+
+
+    d.saveSvg('monthsdisp.svg')
+
 
 
     print("done with month display")
