@@ -49,6 +49,9 @@ def create_monthly_display():
     tot_max = 14
     proj_max = 14
     task_max = 33
+    tot_offset_x = 0
+    proj_offset_x = 54
+    task_offset_x = 110
 
     chart_width = (7 - 1 + 31) * day_display_width
     # 7 = days in week, 1 day less of offset, 31 max days in month
