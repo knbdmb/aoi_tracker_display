@@ -25,49 +25,117 @@ def create_monthly_display():
     ##df = df[df['date'] >= "2020-01-01"]
     ##df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
-    paper_offset_x = 1
-    paper_offset_y = 1
-    boarder_offset_x = 1
-    boarder_offset_y = 1
-    chart_offset_x = 1
-    chart_offset_y = 1
+    paper_to_border_offset_x = 50
+    paper_to_border_offset_y = 50
+    border_to_chart_offset_x = 50
+    border_to_chart_offset_y = 50
+
+    day_display_width = 200
+    day_display_height = 200
+    hour_height = 8
+    hour_width = day_display_width
+
     dow_month_offset_x = 0
-    current_day_postion_x = 0
-    current_day_postion_y = 0
-    day_display_width = 2.4
-    day_dispaly_height = 2.4
-    hour_height = .1
-    date_offset_y = day_dispaly_height - hour_height
-    date_offset_x = .1
+    current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x
+    current_day_postion_y = paper_to_border_offset_y + border_to_chart_offset_y
+
+    f6text_offset_x = 1
+    f6text_offset_y = 2
+    date_offset_y = day_display_height - hour_height + f6text_offset_y
+    date_offset_x = f6text_offset_x
+
+    max_char = 53
+    tot_max = 14
+    proj_max = 14
+    task_max = 33
+
+    chart_width = (7 - 1 + 31) * day_display_width
+    # 7 = days in week, 1 day less of offset, 31 max days in month
+    chart_height = ( 3 * 12 ) * day_display_height
+    # 3 years, 12 months per year
+
+    drawing_width =(chart_width + 2*paper_to_border_offset_x + 2*border_to_chart_offset_x)
+    drawing_height =(chart_height + 2*paper_to_border_offset_y + 2*border_to_chart_offset_y)
 
     import drawSvg as draw
 
-    d = draw.Drawing(width=740, height=520 )
-     #viewBox="0 0 740 520" )
+    d = draw.Drawing(drawing_width, drawing_height, origin=(0,0))
 
-    # Draw an irregular polygon
-    d.append(draw.Lines(80, 45,
-                        170, 49,
-                        195, 20,
-                        90, 40,
-                        close=False,
-                        fill='#eeee00',
+    # Draw an irregular polygon for border
+    d.append(draw.Lines(paper_to_border_offset_x,
+                        paper_to_border_offset_y,
+
+                        paper_to_border_offset_x,
+                        paper_to_border_offset_y + chart_height + 2*border_to_chart_offset_y,
+
+                        paper_to_border_offset_x + chart_width + 2*border_to_chart_offset_x,
+                        paper_to_border_offset_y + chart_height + 2*border_to_chart_offset_y,
+
+                        paper_to_border_offset_x + chart_width + 2*border_to_chart_offset_x,
+                        paper_to_border_offset_y,
+
+                        paper_to_border_offset_x,
+                        paper_to_border_offset_y,
+                        close = False,
+                        fill = '#999999',
                         stroke='black'))
 
-    # Draw a rectangle
-    r = draw.Rectangle(80, 210, 40, 50, fill='#1248ff')
-    r.appendTitle("Our first rectangle")  # Add a tooltip
-    d.append(r)
+    # Draw an irregular polygon for chart border
+    d.append(draw.Lines(paper_to_border_offset_x + border_to_chart_offset_x,
+                        paper_to_border_offset_y + border_to_chart_offset_y,
 
-    d.append(draw.Circle(0, -0, 1, fill='red'))
-    d.append(draw.Circle(2, -2, 0.75, fill='green'))
-    d.append(draw.Circle(3, -3, 0.5, fill='green'))
-    d.append(draw.Text('Text at (2,1)', 0.5, 2, -1, text_anchor='middle'))
+                        paper_to_border_offset_x + border_to_chart_offset_x,
+                        paper_to_border_offset_y + chart_height + border_to_chart_offset_y,
 
-    # Draw text
-    d.append(draw.Text('Basic text', 8, 10, 35, fill='blue'))  # Text with font size 8
-    d.append(draw.Text('Basic text', 6, 5, 25, fill='red'))  # Text with font size 8
+                        paper_to_border_offset_x + chart_width + border_to_chart_offset_x,
+                        paper_to_border_offset_y + chart_height + border_to_chart_offset_y,
 
+                        paper_to_border_offset_x + chart_width + border_to_chart_offset_x,
+                        paper_to_border_offset_y + border_to_chart_offset_y,
+
+                        paper_to_border_offset_x + border_to_chart_offset_x,
+                        paper_to_border_offset_y + border_to_chart_offset_y,
+                        close = False,
+                        fill = '#eeeeee',
+                        stroke='black'))
+
+
+
+    d.append(draw.Rectangle(current_day_postion_x,
+                            current_day_postion_y,
+                            day_display_width, day_display_height,
+                            fill='#1248ff'))
+    d.append(draw.Text('2022-12-03', 6,
+                       current_day_postion_x + date_offset_x,
+                       current_day_postion_y + date_offset_y,
+                       fill='black'))
+    d.append(draw.Rectangle(current_day_postion_x + day_display_width,
+                            current_day_postion_y + day_display_height,
+                            day_display_width, day_display_height,
+                            fill='#1248ff'))
+
+    d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
+                            current_day_postion_y + 35 * day_display_height,
+                            day_display_width, day_display_height,
+                            fill='#124800'))
+    d.append(draw.Text('2022-12-04', 6,
+                       current_day_postion_x + 36 * day_display_width + date_offset_x,
+                       current_day_postion_y + 35 * day_display_height + date_offset_y,
+                       fill='black'))
+
+    d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
+                            current_day_postion_y,
+                            day_display_width, day_display_height,
+                            fill='#1200ff'))
+
+    d.append(draw.Rectangle(current_day_postion_x,
+                            current_day_postion_y + 35 * day_display_height,
+                            day_display_width, day_display_height,
+                            fill='#0048ff'))
+
+    d.append(draw.Rectangle(200, 375, 200, 8, fill='#1248ff'))
+    d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 377,
+                       fill='black'))  # Text with font size 6
     #d.setPixelScale(2)  # Set number of pixels per geometry unit
     # d.setRenderSize(400,200)  # Alternative to setPixelScale
     d.saveSvg('monthsdisp.svg')
