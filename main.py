@@ -36,8 +36,9 @@ def create_monthly_display():
     hour_width = day_display_width
 
     dow_month_offset_x = 0
-    current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x
-    current_day_postion_y = paper_to_border_offset_y + border_to_chart_offset_y
+    month_offset_y = 0
+    current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
+    current_day_postion_y = paper_to_border_offset_y + border_to_chart_offset_y + month_offset_y
 
     f6text_offset_x = 1
     f6text_offset_y = 2
@@ -138,20 +139,35 @@ def create_monthly_display():
     d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 77,
                        fill='black'))  # Text with font size 6
 
+    # Set up required variables before the for loop
+    print(df['date'].iloc[0])
+    df_date = datetime.date.fromisoformat(df['date'].iloc[0])
+    first_of_month = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
+    print(first_of_month)
+    dow_month_offset_x = first_of_month
+    df_date.year
+    df_date.strftime("%m")
+    df_date.weekday()
+
+
+
+    # Step through dataframe and generate chart
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
         first_of_month = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
-        print(first_of_month)
+        dow_month_offset_x
+        #print(first_of_month)
         #dow_month_offset_x = datetime.date.fromisoformat(df_date.year, df_date.strftime("%m"), "1").weekday()
-        #print(dow_month_offset_x)
-        print(df['date'][ind],
+        """
+        print(dow_month_offset_x)         
+              print(df['date'][ind],
               df_date.year,
               df_date.strftime("%m"),
               df_date.weekday(),
               df['types_of_thought'][ind],
               df['project'][ind],
               df['task'][ind])
-
+        """
 
 
     d.saveSvg('monthsdisp.svg')
