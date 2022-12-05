@@ -14,6 +14,9 @@ def create_monthly_display():
     import matplotlib.pyplot as plt
     import seaborn as sns
 
+    import datetime
+    import drawSvg as draw
+
     from pandas_ods_reader import read_ods
 
     path = "../aoi_tracker.ods"
@@ -25,6 +28,19 @@ def create_monthly_display():
     df = df[df['date'] >= "2020-01-01"]
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
+
+    # number_of_months = 3 * 12 # this would be 3 years of months
+    number_of_months = 0
+    current_month = "x"
+    for ind in df.index:
+        df_date = datetime.date.fromisoformat(df['date'][ind])
+        if current_month != df_date.strftime("%m"):
+            number_of_months += 1
+            print(number_of_months)
+            current_month = df_date.strftime("%m")
+
+
+
     paper_to_border_offset_x = 50
     paper_to_border_offset_y = 50
     border_to_chart_offset_x = 50
@@ -35,6 +51,7 @@ def create_monthly_display():
     hour_height = 8
     hour_width = day_display_width
 
+    number_of_months = 3 * 12
     dow_month_offset_x = 0
     month_offset_y = 0
     current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
@@ -53,16 +70,16 @@ def create_monthly_display():
     proj_offset_x = 54
     task_offset_x = 110
 
+
     chart_width = (7 - 1 + 31) * day_display_width
     # 7 = days in week, 1 day less of offset, 31 max days in month
-    chart_height = ( 3 * 12 ) * day_display_height
+    chart_height = ( number_of_months ) * day_display_height
     # 3 years, 12 months per year
 
     drawing_width =(chart_width + 2*paper_to_border_offset_x + 2*border_to_chart_offset_x)
     drawing_height =(chart_height + 2*paper_to_border_offset_y + 2*border_to_chart_offset_y)
 
-    import datetime
-    import drawSvg as draw
+
 
     d = draw.Drawing(drawing_width, drawing_height, origin=(0,0))
 
@@ -114,6 +131,7 @@ def create_monthly_display():
                        current_day_postion_x + date_offset_x,
                        current_day_postion_y + date_offset_y,
                        fill='black'))
+
     d.append(draw.Rectangle(current_day_postion_x + day_display_width,
                             current_day_postion_y + day_display_height,
                             day_display_width, day_display_height,
@@ -142,35 +160,50 @@ def create_monthly_display():
     d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 77,
                        fill='black'))  # Text with font size 6
 
+
     # Set up required variables before the for loop
     print(df['date'].iloc[0])
     df_date = datetime.date.fromisoformat(df['date'].iloc[0])
-    first_of_month = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
-    print(first_of_month)
-    dow_month_offset_x = first_of_month
-    df_date.year
-    df_date.strftime("%m")
-    df_date.weekday()
+    first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
+    current_month = df_date.strftime("%m")
+    number_of_months = 0
 
-
-
+    print(dow_month_offset_x)
+    print(current_month)
+    print("start through dataframe")
     # Step through dataframe and generate chart
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
-        first_of_month = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
-        dow_month_offset_x
-        #print(first_of_month)
-        #dow_month_offset_x = datetime.date.fromisoformat(df_date.year, df_date.strftime("%m"), "1").weekday()
-        """
-        print(dow_month_offset_x)         
-              print(df['date'][ind],
+
+        dow_month_offset_x = first_of_month_offset_x + df_date.day
+
+        d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
+                                current_day_postion_y + int(number_of_months) * day_display_height,
+                                day_display_width, day_display_height,
+                                fill='#124800'))
+        d.append(draw.Text('2022-12-04', 6,
+                           current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
+                           current_day_postion_y + int(number_of_months) * day_display_height + date_offset_y,
+                           fill='black'))
+
+
+        if current_month != df_date.strftime("%m"):
+            number_of_months += 1
+            print(number_of_months)
+            current_month = df_date.strftime("%m")
+            first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
+
+        #"""
+        print(dow_month_offset_x)
+        print(df['date'][ind],
               df_date.year,
               df_date.strftime("%m"),
+              df_date.day,
               df_date.weekday(),
               df['types_of_thought'][ind],
               df['project'][ind],
               df['task'][ind])
-        """
+        #"""
 
 
     d.saveSvg('monthsdisp.svg')
