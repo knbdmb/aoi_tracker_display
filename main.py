@@ -181,7 +181,7 @@ def create_monthly_display():
                                 current_day_postion_y + int(number_of_months) * day_display_height,
                                 day_display_width, day_display_height,
                                 fill='#124800'))
-        d.append(draw.Text('2022-12-04', 6,
+        d.append(draw.Text(df['date'][ind], 6,
                            current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
                            current_day_postion_y + int(number_of_months) * day_display_height + date_offset_y,
                            fill='black'))
