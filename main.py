@@ -143,6 +143,12 @@ def create_monthly_display():
     else:
         year_color = color_odd_year
 
+    # draw year box
+    d.append(draw.Rectangle(current_day_postion_x,
+                            current_day_postion_y + int(number_of_months) * day_display_height,
+                            37 * day_display_width, day_display_height,
+                            fill=year_color))
+
     print(dow_month_offset_x)
     print(current_month)
     print("start through dataframe")
@@ -159,14 +165,15 @@ def create_monthly_display():
                 year_color = color_even_year
             else:
                 year_color = color_odd_year
+            # draw year box
+            d.append(draw.Rectangle(current_day_postion_x,
+                                    current_day_postion_y + int(number_of_months) * day_display_height,
+                                    37 * day_display_width, day_display_height,
+                                    fill=year_color))
 
         dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
 
-        # draw year box
-        d.append(draw.Rectangle(current_day_postion_x,
-                                current_day_postion_y + int(number_of_months) * day_display_height,
-                                37 * day_display_width, day_display_height,
-                                fill=year_color))
+
 
         # draw day box
         if df_date.weekday() < 5:
