@@ -62,6 +62,13 @@ def create_monthly_display():
     date_offset_y = day_display_height - hour_height + f6text_offset_y
     date_offset_x = f6text_offset_x
 
+    color_border    = "#999999"
+    color_even_year = "#CCCCCC"
+    color_odd_year  = "#DDDDDD"
+    color_weekday   = "#FFFFFF"
+    color_weekend   = "#EEEEEE"
+    day_color       = "#EEEEEE" # this set to highlight weekends
+
     max_char = 53
     tot_max = 14
     proj_max = 14
@@ -99,7 +106,7 @@ def create_monthly_display():
                         paper_to_border_offset_x,
                         paper_to_border_offset_y,
                         close = False,
-                        fill = '#999999',
+                        fill = color_border,
                         stroke='black'))
 
     # Draw an irregular polygon for chart border
@@ -118,11 +125,11 @@ def create_monthly_display():
                         paper_to_border_offset_x + border_to_chart_offset_x,
                         paper_to_border_offset_y + border_to_chart_offset_y,
                         close = False,
-                        fill = '#eeeeee',
+                        fill = color_even_year,
                         stroke='black'))
 
 
-
+    # the following rectangles are used for testing
     d.append(draw.Rectangle(current_day_postion_x,
                             current_day_postion_y,
                             day_display_width, day_display_height,
@@ -183,10 +190,14 @@ def create_monthly_display():
 
         dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
 
+        if df_date.weekday() < 5:
+            day_color = color_weekday
+        else:
+            day_color = color_weekend
         d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
                                 current_day_postion_y + int(number_of_months) * day_display_height,
                                 day_display_width, day_display_height,
-                                fill='#DDDDDD'))
+                                fill=day_color))
         d.append(draw.Text(df['date'][ind], 6,
                            current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
                            current_day_postion_y + int(number_of_months) * day_display_height + date_offset_y,
