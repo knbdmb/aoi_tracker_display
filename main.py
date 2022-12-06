@@ -68,6 +68,7 @@ def create_monthly_display():
     color_weekday   = "#FFFFFF"
     color_weekend   = "#EEEEEE"
     day_color       = "#EEEEEE" # this set to highlight weekends
+    year_color      = "#EEEEEE" # this set to highlight years
 
     max_char = 53
     tot_max = 14
@@ -109,6 +110,7 @@ def create_monthly_display():
                         fill = color_border,
                         stroke='black'))
 
+    """
     # Draw an irregular polygon for chart border
     d.append(draw.Lines(paper_to_border_offset_x + border_to_chart_offset_x,
                         paper_to_border_offset_y + border_to_chart_offset_y,
@@ -127,46 +129,7 @@ def create_monthly_display():
                         close = False,
                         fill = color_even_year,
                         stroke='black'))
-
-
-    # the following rectangles are used for testing
-    d.append(draw.Rectangle(current_day_postion_x,
-                            current_day_postion_y,
-                            day_display_width, day_display_height,
-                            fill='#1248ff'))
-    d.append(draw.Text('2022-12-03', 6,
-                       current_day_postion_x + date_offset_x,
-                       current_day_postion_y + date_offset_y,
-                       fill='black'))
-
-    d.append(draw.Rectangle(current_day_postion_x + day_display_width,
-                            current_day_postion_y + day_display_height,
-                            day_display_width, day_display_height,
-                            fill='#1248ff'))
-
-    d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
-                            current_day_postion_y + ( number_of_months - 1 ) * day_display_height,
-                            day_display_width, day_display_height,
-                            fill='#124800'))
-    d.append(draw.Text('2022-12-04', 6,
-                       current_day_postion_x + 36 * day_display_width + date_offset_x,
-                       current_day_postion_y + ( number_of_months - 1 ) * day_display_height + date_offset_y,
-                       fill='black'))
-
-    d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
-                            current_day_postion_y,
-                            day_display_width, day_display_height,
-                            fill='#1200ff'))
-
-    d.append(draw.Rectangle(current_day_postion_x,
-                            current_day_postion_y + ( number_of_months - 1 ) * day_display_height,
-                            day_display_width, day_display_height,
-                            fill='#0048ff'))
-
-    d.append(draw.Rectangle(200, 75, 200, 8, fill='#1248ff'))
-    d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 77,
-                       fill='black'))  # Text with font size 6
-
+    """
 
     # Set up required variables before the for loop
     print(df['date'].iloc[0])
@@ -174,6 +137,11 @@ def create_monthly_display():
     first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
     current_month = df_date.strftime("%m")
     number_of_months = 0
+
+    if (df_date.year % 2) == 0:
+        year_color = color_even_year
+    else:
+        year_color = color_odd_year
 
     print(dow_month_offset_x)
     print(current_month)
@@ -187,9 +155,20 @@ def create_monthly_display():
             print(number_of_months)
             current_month = df_date.strftime("%m")
             first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
+            if (df_date.year % 2) == 0:
+                year_color = color_even_year
+            else:
+                year_color = color_odd_year
 
         dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
 
+        # draw year box
+        d.append(draw.Rectangle(current_day_postion_x,
+                                current_day_postion_y + int(number_of_months) * day_display_height,
+                                37 * day_display_width, day_display_height,
+                                fill=year_color))
+
+        # draw day box
         if df_date.weekday() < 5:
             day_color = color_weekday
         else:
@@ -218,6 +197,43 @@ def create_monthly_display():
               df['task'][ind])
         #"""
 
+    # the following rectangles are used for testing
+    d.append(draw.Rectangle(current_day_postion_x,
+                            current_day_postion_y,
+                            day_display_width, day_display_height,
+                            fill='#1248ff'))
+    d.append(draw.Text('2022-12-03', 6,
+                       current_day_postion_x + date_offset_x,
+                       current_day_postion_y + date_offset_y,
+                       fill='black'))
+
+    d.append(draw.Rectangle(current_day_postion_x + day_display_width,
+                            current_day_postion_y + day_display_height,
+                            day_display_width, day_display_height,
+                            fill='#1248ff'))
+
+    d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
+                            current_day_postion_y + (number_of_months) * day_display_height,
+                            day_display_width, day_display_height,
+                            fill='#124800'))
+    d.append(draw.Text('2022-12-04', 6,
+                       current_day_postion_x + 36 * day_display_width + date_offset_x,
+                       current_day_postion_y + (number_of_months) * day_display_height + date_offset_y,
+                       fill='black'))
+
+    d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
+                            current_day_postion_y,
+                            day_display_width, day_display_height,
+                            fill='#1200ff'))
+
+    d.append(draw.Rectangle(current_day_postion_x,
+                            current_day_postion_y + (number_of_months) * day_display_height,
+                            day_display_width, day_display_height,
+                            fill='#0048ff'))
+
+    d.append(draw.Rectangle(200, 75, 200, 8, fill='#1248ff'))
+    d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 77,
+                       fill='black'))  # Text with font size 6
 
     d.saveSvg('monthsdisp.svg')
 
