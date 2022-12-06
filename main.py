@@ -9,35 +9,26 @@ def create_monthly_display():
     print('trying to print out month display')  # Press ⌘F8 to toggle the breakpoint.
 
     import pandas as pd
+    from pandas_ods_reader import read_ods
     import numpy as np
     import matplotlib as mpl
     import matplotlib.pyplot as plt
     import seaborn as sns
-
     import datetime
     import drawSvg as draw
 
-    from pandas_ods_reader import read_ods
-
+    # get data from spreadsheet
     path = "../aoi_tracker.ods"
     sheet_name = "actions"
     df = read_ods(path, sheet_name)
 
-    # remove rows without dates
+    # filter rows without dates and prep data
     df = df[df['date'].notna()]
     df = df[df['date'] >= "2020-01-01"]
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
 
-    # number_of_months = 3 * 12 # this would be 3 years of months
-    number_of_months = 0
-    current_month = "x"
-    for ind in df.index:
-        df_date = datetime.date.fromisoformat(df['date'][ind])
-        if current_month != df_date.strftime("%m"):
-            number_of_months += 1
-            print(number_of_months)
-            current_month = df_date.strftime("%m")
+
 
 
 
@@ -51,7 +42,7 @@ def create_monthly_display():
     hour_height = 8
     hour_width = day_display_width
 
-    number_of_months = 3 * 12
+    number_of_months = 3 * 12 # this determined later
     dow_month_offset_x = 0
     month_offset_y = 0
     current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
@@ -69,6 +60,12 @@ def create_monthly_display():
     color_weekend   = "#EEEEEE"
     day_color       = "#EEEEEE" # this set to highlight weekends
     year_color      = "#EEEEEE" # this set to highlight years
+    tot_color_array[5] = "cyan"
+    tot_color_array[4] = "red"
+    tot_color_array[3] = "orange"
+    tot_color_array[2] = "green"
+    tot_color_array[1] = "blue"
+
 
     max_char = 53
     tot_max = 14
@@ -78,6 +75,15 @@ def create_monthly_display():
     proj_offset_x = 54
     task_offset_x = 110
 
+    # number_of_months = 3 * 12 # this would be 3 years of months
+    number_of_months = 0
+    current_month = "x"
+    for ind in df.index:
+        df_date = datetime.date.fromisoformat(df['date'][ind])
+        if current_month != df_date.strftime("%m"):
+            number_of_months += 1
+            print(number_of_months)
+            current_month = df_date.strftime("%m")
 
     chart_width = (7 - 1 + 31) * day_display_width
     # 7 = days in week, 1 day less of offset, 31 max days in month
@@ -87,9 +93,8 @@ def create_monthly_display():
     drawing_width =(chart_width + 2*paper_to_border_offset_x + 2*border_to_chart_offset_x)
     drawing_height =(chart_height + 2*paper_to_border_offset_y + 2*border_to_chart_offset_y)
 
-
-
     d = draw.Drawing(drawing_width, drawing_height, origin=(0,0))
+
 
     # Draw an irregular polygon for border
     d.append(draw.Lines(paper_to_border_offset_x,
@@ -110,84 +115,58 @@ def create_monthly_display():
                         fill = color_border,
                         stroke='black'))
 
-    """
-    # Draw an irregular polygon for chart border
-    d.append(draw.Lines(paper_to_border_offset_x + border_to_chart_offset_x,
-                        paper_to_border_offset_y + border_to_chart_offset_y,
-
-                        paper_to_border_offset_x + border_to_chart_offset_x,
-                        paper_to_border_offset_y + chart_height + border_to_chart_offset_y,
-
-                        paper_to_border_offset_x + chart_width + border_to_chart_offset_x,
-                        paper_to_border_offset_y + chart_height + border_to_chart_offset_y,
-
-                        paper_to_border_offset_x + chart_width + border_to_chart_offset_x,
-                        paper_to_border_offset_y + border_to_chart_offset_y,
-
-                        paper_to_border_offset_x + border_to_chart_offset_x,
-                        paper_to_border_offset_y + border_to_chart_offset_y,
-                        close = False,
-                        fill = color_even_year,
-                        stroke='black'))
-    """
 
     # Set up required variables before the for loop
-    print(df['date'].iloc[0])
-    df_date = datetime.date.fromisoformat(df['date'].iloc[0])
-    first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
-    current_month = df_date.strftime("%m")
+    current_year = 9999
+    current_month = "99"
+    current_day = 99
     number_of_months = 0
 
-    if (df_date.year % 2) == 0:
-        year_color = color_even_year
-    else:
-        year_color = color_odd_year
-
-    # draw year box
-    d.append(draw.Rectangle(current_day_postion_x,
-                            current_day_postion_y + int(number_of_months) * day_display_height,
-                            37 * day_display_width, day_display_height,
-                            fill=year_color))
-
-    print(dow_month_offset_x)
-    print(current_month)
     print("start through dataframe")
     # Step through dataframe and generate chart
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
 
-        if current_month != df_date.strftime("%m"):
-            number_of_months += 1
-            print(number_of_months)
-            current_month = df_date.strftime("%m")
-            first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
-            if (df_date.year % 2) == 0:
-                year_color = color_even_year
+        if current_day != df_date.day:
+            current_day = df_date.day
+            # process new month
+            if current_month != df_date.strftime("%m"):
+                current_month = df_date.strftime("%m")
+                first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
+                if (df_date.year % 2) == 0:
+                    year_color = color_even_year
+                else:
+                    year_color = color_odd_year
+
+                # draw month box in right color
+                d.append(draw.Rectangle(current_day_postion_x,
+                                        current_day_postion_y + int(number_of_months) * day_display_height,
+                                        37 * day_display_width, day_display_height,
+                                        fill=year_color))
+                number_of_months += 1
+
+            dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
+
+            # draw day box
+            if df_date.weekday() < 5:
+                day_color = color_weekday
             else:
-                year_color = color_odd_year
-            # draw year box
-            d.append(draw.Rectangle(current_day_postion_x,
-                                    current_day_postion_y + int(number_of_months) * day_display_height,
-                                    37 * day_display_width, day_display_height,
-                                    fill=year_color))
+                day_color = color_weekend
+            d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
+                                    current_day_postion_y + int(number_of_months -1 ) * day_display_height,
+                                    day_display_width, day_display_height,
+                                    fill=day_color))
+            d.append(draw.Text(df['date'][ind], 6,
+                               current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
+                               current_day_postion_y + int(number_of_months - 1) * day_display_height + date_offset_y,
+                               fill='black'))
 
-        dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
+        # draw task
 
 
 
-        # draw day box
-        if df_date.weekday() < 5:
-            day_color = color_weekday
-        else:
-            day_color = color_weekend
-        d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
-                                current_day_postion_y + int(number_of_months) * day_display_height,
-                                day_display_width, day_display_height,
-                                fill=day_color))
-        d.append(draw.Text(df['date'][ind], 6,
-                           current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
-                           current_day_postion_y + int(number_of_months) * day_display_height + date_offset_y,
-                           fill='black'))
+
+
 
 
 
@@ -220,12 +199,12 @@ def create_monthly_display():
                             fill='#1248ff'))
 
     d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
-                            current_day_postion_y + (number_of_months) * day_display_height,
+                            current_day_postion_y + (number_of_months -1) * day_display_height,
                             day_display_width, day_display_height,
                             fill='#124800'))
     d.append(draw.Text('2022-12-04', 6,
                        current_day_postion_x + 36 * day_display_width + date_offset_x,
-                       current_day_postion_y + (number_of_months) * day_display_height + date_offset_y,
+                       current_day_postion_y + (number_of_months -1) * day_display_height + date_offset_y,
                        fill='black'))
 
     d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
@@ -234,13 +213,18 @@ def create_monthly_display():
                             fill='#1200ff'))
 
     d.append(draw.Rectangle(current_day_postion_x,
-                            current_day_postion_y + (number_of_months) * day_display_height,
+                            current_day_postion_y + (number_of_months -1) * day_display_height,
                             day_display_width, day_display_height,
                             fill='#0048ff'))
 
     d.append(draw.Rectangle(200, 75, 200, 8, fill='#1248ff'))
     d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 77,
                        fill='black'))  # Text with font size 6
+
+
+
+
+
 
     d.saveSvg('monthsdisp.svg')
 
