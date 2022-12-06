@@ -138,12 +138,12 @@ def create_monthly_display():
                             fill='#1248ff'))
 
     d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
-                            current_day_postion_y + 35 * day_display_height,
+                            current_day_postion_y + ( number_of_months - 1 ) * day_display_height,
                             day_display_width, day_display_height,
                             fill='#124800'))
     d.append(draw.Text('2022-12-04', 6,
                        current_day_postion_x + 36 * day_display_width + date_offset_x,
-                       current_day_postion_y + 35 * day_display_height + date_offset_y,
+                       current_day_postion_y + ( number_of_months - 1 ) * day_display_height + date_offset_y,
                        fill='black'))
 
     d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
@@ -152,7 +152,7 @@ def create_monthly_display():
                             fill='#1200ff'))
 
     d.append(draw.Rectangle(current_day_postion_x,
-                            current_day_postion_y + 35 * day_display_height,
+                            current_day_postion_y + ( number_of_months - 1 ) * day_display_height,
                             day_display_width, day_display_height,
                             fill='#0048ff'))
 
@@ -175,23 +175,25 @@ def create_monthly_display():
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
 
-        dow_month_offset_x = first_of_month_offset_x + df_date.day
+        if current_month != df_date.strftime("%m"):
+            number_of_months += 1
+            print(number_of_months)
+            current_month = df_date.strftime("%m")
+            first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
+
+        dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
 
         d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
                                 current_day_postion_y + int(number_of_months) * day_display_height,
                                 day_display_width, day_display_height,
-                                fill='#124800'))
+                                fill='#DDDDDD'))
         d.append(draw.Text(df['date'][ind], 6,
                            current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
                            current_day_postion_y + int(number_of_months) * day_display_height + date_offset_y,
                            fill='black'))
 
 
-        if current_month != df_date.strftime("%m"):
-            number_of_months += 1
-            print(number_of_months)
-            current_month = df_date.strftime("%m")
-            first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
+
 
         #"""
         print(dow_month_offset_x)
