@@ -171,12 +171,24 @@ def create_monthly_display():
                                 current_day_postion_y + int(number_of_months - 1) * day_display_height + current_task_offset_y,
                                 day_display_width, hour_height * df['amount'][ind],
                                 fill=tot_color_array[df['types_of_thought'][ind][0]]))
-        d.append(draw.Text(df['types_of_thought'][ind], 6,
-                           current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
-                           current_day_postion_y + int(number_of_months - 1) * day_display_height + date_offset_y + current_task_offset_y,
+        d.append(draw.Text(df['types_of_thought'][ind][0:13], 6,
+                           current_day_postion_x + dow_month_offset_x * day_display_width + f6text_offset_x + tot_offset_x,
+                           current_day_postion_y + int(number_of_months - 1) * day_display_height + f6text_offset_y + current_task_offset_y,
+                           fill='black'))
+        d.append(draw.Text(df['project'][ind][0:13], 6,
+                           current_day_postion_x + dow_month_offset_x * day_display_width + f6text_offset_x + proj_offset_x,
+                           current_day_postion_y + int(
+                               number_of_months - 1) * day_display_height + f6text_offset_y + current_task_offset_y,
+                           fill='black'))
+        d.append(draw.Text(df['task'][ind][0:32], 6,
+                           current_day_postion_x + dow_month_offset_x * day_display_width + f6text_offset_x + task_offset_x,
+                           current_day_postion_y + int(
+                               number_of_months - 1) * day_display_height + f6text_offset_y + current_task_offset_y,
                            fill='black'))
 
+
         current_task_offset_y = current_task_offset_y + hour_height * df['amount'][ind]
+
 
 
 
