@@ -182,6 +182,7 @@ def create_monthly_display():
 
 
 
+
         #"""
         print(dow_month_offset_x)
         print(df['date'][ind],
