@@ -54,7 +54,7 @@ def create_monthly_display():
     date_offset_y = day_display_height - hour_height + f6text_offset_y
     date_offset_x = f6text_offset_x
     day_number_offset_x = day_display_width / 2
-    day_number_offset_y = 50
+    day_number_offset_y = 100
     year_month_offset_x = 10
     year_month_offset_y = 200
 
@@ -157,7 +157,7 @@ def create_monthly_display():
                 year_month_colected = str(df_date.year) + "-" + df_date.strftime("%m")
                 d.append(draw.Text(year_month_colected, 90,
                                    current_day_postion_x + year_month_offset_x,
-                                   current_day_postion_y + year_month_offset_y +
+                                   current_day_postion_y + year_month_offset_y +\
                                    int( number_of_months - 1) * day_display_height,
                                    fill=year_month_color))
                 number_of_months += 1
@@ -166,10 +166,7 @@ def create_monthly_display():
 
             #day_number_offset_x
             #day_number_offset_y
-
-
             #day_number_color = "#B9B9B9"
-            # = "#696969"
 
 
             # draw day box
@@ -185,6 +182,11 @@ def create_monthly_display():
                                current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
                                current_day_postion_y + int(number_of_months - 1) * day_display_height + date_offset_y,
                                fill='black'))
+            d.append(draw.Text(str(df_date.day), 100,
+                               current_day_postion_x + dow_month_offset_x * day_display_width + day_number_offset_x,
+                               current_day_postion_y + int(number_of_months - 1) * day_display_height + day_number_offset_y,
+                               text_anchor="middle",
+                               fill=day_number_color))
 
         # draw task
         d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
@@ -229,6 +231,7 @@ def create_monthly_display():
               df['amount'][ind])
         #"""
 
+    """
     # the following rectangles are used for testing
     d.append(draw.Rectangle(current_day_postion_x,
                             current_day_postion_y,
@@ -266,9 +269,12 @@ def create_monthly_display():
     d.append(draw.Rectangle(200, 75, 200, 8, fill='#1248ff'))
     d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 77,
                        fill='black'))  # Text with font size 6
+    """
 
-
-
+    d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
+    today_date = "created on " + str(datetime.date.today())
+    d.append(draw.Text(today_date, 6, 201, 77,
+                       fill='black'))  # Text with font size 6
 
 
 
