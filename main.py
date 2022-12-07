@@ -272,7 +272,7 @@ def create_monthly_display():
     """
 
     d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
-    today_date = "created on " + str(datetime.date.today())
+    today_date = "Created on: " + str(datetime.date.today())
     d.append(draw.Text(today_date, 6, 201, 77,
                        fill='black'))  # Text with font size 6
 
