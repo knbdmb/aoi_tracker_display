@@ -170,6 +170,7 @@ def create_monthly_display():
         d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
                                 current_day_postion_y + int(number_of_months - 1) * day_display_height + current_task_offset_y,
                                 day_display_width, hour_height * df['amount'][ind],
+                                stroke='black',
                                 fill=tot_color_array[df['types_of_thought'][ind][0]]))
         d.append(draw.Text(df['types_of_thought'][ind][0:13], 6,
                            current_day_postion_x + dow_month_offset_x * day_display_width + f6text_offset_x + tot_offset_x,
