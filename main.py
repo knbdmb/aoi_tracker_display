@@ -47,6 +47,7 @@ def create_monthly_display():
     month_offset_y = 0
     current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
     current_day_postion_y = paper_to_border_offset_y + border_to_chart_offset_y + month_offset_y
+    current_task_offset_y = 0
 
     f6text_offset_x = 1
     f6text_offset_y = 2
@@ -60,12 +61,15 @@ def create_monthly_display():
     color_weekend   = "#EEEEEE"
     day_color       = "#EEEEEE" # this set to highlight weekends
     year_color      = "#EEEEEE" # this set to highlight years
-    tot_color_array[5] = "cyan"
-    tot_color_array[4] = "red"
-    tot_color_array[3] = "orange"
-    tot_color_array[2] = "green"
-    tot_color_array[1] = "blue"
-
+    task_color      = "gray"    # this is set for each task
+    tot_color_array = {
+                      "5": "cyan",
+                      "4": "red",
+                      "3":  "orange",
+                      "2": "green",
+                      "1": "blue",
+                      "x": "gray"
+                      }
 
     max_char = 53
     tot_max = 14
@@ -129,6 +133,7 @@ def create_monthly_display():
 
         if current_day != df_date.day:
             current_day = df_date.day
+            current_task_offset_y = 0
             # process new month
             if current_month != df_date.strftime("%m"):
                 current_month = df_date.strftime("%m")
@@ -162,10 +167,16 @@ def create_monthly_display():
                                fill='black'))
 
         # draw task
+        d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
+                                current_day_postion_y + int(number_of_months - 1) * day_display_height + current_task_offset_y,
+                                day_display_width, hour_height * df['amount'][ind],
+                                fill=tot_color_array[df['types_of_thought'][ind][0]]))
+        d.append(draw.Text(df['types_of_thought'][ind], 6,
+                           current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
+                           current_day_postion_y + int(number_of_months - 1) * day_display_height + date_offset_y + current_task_offset_y,
+                           fill='black'))
 
-
-
-
+        current_task_offset_y = current_task_offset_y + hour_height * df['amount'][ind]
 
 
 
@@ -180,7 +191,8 @@ def create_monthly_display():
               df_date.weekday(),
               df['types_of_thought'][ind],
               df['project'][ind],
-              df['task'][ind])
+              df['task'][ind],
+              df['amount'][ind])
         #"""
 
     # the following rectangles are used for testing
