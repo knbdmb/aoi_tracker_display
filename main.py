@@ -53,6 +53,10 @@ def create_monthly_display():
     f6text_offset_y = 2
     date_offset_y = day_display_height - hour_height + f6text_offset_y
     date_offset_x = f6text_offset_x
+    day_number_offset_x = day_display_width / 2
+    day_number_offset_y = 50
+    year_month_offset_x = 10
+    year_month_offset_y = 200
 
     color_border    = "#999999"
     color_even_year = "#CCCCCC"
@@ -62,12 +66,14 @@ def create_monthly_display():
     day_color       = "#EEEEEE" # this set to highlight weekends
     year_color      = "#EEEEEE" # this set to highlight years
     task_color      = "gray"    # this is set for each task
+    day_number_color = "#B9B9B9"
+    year_month_color = "#696969"
     tot_color_array = {
                       "5": "cyan",
                       "4": "red",
                       "3":  "orange",
                       "2": "green",
-                      "1": "blue",
+                      "1": "#4141FF",
                       "x": "gray"
                       }
 
@@ -148,9 +154,23 @@ def create_monthly_display():
                                         current_day_postion_y + int(number_of_months) * day_display_height,
                                         37 * day_display_width, day_display_height,
                                         fill=year_color))
+                year_month_colected = str(df_date.year) + "-" + df_date.strftime("%m")
+                d.append(draw.Text(year_month_colected, 90,
+                                   current_day_postion_x + year_month_offset_x,
+                                   current_day_postion_y + year_month_offset_y +
+                                   int( number_of_months - 1) * day_display_height,
+                                   fill=year_month_color))
                 number_of_months += 1
 
             dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
+
+            #day_number_offset_x
+            #day_number_offset_y
+
+
+            #day_number_color = "#B9B9B9"
+            # = "#696969"
+
 
             # draw day box
             if df_date.weekday() < 5:
