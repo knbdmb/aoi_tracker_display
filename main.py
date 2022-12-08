@@ -4,6 +4,12 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 def create_monthly_display():
     print('trying to print out monthly display')  # Press ⌘F8 to toggle the breakpoint.
+    # get data, filter and sort data
+    # get list of existing files into dictionary
+    # for each month not yet written (current month is always genterated) create chart
+    # set up frame of chart
+    # step through data and create chart
+    # finish chart and start on next one
 
 
     print("done with monthly display")
@@ -31,6 +37,10 @@ def create_years_display():
     df = df[df['date'] >= "2020-01-01"]
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
+    # Using the sorting function
+    df.sort_values(by=["date", "types_of_thought", "project"],
+                   axis=0, ascending=[True, True, True],
+                   inplace=True)
 
 
 
@@ -362,7 +372,7 @@ def import_data():
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
     # Using the sorting function
-    df.sort_values(["date", "types_of_thought", "project"],
+    df.sort_values(by=["date", "types_of_thought", "project"],
                    axis=0, ascending=[True, True, True],
                    inplace=True)
 
