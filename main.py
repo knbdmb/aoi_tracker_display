@@ -2,11 +2,12 @@
 
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def create_monthly_display():
-    # Use a breakpoint in the code line below to debug your script.
+def create_monthly_display()
     print('trying to print out month display')  # Press ⌘F8 to toggle the breakpoint.
+
+def create_years_display():
+    # Use a breakpoint in the code line below to debug your script.
+    print('trying to print out years display')  # Press ⌘F8 to toggle the breakpoint.
 
     import pandas as pd
     from pandas_ods_reader import read_ods
@@ -282,7 +283,7 @@ def create_monthly_display():
 
 
 
-    print("done with month display")
+    print("done with years display")
 
 
 
@@ -454,6 +455,7 @@ def print_hi(name):
 if __name__ == '__main__':
     #print_hi('PyCharm')
     create_monthly_display()
+    create_years_display()
     #create_heatmap()
     #import_data()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
