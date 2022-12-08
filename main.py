@@ -2,8 +2,11 @@
 
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-def create_monthly_display()
-    print('trying to print out month display')  # Press ⌘F8 to toggle the breakpoint.
+def create_monthly_display():
+    print('trying to print out monthly display')  # Press ⌘F8 to toggle the breakpoint.
+
+
+    print("done with monthly display")
 
 def create_years_display():
     # Use a breakpoint in the code line below to debug your script.
@@ -279,7 +282,7 @@ def create_years_display():
 
 
 
-    d.saveSvg('monthsdisp.svg')
+    d.saveSvg('yearsdisp.svg')
 
 
 
