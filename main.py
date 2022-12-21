@@ -31,7 +31,7 @@ def create_monthly_display():
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
     # Using the sorting function
-    df.sort_values(by=["date", "types_of_thought", "project"],
+    df.sort_values(by=["project", "types_of_thought", "date"],
                    axis=0, ascending=[True, True, True],
                    inplace=True)
 
@@ -81,7 +81,7 @@ def create_monthly_display():
     tot_color_array = {
                       "5": "cyan",
                       "4": "red",
-                      "3":  "orange",
+                      "3": "orange",
                       "2": "green",
                       "1": "#4141FF",
                       "x": "gray"
