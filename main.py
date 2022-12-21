@@ -61,6 +61,12 @@ def create_monthly_display():
 
     f6text_offset_x = 1
     f6text_offset_y = 2
+    day_display_height = 0
+    hour_height = 0
+    day_display_width = 0
+    date_offset_x = 0
+    date_offset_y = 0
+
     task_offset_y = day_display_height - hour_height + f6text_offset_y
     task_offset_x = f6text_offset_x
     day_number_offset_x = day_display_width / 2
@@ -109,8 +115,8 @@ def create_monthly_display():
     # 7 = days in week, 1 day less of offset, 31 max days in month
     chart_height = hours_chart_height
 
-    drawing_width =(chart_width + 2*paper_to_border_offset_x /
-                    + 2*border_to_chart_offset_x /
+    drawing_width =(chart_width + 2*paper_to_border_offset_x
+                    + 2*border_to_chart_offset_x
                     )
     drawing_height =(chart_height + 2*paper_to_border_offset_y + 2*border_to_chart_offset_y)
 
