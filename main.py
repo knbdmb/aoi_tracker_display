@@ -62,24 +62,53 @@ def create_monthly_display():
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             number_of_projects_per_month += 1
-            print(df['yyyy_mm'][ind], number_of_projects_per_month, ", ",number_of_projects_per_month_max)
-            time.sleep(1)
+            print(df['date'][ind], number_of_projects_per_month, ", ", number_of_projects_per_month_max)
 
-    paper_to_border_offset_x = 50
-    paper_to_border_offset_y = 50
-    border_to_chart_offset_x = 50
-    border_to_chart_offset_y = 50
 
-    task_width = 200
+
+    number_of_tot_proj_min = 25
+    if number_of_projects_per_month_max > number_of_tot_proj_min:
+        number_of_tot_proj = number_of_projects_per_month_max
+    else:
+        number_of_tot_proj = number_of_tot_proj_min
+
+    #time.sleep(10)
+
+    default_gap = 50
+    task_width = 100
     task_height = 8
-    hours_chart_width = task_width
-    hours_chart_height = 3000 # 31 days * task_height * 12 h/day rounded up
-    hours_chart_gap_width = 50
+    cal_details_offset_x = 2
+    cal_details_offset_y = 10
+
+    paper_to_border_offset_x = default_gap
+    available_hours_offset_x = paper_to_border_offset_x + default_gap
+    available_hours_width    = task_width
+    month_chart_offset_x     = available_hours_offset_x + available_hours_width + default_gap
+    month_chart_width        = task_width * number_of_tot_proj
+    balances_offset_x        = paper_to_border_offset_x + default_gap
+    balances_width           = available_hours_width + default_gap + month_chart_width
+    cal_offset_x             = paper_to_border_offset_x + default_gap + cal_details_offset_x
+    title_offset_x           = month_chart_offset_x
+    border_width             = balances_offset_x + balances_width + default_gap
+    paper_width              = paper_to_border_offset_x + border_width + default_gap
 
 
 
-    number_of_tot_proj_min = 25 # this determined later
-    number_of_tot_proj = number_of_tot_proj_min  # this determined later
+
+
+
+    month_chart_offset_y = 50
+    paper_to_border_offset_y = 50
+    balances_height = 100
+    balances_offset_y = 50
+    cal_offset_y = 50
+    title_offset_y = 50
+    available_hours_offset_y = 50
+    available_hours_chart_height = 3000 # 31 days * task_height * 12 h/day rounded up
+
+
+
+
     dow_month_offset_x = 0
     month_offset_y = 0
     current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
@@ -164,6 +193,7 @@ def create_monthly_display():
 
     # Set up required variables before the for loop
     current_month = "yyyy_mm"
+    current_day = "xxx"
     current_project = "xxxxxxxxxx"
     number_of_projects = 0
 
