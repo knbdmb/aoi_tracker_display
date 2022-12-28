@@ -19,6 +19,7 @@ def create_monthly_display():
     import seaborn as sns
     import datetime
     import drawSvg as draw
+    import time
 
     # get data from spreadsheet
     path = "../aoi_tracker.ods"
@@ -42,10 +43,25 @@ def create_monthly_display():
                    axis=0, ascending=[True, True, True],
                    inplace=True)
 
-    number_of_tot_proj = df.tot_proj.unique().size
+    # Set up required variables before the for loop
+    current_month = "yyyy_mm"
+    current_project = "xxxxxxxxxx"
+    number_of_projects_per_month = 0
+    number_of_projects_per_month_max = 0
 
-    print(number_of_tot_proj)
-    sleep(5)
+    print("start through dataframe to determine max projects in a month")
+    # Step through dataframe and generate chart
+    for ind in df.index:
+        ###jjj need to check new project
+        if current_month != df['yyyy_mm'][ind]
+            current_month = df['yyyy_mm'][ind]
+            if (number_of_projects_per_month > number_of_projects_per_month_max):
+                number_of_projects_per_month_max = number_of_projects_per_month
+            number_of_projects_per_month = 0
+        else:
+            number_of_projects_per_month += 1
+        print(number_of_tot_proj)
+        time.sleep(1)
 
     paper_to_border_offset_x = 50
     paper_to_border_offset_y = 50
@@ -153,10 +169,9 @@ def create_monthly_display():
 
 
     # Set up required variables before the for loop
-    current_year = 9999
-    current_month = "99"
-    current_day = 99
-    number_of_months = 0
+    current_month = "yyyy_mm"
+    current_project = "xxxxxxxxxx"
+    number_of_projects = 0
 
     print("start through dataframe")
     # Step through dataframe and generate chart
