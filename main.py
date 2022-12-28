@@ -57,13 +57,13 @@ def create_monthly_display():
             current_month = df['yyyy_mm'][ind]
             if (number_of_projects_per_month > number_of_projects_per_month_max):
                 number_of_projects_per_month_max = number_of_projects_per_month
-            print(number_of_projects_per_month, ", ",number_of_projects_per_month_max)
-            time.sleep(1)
+
             number_of_projects_per_month = 0
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             number_of_projects_per_month += 1
-
+            print(df['yyyy_mm'][ind], number_of_projects_per_month, ", ",number_of_projects_per_month_max)
+            time.sleep(1)
 
     paper_to_border_offset_x = 50
     paper_to_border_offset_y = 50
