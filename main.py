@@ -25,18 +25,29 @@ def create_monthly_display():
     sheet_name = "actions"
     df = read_ods(path, sheet_name)
 
+    path_output = "./aoi_month_rpt"
+    file_output = "yyyy_mm_rpt.svg"
+
     # filter rows without dates and prep data
     df = df[df['date'].notna()]
     df = df[df['date'] >= "2020-01-01"]
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
+    df["yyyy_mm"] = df['date'].str[0:4] \
+                    + "_" \
+                    + df['date'].str[5:7]
+    df["project_date"] = df["project"] + df['date']
 
     # Using the sorting function
-    df.sort_values(by=["project", "types_of_thought", "date"],
+    df.sort_values(by=["yyyy_mm", "types_of_thought", "project_date"],
                    axis=0, ascending=[True, True, True],
                    inplace=True)
 
-
-
+    """
+    df_date.year,
+    df_date.strftime("%m")
+    datetime.date.fromisoformat(df['date']).year
+    datetime.date.fromisoformat(df['date']).strftime("%m")
+    """
 
 
     paper_to_border_offset_x = 50
@@ -166,6 +177,7 @@ def create_monthly_display():
                 else:
                     year_color = color_odd_year
 
+                """
                 # draw month box in right color
                 d.append(draw.Rectangle(current_day_postion_x,
                                         current_day_postion_y + int(number_of_months) * day_display_height,
@@ -178,6 +190,7 @@ def create_monthly_display():
                                    int( number_of_months - 1) * day_display_height,
                                    fill=year_month_color))
                 number_of_months += 1
+                """
 
             dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
 
@@ -185,7 +198,7 @@ def create_monthly_display():
             #day_number_offset_y
             #day_number_color = "#B9B9B9"
 
-
+            """
             # draw day box
             if df_date.weekday() < 5:
                 day_color = color_weekday
@@ -204,7 +217,9 @@ def create_monthly_display():
                                current_day_postion_y + int(number_of_months - 1) * day_display_height + day_number_offset_y,
                                text_anchor="middle",
                                fill=day_number_color))
+        """
 
+        """
         # draw task
         d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
                                 current_day_postion_y + int(number_of_months - 1) * day_display_height + current_task_offset_y,
@@ -228,7 +243,7 @@ def create_monthly_display():
 
 
         current_task_offset_y = current_task_offset_y + hour_height * df['amount'][ind]
-
+        """
 
 
 
@@ -242,6 +257,7 @@ def create_monthly_display():
               df_date.strftime("%m"),
               df_date.day,
               df_date.weekday(),
+              df['yyyy_mm'][ind],
               df['types_of_thought'][ind],
               df['project'][ind],
               df['task'][ind],
