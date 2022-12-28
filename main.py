@@ -92,13 +92,13 @@ def create_monthly_display():
     border_width             = balances_offset_x + balances_width + default_gap
     paper_width              = paper_to_border_offset_x + border_width + default_gap
 
-
+    paper_to_border_offset_y = 50
 
 
 
 
     month_chart_offset_y = 50
-    paper_to_border_offset_y = 50
+
     balances_height = 100
     balances_offset_y = 50
     cal_offset_y = 50
