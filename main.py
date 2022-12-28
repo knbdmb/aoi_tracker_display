@@ -53,15 +53,17 @@ def create_monthly_display():
     # Step through dataframe and generate chart
     for ind in df.index:
         ###jjj need to check new project
-        if current_month != df['yyyy_mm'][ind]
+        if current_month != df['yyyy_mm'][ind]:
             current_month = df['yyyy_mm'][ind]
             if (number_of_projects_per_month > number_of_projects_per_month_max):
                 number_of_projects_per_month_max = number_of_projects_per_month
+            print(number_of_projects_per_month, ", ",number_of_projects_per_month_max)
+            time.sleep(1)
             number_of_projects_per_month = 0
-        else:
+        if current_project != df['project'][ind]:
+            current_project = df['project'][ind]
             number_of_projects_per_month += 1
-        print(number_of_tot_proj)
-        time.sleep(1)
+
 
     paper_to_border_offset_x = 50
     paper_to_border_offset_y = 50
@@ -126,15 +128,7 @@ def create_monthly_display():
     proj_offset_x = 54
     task_offset_x = 110
 
-    # number_of_months = 3 * 12 # this would be 3 years of months
-    number_of_months = 0
-    current_month = "x"
-    for ind in df.index:
-        df_date = datetime.date.fromisoformat(df['date'][ind])
-        if current_month != df_date.strftime("%m"):
-            number_of_months += 1
-            print(number_of_months)
-            current_month = df_date.strftime("%m")
+
 
     chart_width = (7 - 1 + 31) * number_of_tot_proj
     # 7 = days in week, 1 day less of offset, 31 max days in month
