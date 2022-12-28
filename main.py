@@ -42,13 +42,10 @@ def create_monthly_display():
                    axis=0, ascending=[True, True, True],
                    inplace=True)
 
-    """
-    df_date.year,
-    df_date.strftime("%m")
-    datetime.date.fromisoformat(df['date']).year
-    datetime.date.fromisoformat(df['date']).strftime("%m")
-    """
+    number_of_tot_proj = df.tot_proj.unique().size
 
+    print(number_of_tot_proj)
+    sleep(5)
 
     paper_to_border_offset_x = 50
     paper_to_border_offset_y = 50
@@ -63,7 +60,8 @@ def create_monthly_display():
 
 
 
-    number_of_tot_proj = 25 # this determined later
+    number_of_tot_proj_min = 25 # this determined later
+    number_of_tot_proj = number_of_tot_proj_min  # this determined later
     dow_month_offset_x = 0
     month_offset_y = 0
     current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
@@ -311,7 +309,7 @@ def create_monthly_display():
 
 
 
-    d.saveSvg('monthlydisp.svg')
+    d.saveSvg(path_output +"/" + file_output)
 
 
     print("done with monthly display")
