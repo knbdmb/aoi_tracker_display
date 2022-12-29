@@ -57,14 +57,11 @@ def create_monthly_display():
             current_month = df['yyyy_mm'][ind]
             if (number_of_projects_per_month > number_of_projects_per_month_max):
                 number_of_projects_per_month_max = number_of_projects_per_month
-
             number_of_projects_per_month = 0
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             number_of_projects_per_month += 1
             print(df['date'][ind], number_of_projects_per_month, ", ", number_of_projects_per_month_max)
-
-
 
     number_of_tot_proj_min = 25
     if number_of_projects_per_month_max > number_of_tot_proj_min:
@@ -79,36 +76,38 @@ def create_monthly_display():
     task_height = 8
     cal_details_offset_x = 2
     cal_details_offset_y = 10
-    balances_height = 100
-    available_hours_chart_height = 3000  # 31 days * task_height * 12 h/day rounded up
+    balances_height = 300
+    available_hours_width = 200
+    available_hours_height = 3000  # 31 days * task_height * 12 h/day rounded up
+    month_chart_height = available_hours_height
     title_height = 200
 
     paper_to_border_offset_x = default_gap
     available_hours_offset_x = paper_to_border_offset_x + default_gap
-    available_hours_width    = task_width
     month_chart_offset_x     = available_hours_offset_x + available_hours_width + default_gap
     month_chart_width        = task_width * number_of_tot_proj
     balances_offset_x        = paper_to_border_offset_x + default_gap
     balances_width           = available_hours_width + default_gap + month_chart_width
     cal_offset_x             = paper_to_border_offset_x + default_gap + cal_details_offset_x
     title_offset_x           = month_chart_offset_x
+    title_width              = month_chart_width
     border_width             = balances_offset_x + balances_width + default_gap
-    drawing_width            = paper_to_border_offset_x + border_width + default_gap
+    drawing_width            = paper_to_border_offset_x + border_width
 
     paper_to_border_offset_y = default_gap
     balances_offset_y        = paper_to_border_offset_y + default_gap
     available_hours_offset_y = balances_offset_y + balances_height + default_gap
-    cal_offset_y             = available_hours_offset_y + available_hours_chart_height + cal_details_offset_y
+    cal_offset_y             = available_hours_offset_y + available_hours_height + default_gap + cal_details_offset_y
     month_chart_offset_y     = available_hours_offset_y
-    title_offset_y           = available_hours_offset_y + available_hours_chart_height + default_gap
+    title_offset_y           = available_hours_offset_y + available_hours_height + default_gap
     border_height            = title_offset_y + title_height + default_gap
     drawing_height           = border_height + default_gap
 
 
     dow_month_offset_x = 0
     month_offset_y = 0
-    current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
-    current_day_postion_y = paper_to_border_offset_y + border_to_chart_offset_y + month_offset_y
+    #current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
+    #current_day_postion_y = paper_to_border_offset_y + border_to_chart_offset_y + month_offset_y
     current_task_offset_y = 0
 
     f6text_offset_x = 1
@@ -153,9 +152,8 @@ def create_monthly_display():
     proj_offset_x = 54
     task_offset_x = 110
 
-
+    # establish paper size
     d = draw.Drawing(drawing_width, drawing_height, origin=(0,0))
-
 
     # Draw an irregular polygon for border
     d.append(draw.Lines(paper_to_border_offset_x,
@@ -176,7 +174,44 @@ def create_monthly_display():
                         fill = color_border,
                         stroke='black'))
 
+    # month chart
+    d.append(draw.Rectangle(month_chart_offset_x,
+                            month_chart_offset_y,
+                            month_chart_width, month_chart_height,
+                            fill=day_color))
 
+
+    # Available hours
+    d.append(draw.Rectangle(available_hours_offset_x,
+                            available_hours_offset_y,
+                            available_hours_width, available_hours_height,
+                            fill=day_color))
+
+
+    # calendar
+    d.append(draw.Rectangle(cal_offset_x,
+                            cal_offset_y,
+                            196, 168,
+                            fill=day_color))
+
+
+    # title
+    d.append(draw.Rectangle(title_offset_x,
+                            title_offset_y,
+                            title_width, title_height,
+                            fill=day_color))
+
+
+    # Balances
+    d.append(draw.Rectangle(balances_offset_x,
+                            balances_offset_x,
+                            balances_width, balances_height,
+                            fill=day_color))
+
+
+
+
+    """
     # Set up required variables before the for loop
     current_month = "yyyy_mm"
     current_day = "xxx"
@@ -200,7 +235,6 @@ def create_monthly_display():
                 else:
                     year_color = color_odd_year
 
-                """
                 # draw month box in right color
                 d.append(draw.Rectangle(current_day_postion_x,
                                         current_day_postion_y + int(number_of_months) * day_display_height,
@@ -213,7 +247,7 @@ def create_monthly_display():
                                    int( number_of_months - 1) * day_display_height,
                                    fill=year_month_color))
                 number_of_months += 1
-                """
+           
 
             dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
 
@@ -221,7 +255,7 @@ def create_monthly_display():
             #day_number_offset_y
             #day_number_color = "#B9B9B9"
 
-            """
+     
             # draw day box
             if df_date.weekday() < 5:
                 day_color = color_weekday
@@ -240,9 +274,7 @@ def create_monthly_display():
                                current_day_postion_y + int(number_of_months - 1) * day_display_height + day_number_offset_y,
                                text_anchor="middle",
                                fill=day_number_color))
-        """
-
-        """
+ 
         # draw task
         d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
                                 current_day_postion_y + int(number_of_months - 1) * day_display_height + current_task_offset_y,
@@ -266,14 +298,8 @@ def create_monthly_display():
 
 
         current_task_offset_y = current_task_offset_y + hour_height * df['amount'][ind]
-        """
+       
 
-
-
-
-
-
-        #"""
         print(dow_month_offset_x)
         print(df['date'][ind],
               df_date.year,
@@ -285,7 +311,7 @@ def create_monthly_display():
               df['project'][ind],
               df['task'][ind],
               df['amount'][ind])
-        #"""
+    """
 
     """
     # the following rectangles are used for testing
