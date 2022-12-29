@@ -79,6 +79,9 @@ def create_monthly_display():
     task_height = 8
     cal_details_offset_x = 2
     cal_details_offset_y = 10
+    balances_height = 100
+    available_hours_chart_height = 3000  # 31 days * task_height * 12 h/day rounded up
+    title_height = 200
 
     paper_to_border_offset_x = default_gap
     available_hours_offset_x = paper_to_border_offset_x + default_gap
@@ -90,23 +93,16 @@ def create_monthly_display():
     cal_offset_x             = paper_to_border_offset_x + default_gap + cal_details_offset_x
     title_offset_x           = month_chart_offset_x
     border_width             = balances_offset_x + balances_width + default_gap
-    paper_width              = paper_to_border_offset_x + border_width + default_gap
+    drawing_width            = paper_to_border_offset_x + border_width + default_gap
 
-    paper_to_border_offset_y = 50
-
-
-
-
-    month_chart_offset_y = 50
-
-    balances_height = 100
-    balances_offset_y = 50
-    cal_offset_y = 50
-    title_offset_y = 50
-    available_hours_offset_y = 50
-    available_hours_chart_height = 3000 # 31 days * task_height * 12 h/day rounded up
-
-
+    paper_to_border_offset_y = default_gap
+    balances_offset_y        = paper_to_border_offset_y + default_gap
+    available_hours_offset_y = balances_offset_y + balances_height + default_gap
+    cal_offset_y             = available_hours_offset_y + available_hours_chart_height + cal_details_offset_y
+    month_chart_offset_y     = available_hours_offset_y
+    title_offset_y           = available_hours_offset_y + available_hours_chart_height + default_gap
+    border_height            = title_offset_y + title_height + default_gap
+    drawing_height           = border_height + default_gap
 
 
     dow_month_offset_x = 0
@@ -158,16 +154,6 @@ def create_monthly_display():
     task_offset_x = 110
 
 
-
-    chart_width = (7 - 1 + 31) * number_of_tot_proj
-    # 7 = days in week, 1 day less of offset, 31 max days in month
-    chart_height = hours_chart_height
-
-    drawing_width =(chart_width + 2*paper_to_border_offset_x
-                    + 2*border_to_chart_offset_x
-                    )
-    drawing_height =(chart_height + 2*paper_to_border_offset_y + 2*border_to_chart_offset_y)
-
     d = draw.Drawing(drawing_width, drawing_height, origin=(0,0))
 
 
@@ -176,12 +162,12 @@ def create_monthly_display():
                         paper_to_border_offset_y,
 
                         paper_to_border_offset_x,
-                        paper_to_border_offset_y + chart_height + 2*border_to_chart_offset_y,
+                        border_height,
 
-                        paper_to_border_offset_x + chart_width + 2*border_to_chart_offset_x,
-                        paper_to_border_offset_y + chart_height + 2*border_to_chart_offset_y,
+                        border_width,
+                        border_height,
 
-                        paper_to_border_offset_x + chart_width + 2*border_to_chart_offset_x,
+                        border_width,
                         paper_to_border_offset_y,
 
                         paper_to_border_offset_x,
