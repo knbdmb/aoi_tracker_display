@@ -80,6 +80,7 @@ def create_monthly_display():
     available_hours_width = 200
     available_hours_height = 3000  # 31 days * task_height * 12 h/day rounded up
     month_chart_height = available_hours_height
+    month_chart_label_height = 100
     title_height = 200
 
     paper_to_border_offset_x = default_gap
@@ -96,7 +97,7 @@ def create_monthly_display():
 
     paper_to_border_offset_y = default_gap
     balances_offset_y        = paper_to_border_offset_y + default_gap
-    available_hours_offset_y = balances_offset_y + balances_height + default_gap
+    available_hours_offset_y = balances_offset_y + balances_height + month_chart_label_height + default_gap
     cal_offset_y             = available_hours_offset_y + available_hours_height + default_gap + cal_details_offset_y
     month_chart_offset_y     = available_hours_offset_y
     title_offset_y           = available_hours_offset_y + available_hours_height + default_gap
