@@ -52,7 +52,6 @@ def create_monthly_display():
     print("start through dataframe to determine max projects in a month")
     # Step through dataframe and generate chart
     for ind in df.index:
-        ###jjj need to check new project
         if current_month != df['yyyy_mm'][ind]:
             current_month = df['yyyy_mm'][ind]
             if (number_of_projects_per_month > number_of_projects_per_month_max):
@@ -61,7 +60,7 @@ def create_monthly_display():
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             number_of_projects_per_month += 1
-            print(df['date'][ind], number_of_projects_per_month, ", ", number_of_projects_per_month_max)
+            #print(df['date'][ind], number_of_projects_per_month, ", ", number_of_projects_per_month_max)
 
     number_of_tot_proj_min = 25
     if number_of_projects_per_month_max > number_of_tot_proj_min:
@@ -180,6 +179,31 @@ def create_monthly_display():
                             month_chart_offset_y,
                             month_chart_width, month_chart_height,
                             fill=day_color))
+
+
+    #jjj
+    print("start through dataframe to plot tasks")
+    # Step through dataframe and generate chart
+    for ind in df.index:
+        if current_month != df['yyyy_mm'][ind]:
+            current_month = df['yyyy_mm'][ind]
+            #close old file
+            #start new file
+        if current_project != df['project'][ind]:
+            current_project = df['project'][ind]
+            #move to new column for task ploting
+            #plot out tot and project labels
+        #plot task and increment y offset
+
+
+
+
+
+
+
+
+
+
 
 
     # Available hours
