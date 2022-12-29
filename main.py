@@ -182,13 +182,16 @@ def create_monthly_display():
 
 
     #jjj
+    file_open_flag = False
     print("start through dataframe to plot tasks")
     # Step through dataframe and generate chart
     for ind in df.index:
         if current_month != df['yyyy_mm'][ind]:
             current_month = df['yyyy_mm'][ind]
-            #close old file
-            #start new file
+            #if open file
+                #close open file
+            #else
+                #start new document/file
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             #move to new column for task ploting
