@@ -154,30 +154,8 @@ def create_monthly_display():
 
 
 
-    # Draw an irregular polygon for border
-    d.append(draw.Lines(paper_to_border_offset_x,
-                        paper_to_border_offset_y,
 
-                        paper_to_border_offset_x,
-                        border_height,
 
-                        border_width,
-                        border_height,
-
-                        border_width,
-                        paper_to_border_offset_y,
-
-                        paper_to_border_offset_x,
-                        paper_to_border_offset_y,
-                        close = False,
-                        fill = color_border,
-                        stroke='black'))
-
-    # month chart
-    d.append(draw.Rectangle(month_chart_offset_x,
-                            month_chart_offset_y,
-                            month_chart_width, month_chart_height,
-                            fill=day_color))
 
 
     #jjj
@@ -209,8 +187,30 @@ def create_monthly_display():
             # start new month
             # clean previous month info and chart
             # set up drawing size object
-            # set up border
+            # Draw an irregular polygon for border
+            d.append(draw.Lines(paper_to_border_offset_x,
+                                paper_to_border_offset_y,
+
+                                paper_to_border_offset_x,
+                                border_height,
+
+                                border_width,
+                                border_height,
+
+                                border_width,
+                                paper_to_border_offset_y,
+
+                                paper_to_border_offset_x,
+                                paper_to_border_offset_y,
+                                close=False,
+                                fill=color_border,
+                                stroke='black'))
             # month chart
+            d.append(draw.Rectangle(month_chart_offset_x,
+                                    month_chart_offset_y,
+                                    month_chart_width, month_chart_height,
+                                    fill=day_color))
+
             # determine available hours and focus hours and plot
             # Available hours
             d.append(draw.Rectangle(available_hours_offset_x,
