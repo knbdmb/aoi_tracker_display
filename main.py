@@ -173,6 +173,7 @@ def create_monthly_display():
                 # fill in available hours stats
                 # fill in balance focus details
                 # save drawing obj to file
+                file_output = current_month + "_rpt.svg"
                 d.saveSvg(path_output + "/" + file_output)
                 # del drawing_object
                 del d
@@ -258,20 +259,9 @@ def create_monthly_display():
         # update hours to totals arrays
         # track hours per day
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if drawing_obj_flag:
+        file_output = current_month + "_rpt.svg"
+        d.saveSvg(path_output + "/" + file_output)
     print("done with monthly display")
 
 def create_years_display():
