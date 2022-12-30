@@ -182,21 +182,48 @@ def create_monthly_display():
 
 
     #jjj
-    file_open_flag = False
+
+    drawing_obj_flag = False
+    current_month = "yyyy_mm"
+    current_project = "xxxxxxxxxx"
     print("start through dataframe to plot tasks")
     # Step through dataframe and generate chart
     for ind in df.index:
         if current_month != df['yyyy_mm'][ind]:
-            current_month = df['yyyy_mm'][ind]
-            #if open file
-                #close open file
+            #if drawing_obj exists
+                # totals found from previous months
+                # fill in calender hours and focus hours stats
+                # fill in available hours stats
+                # fill in balance focus details
+                # save drawing obj to file
+                # del drawing_object
+                # create new drawing obj and set flag
             #else
-                #start new document/file
+                # create new drawing obj and set flag
+            current_month = df['yyyy_mm'][ind]
+            # start new month
+            # clean previous month info and chart
+            # determine calendar shape and plot
+            # determine available hours and focus hours and plot
+            # fill in title area
+            # fill in Balance area
+            # set column x offset for task plotting to first column
+            # set column y offset to start position
+            # fill in tot and project labels
+            current_project = df['project'][ind]
+
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
-            #move to new column for task ploting
-            #plot out tot and project labels
-        #plot task and increment y offset
+            # move to new column for task ploting
+            # set column y offset to start position
+            # plot out tot and project labels
+
+        # for current row of df
+        # plot task box and description
+        # increment y offset
+        # update hours to totals arrays
+        # track hours per day
+
 
 
 
