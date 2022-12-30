@@ -152,8 +152,7 @@ def create_monthly_display():
     proj_offset_x = 54
     task_offset_x = 110
 
-    # establish drawing object
-    d = draw.Drawing(drawing_width, drawing_height, origin=(0,0))
+
 
     # Draw an irregular polygon for border
     d.append(draw.Lines(paper_to_border_offset_x,
@@ -190,32 +189,58 @@ def create_monthly_display():
     # Step through dataframe and generate chart
     for ind in df.index:
         if current_month != df['yyyy_mm'][ind]:
-            #if drawing_obj exists
+            if drawing_obj_flag:
                 # totals found from previous months
                 # fill in calender hours and focus hours stats
                 # fill in available hours stats
                 # fill in balance focus details
                 # save drawing obj to file
-                # save drawing
+                d.saveSvg(path_output + "/" + file_output)
                 # del drawing_object
-                # establish drawing object and set flag
-            #else
-                # establish drawing object and set flag
+                del d
+                drawing_obj_flag = False
+
+            # establish drawing object and set flag
+            d = draw.Drawing(drawing_width, drawing_height, origin=(0, 0))
+            drawing_obj_flag = True
+
+
             current_month = df['yyyy_mm'][ind]
             # start new month
             # clean previous month info and chart
             # set up drawing size object
             # set up border
             # month chart
-            # Available hours
-            # calendar
-            # determine calendar shape and plot
             # determine available hours and focus hours and plot
+            # Available hours
+            d.append(draw.Rectangle(available_hours_offset_x,
+                                    available_hours_offset_y,
+                                    available_hours_width, available_hours_height,
+                                    fill=day_color))
+            # determine calendar shape and plot
+            # calendar
+            d.append(draw.Rectangle(cal_offset_x,
+                                    cal_offset_y,
+                                    196, 168,
+                                    fill=day_color))
+
             # title
+            d.append(draw.Rectangle(title_offset_x,
+                                    title_offset_y,
+                                    title_width, title_height,
+                                    fill=day_color))
             # fill in title area
             # Balances
+            d.append(draw.Rectangle(balances_offset_x,
+                                    balances_offset_x,
+                                    balances_width, balances_height,
+                                    fill=day_color))
             # fill in Balance area
             # date created label
+            d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
+            today_date = "Created on: " + str(datetime.date.today())
+            d.append(draw.Text(today_date, 6, 201, 77,
+                               fill='black'))  # Text with font size 6
             # set column x offset for task plotting to first column
             # set column y offset to start position
             # fill in tot and project labels
@@ -245,40 +270,6 @@ def create_monthly_display():
 
 
 
-    # Available hours
-    d.append(draw.Rectangle(available_hours_offset_x,
-                            available_hours_offset_y,
-                            available_hours_width, available_hours_height,
-                            fill=day_color))
-
-    # calendar
-    d.append(draw.Rectangle(cal_offset_x,
-                            cal_offset_y,
-                            196, 168,
-                            fill=day_color))
-
-
-    # title
-    d.append(draw.Rectangle(title_offset_x,
-                            title_offset_y,
-                            title_width, title_height,
-                            fill=day_color))
-
-    # Balances
-    d.append(draw.Rectangle(balances_offset_x,
-                            balances_offset_x,
-                            balances_width, balances_height,
-                            fill=day_color))
-
-    # date created label
-    d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
-    today_date = "Created on: " + str(datetime.date.today())
-    d.append(draw.Text(today_date, 6, 201, 77,
-                       fill='black'))  # Text with font size 6
-
-
-    # save drawing
-    d.saveSvg(path_output +"/" + file_output)
 
 
     print("done with monthly display")
