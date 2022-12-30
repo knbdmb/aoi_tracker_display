@@ -152,7 +152,7 @@ def create_monthly_display():
     proj_offset_x = 54
     task_offset_x = 110
 
-    # establish paper size
+    # establish drawing object
     d = draw.Drawing(drawing_width, drawing_height, origin=(0,0))
 
     # Draw an irregular polygon for border
@@ -196,17 +196,26 @@ def create_monthly_display():
                 # fill in available hours stats
                 # fill in balance focus details
                 # save drawing obj to file
+                # save drawing
                 # del drawing_object
-                # create new drawing obj and set flag
+                # establish drawing object and set flag
             #else
-                # create new drawing obj and set flag
+                # establish drawing object and set flag
             current_month = df['yyyy_mm'][ind]
             # start new month
             # clean previous month info and chart
+            # set up drawing size object
+            # set up border
+            # month chart
+            # Available hours
+            # calendar
             # determine calendar shape and plot
             # determine available hours and focus hours and plot
+            # title
             # fill in title area
+            # Balances
             # fill in Balance area
+            # date created label
             # set column x offset for task plotting to first column
             # set column y offset to start position
             # fill in tot and project labels
@@ -242,7 +251,6 @@ def create_monthly_display():
                             available_hours_width, available_hours_height,
                             fill=day_color))
 
-
     # calendar
     d.append(draw.Rectangle(cal_offset_x,
                             cal_offset_y,
@@ -256,165 +264,20 @@ def create_monthly_display():
                             title_width, title_height,
                             fill=day_color))
 
-
     # Balances
     d.append(draw.Rectangle(balances_offset_x,
                             balances_offset_x,
                             balances_width, balances_height,
                             fill=day_color))
 
-
-
-
-    """
-    # Set up required variables before the for loop
-    current_month = "yyyy_mm"
-    current_day = "xxx"
-    current_project = "xxxxxxxxxx"
-    number_of_projects = 0
-
-    print("start through dataframe")
-    # Step through dataframe and generate chart
-    for ind in df.index:
-        df_date = datetime.date.fromisoformat(df['date'][ind])
-
-        if current_day != df_date.day:
-            current_day = df_date.day
-            current_task_offset_y = 0
-            # process new month
-            if current_month != df_date.strftime("%m"):
-                current_month = df_date.strftime("%m")
-                first_of_month_offset_x = datetime.datetime(df_date.year, int(df_date.strftime("%m")), 1).weekday()
-                if (df_date.year % 2) == 0:
-                    year_color = color_even_year
-                else:
-                    year_color = color_odd_year
-
-                # draw month box in right color
-                d.append(draw.Rectangle(current_day_postion_x,
-                                        current_day_postion_y + int(number_of_months) * day_display_height,
-                                        37 * day_display_width, day_display_height,
-                                        fill=year_color))
-                year_month_colected = str(df_date.year) + "-" + df_date.strftime("%m")
-                d.append(draw.Text(year_month_colected, 90,
-                                   current_day_postion_x + year_month_offset_x,
-                                   current_day_postion_y + year_month_offset_y +\
-                                   int( number_of_months - 1) * day_display_height,
-                                   fill=year_month_color))
-                number_of_months += 1
-           
-
-            dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
-
-            #day_number_offset_x
-            #day_number_offset_y
-            #day_number_color = "#B9B9B9"
-
-     
-            # draw day box
-            if df_date.weekday() < 5:
-                day_color = color_weekday
-            else:
-                day_color = color_weekend
-            d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
-                                    current_day_postion_y + int(number_of_months -1 ) * day_display_height,
-                                    day_display_width, day_display_height,
-                                    fill=day_color))
-            d.append(draw.Text(df['date'][ind], 6,
-                               current_day_postion_x + dow_month_offset_x * day_display_width + date_offset_x,
-                               current_day_postion_y + int(number_of_months - 1) * day_display_height + date_offset_y,
-                               fill='black'))
-            d.append(draw.Text(str(df_date.day), 100,
-                               current_day_postion_x + dow_month_offset_x * day_display_width + day_number_offset_x,
-                               current_day_postion_y + int(number_of_months - 1) * day_display_height + day_number_offset_y,
-                               text_anchor="middle",
-                               fill=day_number_color))
- 
-        # draw task
-        d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
-                                current_day_postion_y + int(number_of_months - 1) * day_display_height + current_task_offset_y,
-                                day_display_width, hour_height * df['amount'][ind],
-                                stroke='black',
-                                fill=tot_color_array[df['types_of_thought'][ind][0]]))
-        d.append(draw.Text(df['types_of_thought'][ind][0:13], 6,
-                           current_day_postion_x + dow_month_offset_x * day_display_width + f6text_offset_x + tot_offset_x,
-                           current_day_postion_y + int(number_of_months - 1) * day_display_height + f6text_offset_y + current_task_offset_y,
-                           fill='black'))
-        d.append(draw.Text(df['project'][ind][0:13], 6,
-                           current_day_postion_x + dow_month_offset_x * day_display_width + f6text_offset_x + proj_offset_x,
-                           current_day_postion_y + int(
-                               number_of_months - 1) * day_display_height + f6text_offset_y + current_task_offset_y,
-                           fill='black'))
-        d.append(draw.Text(df['task'][ind][0:32], 6,
-                           current_day_postion_x + dow_month_offset_x * day_display_width + f6text_offset_x + task_offset_x,
-                           current_day_postion_y + int(
-                               number_of_months - 1) * day_display_height + f6text_offset_y + current_task_offset_y,
-                           fill='black'))
-
-
-        current_task_offset_y = current_task_offset_y + hour_height * df['amount'][ind]
-       
-
-        print(dow_month_offset_x)
-        print(df['date'][ind],
-              df_date.year,
-              df_date.strftime("%m"),
-              df_date.day,
-              df_date.weekday(),
-              df['yyyy_mm'][ind],
-              df['types_of_thought'][ind],
-              df['project'][ind],
-              df['task'][ind],
-              df['amount'][ind])
-    """
-
-    """
-    # the following rectangles are used for testing
-    d.append(draw.Rectangle(current_day_postion_x,
-                            current_day_postion_y,
-                            day_display_width, day_display_height,
-                            fill='#1248ff'))
-    d.append(draw.Text('2022-12-03', 6,
-                       current_day_postion_x + date_offset_x,
-                       current_day_postion_y + date_offset_y,
-                       fill='black'))
-
-    d.append(draw.Rectangle(current_day_postion_x + day_display_width,
-                            current_day_postion_y + day_display_height,
-                            day_display_width, day_display_height,
-                            fill='#1248ff'))
-
-    d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
-                            current_day_postion_y + (number_of_months -1) * day_display_height,
-                            day_display_width, day_display_height,
-                            fill='#124800'))
-    d.append(draw.Text('2022-12-04', 6,
-                       current_day_postion_x + 36 * day_display_width + date_offset_x,
-                       current_day_postion_y + (number_of_months -1) * day_display_height + date_offset_y,
-                       fill='black'))
-
-    d.append(draw.Rectangle(current_day_postion_x + 36 * day_display_width,
-                            current_day_postion_y,
-                            day_display_width, day_display_height,
-                            fill='#1200ff'))
-
-    d.append(draw.Rectangle(current_day_postion_x,
-                            current_day_postion_y + (number_of_months -1) * day_display_height,
-                            day_display_width, day_display_height,
-                            fill='#0048ff'))
-
-    d.append(draw.Rectangle(200, 75, 200, 8, fill='#1248ff'))
-    d.append(draw.Text('AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789', 6, 201, 77,
-                       fill='black'))  # Text with font size 6
-    """
-
+    # date created label
     d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
     today_date = "Created on: " + str(datetime.date.today())
     d.append(draw.Text(today_date, 6, 201, 77,
                        fill='black'))  # Text with font size 6
 
 
-
+    # save drawing
     d.saveSvg(path_output +"/" + file_output)
 
 
