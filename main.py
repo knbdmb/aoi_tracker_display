@@ -259,6 +259,15 @@ def create_monthly_display():
             current_number_of_projects = 0
             # fill in tot and project labels
             current_project = df['project'][ind]
+            if first_record_of_df:
+                d.append(draw.Text(df['project'][ind][0:13], 12,
+                                   current_month_x_offset,
+                                   current_month_y_offset - 50,
+                                   fill='black'))
+                d.append(draw.Text(df['types_of_thought'][ind][0:13], 12,
+                                   current_month_x_offset,
+                                   current_month_y_offset - 100,
+                                   fill='black'))
 
 
         if current_project != df['project'][ind]:
@@ -269,11 +278,18 @@ def create_monthly_display():
                 current_number_of_projects += 1
             first_record_of_df = True # fix better name
 
-
             current_month_x_offset = month_chart_offset_x + current_number_of_projects * task_width
             current_month_y_offset = month_chart_offset_y
             # plot out tot and project labels
 
+            d.append(draw.Text(df['project'][ind][0:13], 12,
+                               current_month_x_offset,
+                               current_month_y_offset - 50,
+                               fill='black'))
+            d.append(draw.Text(df['types_of_thought'][ind][0:13], 12,
+                               current_month_x_offset,
+                               current_month_y_offset - 100,
+                               fill='black'))
 
         # jjj
         # for current row of df
