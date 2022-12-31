@@ -46,6 +46,7 @@ def create_monthly_display():
     # Set up required variables before the for loop
     current_month = "yyyy_mm"
     current_project = "xxxxxxxxxx"
+    current_number_of_projects = 0
     number_of_projects_per_month = 0
     number_of_projects_per_month_max = 0
 
@@ -158,7 +159,7 @@ def create_monthly_display():
 
 
 
-    #jjj
+
 
     drawing_obj_flag = False
     current_month = "yyyy_mm"
@@ -183,10 +184,14 @@ def create_monthly_display():
             d = draw.Drawing(drawing_width, drawing_height, origin=(0, 0))
             drawing_obj_flag = True
 
+            current_number_of_projects = 0
 
             current_month = df['yyyy_mm'][ind]
             # start new month
             # clean previous month info and chart
+            current_month_x_offset = month_chart_offset_x
+            current_month_y_offset = month_chart_offset_y
+            current_task_offset_y = 0
             # set up drawing size object
             # Draw an irregular polygon for border
             d.append(draw.Lines(paper_to_border_offset_x,
@@ -231,6 +236,11 @@ def create_monthly_display():
                                     title_width, title_height,
                                     fill=day_color))
             # fill in title area
+            d.append(draw.Text(current_month, 50, title_offset_x + title_width/2, title_offset_y + title_height/2,
+                               fill='black'))
+            today_date = "Created on: " + str(datetime.date.today())
+            d.append(draw.Text(today_date, 50, title_offset_x, title_offset_y,
+                               fill='black'))
             # Balances
             d.append(draw.Rectangle(balances_offset_x,
                                     balances_offset_x,
@@ -251,18 +261,35 @@ def create_monthly_display():
             current_project = df['project'][ind]
             # move to new column for task ploting
             # set column y offset to start position
+            current_number_of_projects =+ 1
+            current_month_x_offset = month_chart_offset_x + current_number_of_projects * task_width
+            current_month_y_offset = month_chart_offset_y
             # plot out tot and project labels
 
+
+        # jjj
         # for current row of df
         # plot task box and description
+        d.append(draw.Rectangle(current_month_x_offset,
+                                current_month_y_offset,
+                                task_width,
+                                task_height  * df['amount'][ind],
+                                fill='#ff00ff'))
         # increment y offset
+        current_month_y_offset = current_month_y_offset + task_height  * df['amount'][ind]
         # update hours to totals arrays
         # track hours per day
+        print(df['yyyy_mm'][ind]," _-_ ",df['project'][ind]," _-_ ",df['task'][ind])
 
     if drawing_obj_flag:
         file_output = current_month + "_rpt.svg"
         d.saveSvg(path_output + "/" + file_output)
     print("done with monthly display")
+
+
+
+
+
 
 def create_years_display():
     # Use a breakpoint in the code line below to debug your script.
