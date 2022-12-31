@@ -258,7 +258,7 @@ def create_monthly_display():
             current_month_y_offset = month_chart_offset_y
             current_number_of_projects = 0
             # fill in tot and project labels
-            #current_project = df['project'][ind]
+            current_project = df['project'][ind]
 
 
         if current_project != df['project'][ind]:
@@ -266,8 +266,8 @@ def create_monthly_display():
             # move to new column for task ploting
             # set column y offset to start position
             if first_record_of_df:
-                current_number_of_projects = + 1
-                first_record_of_df = True # fix better name
+                current_number_of_projects += 1
+            first_record_of_df = True # fix better name
 
 
             current_month_x_offset = month_chart_offset_x + current_number_of_projects * task_width
@@ -282,7 +282,12 @@ def create_monthly_display():
                                 current_month_y_offset,
                                 task_width,
                                 task_height * df['amount'][ind],
-                                fill='#ff00ff'))
+                                stroke='black',
+                                fill=tot_color_array[df['types_of_thought'][ind][0]]))
+        d.append(draw.Text(df['task'][ind][0:32], 6,
+                           current_month_x_offset,
+                           current_month_y_offset,
+                           fill='black'))
         # increment y offset
         current_month_y_offset = current_month_y_offset + task_height * df['amount'][ind]
         # update hours to totals arrays
