@@ -160,7 +160,7 @@ def create_monthly_display():
 
 
 
-
+    first_record_of_df = True
     drawing_obj_flag = False
     current_month = "yyyy_mm"
     current_project = "xxxxxxxxxx"
@@ -255,7 +255,9 @@ def create_monthly_display():
             # set column x offset for task plotting to first column
             # set column y offset to start position
             # fill in tot and project labels
-            current_project = df['project'][ind]
+            if first_record_of_df:
+                current_project = df['project'][ind]
+                first_record_of_df = False
 
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
@@ -273,10 +275,10 @@ def create_monthly_display():
         d.append(draw.Rectangle(current_month_x_offset,
                                 current_month_y_offset,
                                 task_width,
-                                task_height  * df['amount'][ind],
+                                task_height * df['amount'][ind],
                                 fill='#ff00ff'))
         # increment y offset
-        current_month_y_offset = current_month_y_offset + task_height  * df['amount'][ind]
+        current_month_y_offset = current_month_y_offset + task_height * df['amount'][ind]
         # update hours to totals arrays
         # track hours per day
         print(df['yyyy_mm'][ind]," _-_ ",df['project'][ind]," _-_ ",df['task'][ind])
