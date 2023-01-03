@@ -51,7 +51,7 @@ def create_monthly_display():
     number_of_projects_per_month_max = 0
 
     print("start through dataframe to determine max projects in a month")
-    # Step through dataframe and generate chart
+    # Step through dataframe and calculate hours arrays and totals
     for ind in df.index:
         if current_month != df['yyyy_mm'][ind]:
             current_month = df['yyyy_mm'][ind]
@@ -165,13 +165,13 @@ def create_monthly_display():
     current_month = "yyyy_mm"
     current_project = "xxxxxxxxxx"
     print("start through dataframe to plot tasks")
-    # Step through dataframe and generate chart
+    # Step through dataframe and generate charts
     for ind in df.index:
         if current_month != df['yyyy_mm'][ind]:
             if drawing_obj_flag:
                 # totals found from previous months
-                # fill in calender hours and focus hours stats
                 # fill in available hours stats
+                # fill in calender hours and focus hours stats
                 # fill in balance focus details
                 # save drawing obj to file
                 file_output = current_month + "_rpt.svg"
@@ -313,7 +313,7 @@ def create_monthly_display():
     if drawing_obj_flag:
         file_output = current_month + "_rpt.svg"
         d.saveSvg(path_output + "/" + file_output)
-        d.saveSvg(path_output + "/current_month-rpt.svg")
+        d.saveSvg(path_output + "/current_month_rpt.svg")
     print("done with monthly display")
 
 
