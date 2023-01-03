@@ -68,22 +68,7 @@ def create_monthly_display():
             if (number_of_projects_per_month > number_of_projects_per_month_max):
                 number_of_projects_per_month_max = number_of_projects_per_month
             number_of_projects_per_month = 0
-            df_date = datetime.date.fromisoformat(df['date'][ind])
-            (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
-                                                                     int(df_date.strftime("%m")))
-            #print(df_date,starting_day_number, month_number_of_days)
-            print(current_month)
-            available_hours[0] = 0
-            available_hours_logged[0] = 0
-            focus_hours[0] = 0
-            focus_hours_logged[0] = 0
-            for i in range(1,month_number_of_days + 1):
-                print(i)
-                available_hours[1] = 0
-                available_hours_logged[1] = 0
-                focus_hours[1] = 0
-                focus_hours_logged[1] = 0
-            time.sleep(2)
+
 
 
 
@@ -220,8 +205,29 @@ def create_monthly_display():
 
             current_number_of_projects = 0
 
+            # print out statistis from last month before resetting arrays
+
+
+
+
             current_month = df['yyyy_mm'][ind]
             # start new month
+            df_date = datetime.date.fromisoformat(df['date'][ind])
+            (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
+                                                                     int(df_date.strftime("%m")))
+            # print(df_date,starting_day_number, month_number_of_days)
+            print(current_month)
+            available_hours[0] = 0
+            available_hours_logged[0] = 0
+            focus_hours[0] = 0
+            focus_hours_logged[0] = 0
+            for i in range(1, month_number_of_days + 1):
+                print(i)
+                available_hours[1] = 0
+                available_hours_logged[1] = 0
+                focus_hours[1] = 0
+                focus_hours_logged[1] = 0
+            time.sleep(2)
             # clean previous month info and chart
             current_month_x_offset = month_chart_offset_x
             current_month_y_offset = month_chart_offset_y
