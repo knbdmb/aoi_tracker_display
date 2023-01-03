@@ -18,6 +18,8 @@ def create_monthly_display():
     import matplotlib.pyplot as plt
     import seaborn as sns
     import datetime
+    def week_number_of_month(date_value):
+        return (date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1] + 1)
     import drawSvg as draw
     import time
 
