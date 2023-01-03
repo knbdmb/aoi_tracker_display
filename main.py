@@ -313,6 +313,7 @@ def create_monthly_display():
     if drawing_obj_flag:
         file_output = current_month + "_rpt.svg"
         d.saveSvg(path_output + "/" + file_output)
+        d.saveSvg(path_output + "/current_month-rpt.svg")
     print("done with monthly display")
 
 
