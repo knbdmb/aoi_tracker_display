@@ -17,6 +17,7 @@ def create_monthly_display():
     import matplotlib as mpl
     import matplotlib.pyplot as plt
     import seaborn as sns
+    from calendar import monthrange
     import datetime
     def week_number_of_month(date_value):
         return (date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1] + 1)
@@ -48,6 +49,13 @@ def create_monthly_display():
     # Set up required variables before the for loop
     current_month = "yyyy_mm"
     current_project = "xxxxxxxxxx"
+    starting_day_number    = 0
+    month_number_of_days   = 0
+    available_hours        = [0]*32
+    available_hours_logged = [0]*32
+    focus_hours            = [0]*32
+    focus_hours_logged     =  [0]*32
+
     current_number_of_projects = 0
     number_of_projects_per_month = 0
     number_of_projects_per_month_max = 0
@@ -60,6 +68,26 @@ def create_monthly_display():
             if (number_of_projects_per_month > number_of_projects_per_month_max):
                 number_of_projects_per_month_max = number_of_projects_per_month
             number_of_projects_per_month = 0
+            df_date = datetime.date.fromisoformat(df['date'][ind])
+            (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
+                                                                     int(df_date.strftime("%m")))
+            #print(df_date,starting_day_number, month_number_of_days)
+            print(current_month)
+            available_hours[0] = 0
+            available_hours_logged[0] = 0
+            focus_hours[0] = 0
+            focus_hours_logged[0] = 0
+            for i in range(1,month_number_of_days + 1):
+                print(i)
+                available_hours[1] = 0
+                available_hours_logged[1] = 0
+                focus_hours[1] = 0
+                focus_hours_logged[1] = 0
+            time.sleep(2)
+
+
+
+
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             number_of_projects_per_month += 1
