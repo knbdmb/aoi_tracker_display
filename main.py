@@ -223,9 +223,9 @@ def create_monthly_display():
             focus_hours_logged[0] = 0
             for i in range(1, month_number_of_days + 1):
                 print(i)
-                cm_date = datetime.date.fromisoformat(df_date.strftime("%y")
-                                                      + "-" + df_date.strftime("%m")
-                                                      + "-" + str(i).zfill(2))
+                cm_date = datetime.date.fromisoformat(str(df_date.year)
+                                              + "-" + str(df_date.month).zfill(2)
+                                              + "-" + str(i).zfill(2))
                 print(cm_date)
                 if cm_date.day == 6:
                     available_hours[i] = 8
