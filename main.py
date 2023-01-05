@@ -52,8 +52,10 @@ def create_monthly_display():
     starting_day_number    = 0
     month_number_of_days   = 0
     available_hours        = [0]*32
+    available_cumulative_hours = [0]*32
     available_hours_logged = [0]*32
     focus_hours            = [0]*32
+    focus_cumulative_hours = [0] * 32
     focus_hours_logged     =  [0]*32
 
     current_number_of_projects = 0
@@ -68,11 +70,6 @@ def create_monthly_display():
             if (number_of_projects_per_month > number_of_projects_per_month_max):
                 number_of_projects_per_month_max = number_of_projects_per_month
             number_of_projects_per_month = 0
-
-
-
-
-
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             number_of_projects_per_month += 1
@@ -191,6 +188,7 @@ def create_monthly_display():
                 print(df_date)
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
                 print("\nWeek number of month: ", week_number_of_month(df_date), "\n")
+                time.sleep(2)
                 # fill in balance focus details
                 # save drawing obj to file
                 file_output = current_month + "_rpt.svg"
@@ -218,16 +216,28 @@ def create_monthly_display():
             # print(df_date,starting_day_number, month_number_of_days)
             print(current_month)
             available_hours[0] = 0
+            available_cumulative_hours[0] = 0
             available_hours_logged[0] = 0
             focus_hours[0] = 0
+            focus_cumulative_hours[0] = 0
             focus_hours_logged[0] = 0
             for i in range(1, month_number_of_days + 1):
                 print(i)
-                available_hours[1] = 0
-                available_hours_logged[1] = 0
-                focus_hours[1] = 0
-                focus_hours_logged[1] = 0
-            time.sleep(2)
+                if df_date.day = 6:
+                    available_hours[i] = 8
+                    available_cumulative_hours[i] = available_hours[i] + available_cumulative_hours[i-1]
+                    focus_hours[i] = 3
+                    focus_cumulative_hours[i] = focus_hours[i] + focus_cumulative_hours[i-1]
+
+                else:
+                    available_hours[i] = 10
+                    available_cumulative_hours[i] = available_hours[i] + available_cumulative_hours[i - 1]
+                    focus_hours[i] = 5
+                    focus_cumulative_hours[i] = focus_hours[i] + focus_cumulative_hours[i - 1]
+
+                available_hours_logged[i] = 0
+                focus_hours_logged[i] = 0
+            #time.sleep(2)
             # clean previous month info and chart
             current_month_x_offset = month_chart_offset_x
             current_month_y_offset = month_chart_offset_y
