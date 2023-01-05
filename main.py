@@ -225,7 +225,7 @@ def create_monthly_display():
                 print(i)
                 cm_date = datetime.date.fromisoformat(df_date.strftime("%y")
                                                       + "-" + df_date.strftime("%m")
-                                                      + "-" + str(i))
+                                                      + "-" + str(i).zfill(2))
                 print(cm_date)
                 if cm_date.day == 6:
                     available_hours[i] = 8
