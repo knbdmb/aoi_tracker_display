@@ -187,7 +187,7 @@ def create_monthly_display():
                 df_date = datetime.date.fromisoformat(df['date'][ind])
                 print(df_date)
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
-                print("\nWeek number of month: ", week_number_of_month(df_date), "\n")
+                print("\nNumber of weeks the month: ", week_number_of_month(df_date), "\n")
                 time.sleep(1)
                 # fill in balance focus details
                 # save drawing obj to file
@@ -222,12 +222,11 @@ def create_monthly_display():
             focus_cumulative_hours[0] = 0
             focus_hours_logged[0] = 0
             for i in range(1, month_number_of_days + 1):
-                print(i)
                 cm_date = datetime.date.fromisoformat(str(df_date.year)
                                               + "-" + str(df_date.month).zfill(2)
                                               + "-" + str(i).zfill(2))
-                print(cm_date)
-                if cm_date.day == 6:
+                print(i,cm_date)
+                if cm_date.weekday() == 6:
                     available_hours[i] = 8
                     available_cumulative_hours[i] = available_hours[i] + available_cumulative_hours[i-1]
                     focus_hours[i] = 3
