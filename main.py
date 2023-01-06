@@ -95,6 +95,8 @@ def create_monthly_display():
     month_chart_label_height = 100
     title_height = 200
     current_available_offset_y = 0
+    starting_day_number = 0
+    month_number_of_days = 0
 
     paper_to_border_offset_x = default_gap
     available_hours_offset_x = paper_to_border_offset_x + default_gap
@@ -180,14 +182,14 @@ def create_monthly_display():
     print("start through dataframe to plot tasks")
     # Step through dataframe and generate charts
     for ind in df.index:
-
+        df_date = datetime.date.fromisoformat(df['date'][ind])
+        print(df_date)
         if current_month != df['yyyy_mm'][ind]:
             if drawing_obj_flag:
                 # totals found from previous months
                 # fill in available hours stats
                 # fill in calender hours and focus hours stats
-                df_date = datetime.date.fromisoformat(df['date'][ind])
-                print(df_date)
+
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
                 print("\nNumber of weeks the month: ", week_number_of_month(df_date), "\n")
                 time.sleep(1)
@@ -212,7 +214,7 @@ def create_monthly_display():
 
             current_month = df['yyyy_mm'][ind]
             # start new month
-            df_date = datetime.date.fromisoformat(df['date'][ind])
+            #df_date = datetime.date.fromisoformat(df['date'][ind])
             (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
                                                                      int(df_date.strftime("%m")))
             # print(df_date,starting_day_number, month_number_of_days)
