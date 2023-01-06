@@ -179,6 +179,7 @@ def create_monthly_display():
     print("start through dataframe to plot tasks")
     # Step through dataframe and generate charts
     for ind in df.index:
+
         if current_month != df['yyyy_mm'][ind]:
             if drawing_obj_flag:
                 # totals found from previous months
@@ -225,7 +226,7 @@ def create_monthly_display():
                 cm_date = datetime.date.fromisoformat(str(df_date.year)
                                               + "-" + str(df_date.month).zfill(2)
                                               + "-" + str(i).zfill(2))
-                print(i,cm_date)
+                #print(i,cm_date)
                 if cm_date.weekday() == 6:
                     available_hours[i] = 8
                     available_cumulative_hours[i] = available_hours[i] + available_cumulative_hours[i-1]
@@ -240,15 +241,17 @@ def create_monthly_display():
 
                 available_hours_logged[i] = 0
                 focus_hours_logged[i] = 0
-            print(available_hours)
-            print(available_cumulative_hours)
-            print(focus_hours)
-            print(focus_cumulative_hours)
-            time.sleep(2)
+            #print(available_hours)
+            #print(available_cumulative_hours)
+            #print(focus_hours)
+            #print(focus_cumulative_hours)
+            #time.sleep(2)
             # clean previous month info and chart
             current_month_x_offset = month_chart_offset_x
             current_month_y_offset = month_chart_offset_y
             current_task_offset_y = 0
+            current_available_offset_y = available_hours_offset_y \
+                                         + available_cumulative_hours[month_number_of_days] * task_height
             # set up drawing size object
             # Draw an irregular polygon for border
             d.append(draw.Lines(paper_to_border_offset_x,
@@ -350,7 +353,7 @@ def create_monthly_display():
 
         # jjj
         # for current row of df
-        # plot task box and description
+        # plot task box and description in the month chart
         d.append(draw.Rectangle(current_month_x_offset,
                                 current_month_y_offset,
                                 task_width,
@@ -365,6 +368,19 @@ def create_monthly_display():
         current_month_y_offset = current_month_y_offset + task_height * df['amount'][ind]
         # update hours to totals arrays
         # track hours per day
+        df_date = datetime.date.fromisoformat(df['date'][ind])
+        # plot task box and description in the available hours chart
+        current_available_offset_y = current_available_offset_y - task_height * df['amount'][ind]
+        d.append(draw.Rectangle(available_hours_offset_x,
+                                current_available_offset_y,
+                                available_hours_width,
+                                task_height * df['amount'][ind],
+                                stroke='black',
+                                fill=tot_color_array[df['types_of_thought'][ind][0]]))
+        d.append(draw.Text(df['task'][ind][0:32], 6,
+                           available_hours_offset_x,
+                           current_available_offset_y,
+                           fill='black'))
         print(df['yyyy_mm'][ind]," _-_ ",df['project'][ind]," _-_ ",df['task'][ind])
 
     if drawing_obj_flag:
