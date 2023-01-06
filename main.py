@@ -94,6 +94,7 @@ def create_monthly_display():
     month_chart_height = available_hours_height
     month_chart_label_height = 100
     title_height = 200
+    current_available_offset_y = 0
 
     paper_to_border_offset_x = default_gap
     available_hours_offset_x = paper_to_border_offset_x + default_gap
@@ -381,18 +382,13 @@ def create_monthly_display():
                            available_hours_offset_x,
                            current_available_offset_y,
                            fill='black'))
-        print(df['yyyy_mm'][ind]," _-_ ",df['project'][ind]," _-_ ",df['task'][ind])
+        print(df['yyyy_mm'][ind], " _-_ ", df['project'][ind], " _-_ ", df['task'][ind])
 
     if drawing_obj_flag:
         file_output = current_month + "_rpt.svg"
         d.saveSvg(path_output + "/" + file_output)
         d.saveSvg(path_output + "/current_month_rpt.svg")
     print("done with monthly display")
-
-
-
-
-
 
 def create_years_display():
     # Use a breakpoint in the code line below to debug your script.
@@ -421,10 +417,6 @@ def create_years_display():
     df.sort_values(by=["date", "types_of_thought", "project"],
                    axis=0, ascending=[True, True, True],
                    inplace=True)
-
-
-
-
 
     paper_to_border_offset_x = 50
     paper_to_border_offset_y = 50
