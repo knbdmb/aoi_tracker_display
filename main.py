@@ -11,12 +11,15 @@ def create_monthly_display():
     # step through data and create chart
     # finish chart and start on next one
 
-    import pandas as pd
+    #import pandas as pd
     from pandas_ods_reader import read_ods
-    import numpy as np
-    import matplotlib as mpl
-    import matplotlib.pyplot as plt
-    import seaborn as sns
+    #import numpy as np
+
+    #import matplotlib as mpl
+
+    #import matplotlib.pyplot as plt
+
+    #import seaborn as sns
     from calendar import monthrange
     import datetime
     def week_number_of_month(date_value):
@@ -168,13 +171,6 @@ def create_monthly_display():
     proj_offset_x = 54
     task_offset_x = 110
 
-
-
-
-
-
-
-
     first_record_of_df = False
     drawing_obj_flag = False
     current_month = "yyyy_mm"
@@ -183,7 +179,7 @@ def create_monthly_display():
     # Step through dataframe and generate charts
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
-        print(df_date)
+        print("this is the next row to be processed: ", df_date)
         if current_month != df['yyyy_mm'][ind]:
             if drawing_obj_flag:
                 # totals found from previous months
@@ -192,7 +188,7 @@ def create_monthly_display():
 
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
                 print("\nNumber of weeks the month: ", week_number_of_month(df_date), "\n")
-                time.sleep(1)
+                #time.sleep(1)
                 # fill in balance focus details
                 # save drawing obj to file
                 file_output = current_month + "_rpt.svg"
@@ -209,15 +205,12 @@ def create_monthly_display():
 
             # print out statistis from last month before resetting arrays
 
-
-
-
             current_month = df['yyyy_mm'][ind]
             # start new month
             #df_date = datetime.date.fromisoformat(df['date'][ind])
             (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
                                                                      int(df_date.strftime("%m")))
-            # print(df_date,starting_day_number, month_number_of_days)
+            print(df_date,starting_day_number, month_number_of_days)
             print(current_month)
             available_hours[0] = 0
             available_cumulative_hours[0] = 0
@@ -244,18 +237,27 @@ def create_monthly_display():
 
                 available_hours_logged[i] = 0
                 focus_hours_logged[i] = 0
-            #print(available_hours)
-            #print(available_cumulative_hours)
-            #print(focus_hours)
-            #print(focus_cumulative_hours)
+            print(available_hours)
+
+            print(available_cumulative_hours)
+
+            print(focus_hours)
+
+            print(focus_cumulative_hours)
+
             #time.sleep(2)
+
             # clean previous month info and chart
             current_month_x_offset = month_chart_offset_x
             current_month_y_offset = month_chart_offset_y
             current_task_offset_y = 0
-            current_available_offset_y = available_hours_offset_y \
-                                         + available_cumulative_hours[month_number_of_days] * task_height
+            print("last day of month: ", month_number_of_days, "aval hrs: ", available_cumulative_hours[month_number_of_days])
+            print("available_hours_offset_y: ", available_hours_offset_y)
+            print("new month found", current_available_offset_y)
+            current_available_offset_y = available_hours_offset_y + available_cumulative_hours[month_number_of_days] * task_height
+            print("set new value new month", current_available_offset_y)
             # set up drawing size object
+
             # Draw an irregular polygon for border
             d.append(draw.Lines(paper_to_border_offset_x,
                                 paper_to_border_offset_y,
@@ -373,7 +375,9 @@ def create_monthly_display():
         # track hours per day
         df_date = datetime.date.fromisoformat(df['date'][ind])
         # plot task box and description in the available hours chart
+        print("before avail: ",current_available_offset_y)
         current_available_offset_y = current_available_offset_y - task_height * df['amount'][ind]
+        print("just after: ",current_available_offset_y)
         d.append(draw.Rectangle(available_hours_offset_x,
                                 current_available_offset_y,
                                 available_hours_width,
@@ -384,7 +388,7 @@ def create_monthly_display():
                            available_hours_offset_x,
                            current_available_offset_y,
                            fill='black'))
-        print(df['yyyy_mm'][ind], " _-_ ", df['project'][ind], " _-_ ", df['task'][ind])
+        #print(df['yyyy_mm'][ind], " _-_ ", df['project'][ind], " _-_ ", df['task'][ind])
 
     if drawing_obj_flag:
         file_output = current_month + "_rpt.svg"
