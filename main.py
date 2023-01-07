@@ -116,6 +116,7 @@ def create_monthly_display():
     paper_to_border_offset_y = default_gap
     balances_offset_y        = paper_to_border_offset_y + default_gap
     available_hours_offset_y = balances_offset_y + balances_height + month_chart_label_height + default_gap
+    avail_hrs_zero_offset_y  = 500
     cal_offset_y             = available_hours_offset_y + available_hours_height + default_gap + cal_details_offset_y
     month_chart_offset_y     = available_hours_offset_y
     title_offset_y           = available_hours_offset_y + available_hours_height + default_gap
@@ -237,13 +238,13 @@ def create_monthly_display():
 
                 available_hours_logged[i] = 0
                 focus_hours_logged[i] = 0
-            print(available_hours)
+            #print(available_hours)
 
-            print(available_cumulative_hours)
+            #print(available_cumulative_hours)
 
-            print(focus_hours)
+            #print(focus_hours)
 
-            print(focus_cumulative_hours)
+            #print(focus_cumulative_hours)
 
             #time.sleep(2)
 
@@ -251,11 +252,9 @@ def create_monthly_display():
             current_month_x_offset = month_chart_offset_x
             current_month_y_offset = month_chart_offset_y
             current_task_offset_y = 0
-            print("last day of month: ", month_number_of_days, "aval hrs: ", available_cumulative_hours[month_number_of_days])
-            print("available_hours_offset_y: ", available_hours_offset_y)
-            print("new month found", current_available_offset_y)
-            current_available_offset_y = available_hours_offset_y + available_cumulative_hours[month_number_of_days] * task_height
-            print("set new value new month", current_available_offset_y)
+            current_available_offset_y = available_hours_offset_y \
+                                         + avail_hrs_zero_offset_y \
+                                         + available_cumulative_hours[month_number_of_days] * task_height
             # set up drawing size object
 
             # Draw an irregular polygon for border
