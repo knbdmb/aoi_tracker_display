@@ -164,7 +164,7 @@ def create_monthly_display():
     day_number_color = "#B9B9B9"
     year_month_color = "#696969"
     tot_color_array = {
-                      "5": "cyan",
+                      "5": "#6C0BA9",
                       "4": "red",
                       "3": "orange",
                       "2": "green",
@@ -312,7 +312,7 @@ def create_monthly_display():
                                         available_hours_offset_y + avail_hrs_zero_height,
                                         avail_hrs_charts_width,
                                         focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
-                                        fill="#FFC0CB"))
+                                        fill="#00C0F0")) # #FFC0CB
 
                 avail_hrs_diff_height = available_cumulative_hours[month_number_of_days - today_day_of_month] \
                                         - focus_cumulative_hours[month_number_of_days - today_day_of_month]
@@ -499,7 +499,7 @@ def create_years_display():
     day_number_color = "#B9B9B9"
     year_month_color = "#696969"
     tot_color_array = {
-                      "5": "cyan",
+                      "5": "#6C0BA9",
                       "4": "red",
                       "3":  "orange",
                       "2": "green",
