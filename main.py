@@ -27,6 +27,10 @@ def create_monthly_display():
     import drawSvg as draw
     import time
 
+    today_date = datetime.date.today()
+    today_day_of_month = today_date.day
+    today_yyyy_mm = str(today_date.year) + "_" + str(today_date.month).zfill(2)
+
     # get data from spreadsheet
     path = "../aoi_tracker.ods"
     sheet_name = "actions"
@@ -112,16 +116,20 @@ def create_monthly_display():
     title_width              = month_chart_width
     border_width             = balances_offset_x + balances_width + default_gap
     drawing_width            = paper_to_border_offset_x + border_width
+    avail_hrs_charts_offset_x = available_hours_offset_x - default_gap / 2
+    avail_hrs_charts_width    = available_hours_width + default_gap
 
     paper_to_border_offset_y = default_gap
     balances_offset_y        = paper_to_border_offset_y + default_gap
     available_hours_offset_y = balances_offset_y + balances_height + month_chart_label_height + default_gap
-    avail_hrs_zero_offset_y  = 500
+    avail_hrs_zero_height  = 500
+    avail_hrs_diff_height = 10
     cal_offset_y             = available_hours_offset_y + available_hours_height + default_gap + cal_details_offset_y
     month_chart_offset_y     = available_hours_offset_y
     title_offset_y           = available_hours_offset_y + available_hours_height + default_gap
     border_height            = title_offset_y + title_height + default_gap
     drawing_height           = border_height + default_gap
+
 
 
     dow_month_offset_x = 0
@@ -253,7 +261,7 @@ def create_monthly_display():
             current_month_y_offset = month_chart_offset_y
             current_task_offset_y = 0
             current_available_offset_y = available_hours_offset_y \
-                                         + avail_hrs_zero_offset_y \
+                                         + avail_hrs_zero_height \
                                          + available_cumulative_hours[month_number_of_days] * task_height
             # set up drawing size object
 
@@ -287,6 +295,37 @@ def create_monthly_display():
                                     available_hours_offset_y,
                                     available_hours_width, available_hours_height,
                                     fill=day_color))
+            # fill in available hours chart area
+            # draw total available hours line
+            d.append(draw.Rectangle(avail_hrs_charts_offset_x,
+                                    current_available_offset_y,
+                                    avail_hrs_charts_width, task_height,
+                                    fill="#555555"))
+            # draw zero offset area
+            d.append(draw.Rectangle(avail_hrs_charts_offset_x,
+                                    available_hours_offset_y,
+                                    avail_hrs_charts_width, avail_hrs_zero_height,
+                                    fill="#555555"))
+            # draw available hours and focus hours
+            if today_yyyy_mm == current_month:
+                d.append(draw.Rectangle(avail_hrs_charts_offset_x,
+                                        available_hours_offset_y + avail_hrs_zero_height,
+                                        avail_hrs_charts_width,
+                                        focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
+                                        fill="#FFC0CB"))
+
+                avail_hrs_diff_height = available_cumulative_hours[month_number_of_days - today_day_of_month] \
+                                        - focus_cumulative_hours[month_number_of_days - today_day_of_month]
+
+                d.append(draw.Rectangle(avail_hrs_charts_offset_x,
+                                        available_hours_offset_y 
+                                        + avail_hrs_zero_height 
+                                        + focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
+                                        avail_hrs_charts_width,
+                                        avail_hrs_diff_height * task_height,
+                                        fill="#32CD32"))
+
+
             # determine calendar shape and plot
             # calendar
             d.append(draw.Rectangle(cal_offset_x,
@@ -302,8 +341,8 @@ def create_monthly_display():
             # fill in title area
             d.append(draw.Text(current_month, 50, title_offset_x + title_width/2, title_offset_y + title_height/2,
                                fill='black'))
-            today_date = "Created on: " + str(datetime.date.today())
-            d.append(draw.Text(today_date, 50, title_offset_x, title_offset_y,
+            today_date_label = "Created on: " + str(today_date)
+            d.append(draw.Text(today_date_label, 50, title_offset_x, title_offset_y,
                                fill='black'))
             # Balances
             d.append(draw.Rectangle(balances_offset_x,
@@ -313,8 +352,8 @@ def create_monthly_display():
             # fill in Balance area
             # date created label
             d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
-            today_date = "Created on: " + str(datetime.date.today())
-            d.append(draw.Text(today_date, 6, 201, 77,
+            today_date_label = "Created on: " + str(today_date)
+            d.append(draw.Text(today_date_label, 6, 201, 77,
                                fill='black'))  # Text with font size 6
             # set column x offset for task plotting to first column
             current_month_x_offset = month_chart_offset_x
@@ -374,9 +413,9 @@ def create_monthly_display():
         # track hours per day
         df_date = datetime.date.fromisoformat(df['date'][ind])
         # plot task box and description in the available hours chart
-        print("before avail: ",current_available_offset_y)
+        #print("before avail: ",current_available_offset_y)
         current_available_offset_y = current_available_offset_y - task_height * df['amount'][ind]
-        print("just after: ",current_available_offset_y)
+        #print("just after: ",current_available_offset_y)
         d.append(draw.Rectangle(available_hours_offset_x,
                                 current_available_offset_y,
                                 available_hours_width,
@@ -663,8 +702,8 @@ def create_years_display():
     """
 
     d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
-    today_date = "Created on: " + str(datetime.date.today())
-    d.append(draw.Text(today_date, 6, 201, 77,
+    today_date_label = "Created on: " + str(datetime.date.today())
+    d.append(draw.Text(today_date_label, 6, 201, 77,
                        fill='black'))  # Text with font size 6
 
 
