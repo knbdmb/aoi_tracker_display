@@ -383,12 +383,40 @@ def create_monthly_display():
                                     balances_width, balances_height,
                                     fill=day_color))
             # fill in Balance area
-            d.append(draw.Text(current_month, 50, balances_offset_x + balances_width/2, balances_offset_x + balances_width/2,
-                               fill='black'))
+            d.append(draw.Text("project 1.3t", 30, balances_offset_x + 5,
+                               balances_offset_y + 40, fill='black'))
+            d.append(draw.Text("project 1.3d", 30, balances_offset_x + 5,
+                               balances_offset_y + 5, fill='black'))
+            d.append(draw.Text("project 1.2t", 30, balances_offset_x + 5,
+                               balances_offset_y + balances_height/3 + 40, fill='black'))
+            d.append(draw.Text("project 1.2d", 30, balances_offset_x + 5,
+                               balances_offset_y + balances_height/3 + 5, fill='black'))
+            d.append(draw.Text("project 1.1t", 30, balances_offset_x + 5,
+                               balances_offset_y + 2 * balances_height/3 + 40, fill='black'))
+            d.append(draw.Text("project 1.1d", 30, balances_offset_x + 5,
+                               balances_offset_y + 2 * balances_height/3 + 5, fill='black'))
 
 
+            d.append(draw.Text("project 2.3", 30, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + 5, fill='black'))
+            d.append(draw.Text("project 2.2", 30, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + balances_height/3 + 5, fill='black'))
+            d.append(draw.Text("project 2.1", 30, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + 2 * balances_height/3 + 5, fill='black'))
 
+            d.append(draw.Text("project 3.3", 30, balances_offset_x + balances_width/2,
+                               balances_offset_y + 5, fill='black'))
+            d.append(draw.Text("project 3.2", 30, balances_offset_x + balances_width/2,
+                               balances_offset_y + balances_height/3 + 5, fill='black'))
+            d.append(draw.Text("project 3.1", 30, balances_offset_x + balances_width/2,
+                               balances_offset_y + 2 * balances_height/3, fill='black'))
 
+            d.append(draw.Text("project 4.3", 30, balances_offset_x + balances_width*3/4,
+                               balances_offset_y + 5, fill='black'))
+            d.append(draw.Text("project 4.2", 30, balances_offset_x + balances_width*3/4,
+                               balances_offset_y + balances_height/3 + 5, fill='black'))
+            d.append(draw.Text("project 4.1", 30, balances_offset_x + balances_width*3/4,
+                               balances_offset_y + 2 * balances_height/3, fill='black'))
 
 
             # date created label
