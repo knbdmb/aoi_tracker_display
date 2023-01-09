@@ -396,7 +396,6 @@ def create_monthly_display():
             d.append(draw.Text("project 1.1d", 30, balances_offset_x + 5,
                                balances_offset_y + 2 * balances_height/3 + 5, fill='black'))
 
-
             d.append(draw.Text("project 2.3", 30, balances_offset_x + balances_width/4 + 5,
                                balances_offset_y + 5, fill='black'))
             d.append(draw.Text("project 2.2", 30, balances_offset_x + balances_width/4 + 5,
