@@ -288,6 +288,39 @@ def create_monthly_display():
                                     month_chart_offset_y,
                                     month_chart_width, month_chart_height,
                                     fill=day_color))
+            # give month chart horizontal hour lines
+            d.append(draw.Rectangle(month_chart_offset_x, month_chart_offset_y + 10 * task_height,
+                                    month_chart_width, task_height, fill="#555555"))
+            d.append(draw.Text("10 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 10 * task_height + 12,
+                               fill='black'))
+            d.append(draw.Rectangle(month_chart_offset_x, month_chart_offset_y + 20 * task_height,
+                                    month_chart_width, task_height, fill="#555555"))
+            d.append(draw.Text("20 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 20 * task_height + 12,
+                               fill='black'))
+            d.append(draw.Rectangle(month_chart_offset_x, month_chart_offset_y + 40 * task_height,
+                                    month_chart_width, task_height, fill="#555555"))
+            d.append(draw.Text("40 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 40 * task_height + 12,
+                               fill='black'))
+            d.append(draw.Rectangle(month_chart_offset_x, month_chart_offset_y + 60 * task_height,
+                                    month_chart_width, task_height, fill="#555555"))
+            d.append(draw.Text("60 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 60 * task_height + 12,
+                               fill='black'))
+            d.append(draw.Rectangle(month_chart_offset_x, month_chart_offset_y + 80 * task_height,
+                                    month_chart_width, task_height, fill="#555555"))
+            d.append(draw.Text("80 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 80 * task_height + 12,
+                               fill='black'))
+            d.append(draw.Rectangle(month_chart_offset_x, month_chart_offset_y + 100 * task_height,
+                                    month_chart_width, task_height, fill="#555555"))
+            d.append(draw.Text("100 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 100 * task_height + 12,
+                               fill='black'))
+            d.append(draw.Rectangle(month_chart_offset_x, month_chart_offset_y + 200 * task_height,
+                                    month_chart_width, task_height, fill="#555555"))
+            d.append(draw.Text("200 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 200 * task_height + 12,
+                               fill='black'))
+            d.append(draw.Rectangle(month_chart_offset_x, month_chart_offset_y + 300 * task_height,
+                                    month_chart_width, task_height, fill="#555555"))
+            d.append(draw.Text("300 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 300 * task_height + 12,
+                               fill='black'))
 
             # determine available hours and focus hours and plot
             # Available hours
@@ -350,6 +383,14 @@ def create_monthly_display():
                                     balances_width, balances_height,
                                     fill=day_color))
             # fill in Balance area
+            d.append(draw.Text(current_month, 50, balances_offset_x + balances_width/2, balances_offset_x + balances_width/2,
+                               fill='black'))
+
+
+
+
+
+
             # date created label
             d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
             today_date_label = "Created on: " + str(today_date)
