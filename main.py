@@ -950,9 +950,9 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    #print_hi('PyCharm')
+    print_hi('PyCharm')
     create_monthly_display()
-    #create_years_display()
-    #create_heatmap()
-    #import_data()
+    create_years_display()
+    create_heatmap()
+    import_data()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
