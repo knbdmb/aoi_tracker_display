@@ -268,10 +268,10 @@ def create_monthly_display():
             # set up drawing size object
 
             #start the grouping of the chart
-            group = draw.Group()
+            #group = draw.Group()
 
             # end the grouping of the chart
-            d.append(group)
+            #d.append(group)
 
 
             # Draw an irregular polygon for border
