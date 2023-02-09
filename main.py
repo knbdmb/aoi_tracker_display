@@ -195,6 +195,8 @@ def create_monthly_display():
                 # fill in available hours stats
                 # fill in calender hours and focus hours stats
 
+
+
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
                 print("\nNumber of weeks the month: ", week_number_of_month(df_date), "\n")
                 #time.sleep(1)
@@ -207,7 +209,7 @@ def create_monthly_display():
                 drawing_obj_flag = False
 
             # establish drawing object and set flag
-            d = draw.Drawing(drawing_width, drawing_height, origin=(0, 0))
+            d = draw.Drawing(drawing_width, drawing_height, origin=(0, 0), id='map-svg')
             drawing_obj_flag = True
 
             current_number_of_projects = 0
@@ -264,6 +266,13 @@ def create_monthly_display():
                                          + avail_hrs_zero_height \
                                          + available_cumulative_hours[month_number_of_days] * task_height
             # set up drawing size object
+
+            #start the grouping of the chart
+            group = draw.Group()
+
+            # end the grouping of the chart
+            d.append(group)
+
 
             # Draw an irregular polygon for border
             d.append(draw.Lines(paper_to_border_offset_x,
