@@ -37,6 +37,7 @@ def create_monthly_display():
     df = read_ods(path, sheet_name)
 
     path_output = "./aoi_month_rpt"
+    path_output_web = "/Library/WebServer/Documents/aoi_month_rpt_web"
     file_output = "yyyy_mm_rpt.svg"
 
     # filter rows without dates and prep data
@@ -204,6 +205,7 @@ def create_monthly_display():
                 # save drawing obj to file
                 file_output = current_month + "_rpt.svg"
                 d.saveSvg(path_output + "/" + file_output)
+                d.saveSvg(path_output_web + "/" + file_output)
                 # del drawing_object
                 del d
                 drawing_obj_flag = False
