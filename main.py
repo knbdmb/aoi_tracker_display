@@ -511,6 +511,8 @@ def create_monthly_display():
         file_output = current_month + "_rpt.svg"
         d.saveSvg(path_output + "/" + file_output)
         d.saveSvg(path_output + "/current_month_rpt.svg")
+        d.saveSvg(path_output_web + "/" + file_output)
+        d.saveSvg(path_output_web + "/current_month_rpt.svg")
     print("done with monthly display")
 
 def create_years_display():
