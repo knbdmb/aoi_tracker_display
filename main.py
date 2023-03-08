@@ -36,6 +36,12 @@ def create_monthly_display():
     sheet_name = "actions"
     df = read_ods(path, sheet_name)
 
+    sheet_name = "month_plans"
+    dfmp = read_ods(path, sheet_name)
+
+    print(dfmp)
+    time.sleep(10)
+
     path_output = "./aoi_month_rpt"
     path_output_web = "/Library/WebServer/Documents/aoi_month_rpt_web"
     file_output = "yyyy_mm_rpt.svg"
