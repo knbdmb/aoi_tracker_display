@@ -39,9 +39,6 @@ def create_monthly_display():
     sheet_name = "month_plans"
     dfmp = read_ods(path, sheet_name)
 
-    print(dfmp)
-    time.sleep(10)
-
     path_output = "./aoi_month_rpt"
     path_output_web = "/Library/WebServer/Documents/aoi_month_rpt_web"
     file_output = "yyyy_mm_rpt.svg"
@@ -54,6 +51,12 @@ def create_monthly_display():
                     + "_" \
                     + df['date'].str[5:7]
     df["project_date"] = df["project"] + df['date']
+
+    dfmp = dfmp[dfmp["task"].notna()]
+
+    ###jjj
+    print(dfmp)
+    time.sleep(10)
 
     # Using the sorting function
     df.sort_values(by=["yyyy_mm", "types_of_thought", "project_date"],
