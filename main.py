@@ -105,6 +105,10 @@ def create_monthly_display():
     else:
         number_of_tot_proj = number_of_tot_proj_min
 
+    for ind in dfmp.index:
+        month_task_plan = 0
+        month_task_actual = 0
+
     #time.sleep(10)
 
     default_gap = 50
