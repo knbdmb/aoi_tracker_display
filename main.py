@@ -52,16 +52,23 @@ def create_monthly_display():
                     + df['date'].str[5:7]
     df["project_date"] = df["project"] + df['date']
 
-    dfmp = dfmp[dfmp["task"].notna()]
+    dfmp = dfmp[dfmp["yyyy_mm"].notna()]
 
-    ###jjj
-    print(dfmp)
-    time.sleep(10)
+
 
     # Using the sorting function
     df.sort_values(by=["yyyy_mm", "types_of_thought", "project_date"],
                    axis=0, ascending=[True, True, True],
                    inplace=True)
+
+    dfmp.sort_values(by=["yyyy_mm", "task"],
+                   axis=0, ascending=[True, True],
+                   inplace=True)
+
+
+    ###jjj
+    #print(dfmp[["yyyy_mm", "task"]])
+    #time.sleep(10)
 
     # Set up required variables before the for loop
     current_month = "yyyy_mm"
