@@ -29,7 +29,7 @@ def create_monthly_display():
 
     today_date = datetime.date.today()
     today_day_of_month = today_date.day
-    today_yyyy_mm = str(today_date.year) + "_" + str(today_date.month).zfill(2)
+    today_yyyy_mm = str(today_date.year) + "-" + str(today_date.month).zfill(2)
 
     # get data from spreadsheet
     path = "../aoi_tracker.ods"
@@ -49,7 +49,7 @@ def create_monthly_display():
     df = df[df['date'] >= "2020-01-01"]
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
     df["yyyy_mm"] = df['date'].str[0:4] \
-                    + "_" \
+                    + "-" \
                     + df['date'].str[5:7]
     df["project_date"] = df["project"] + df['date']
 
@@ -217,7 +217,7 @@ def create_monthly_display():
 
         print(df['yyyy_mm'][ind]," = ",df['task'][ind])
         print((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual)
-        #time.sleep(1)
+        time.sleep(1)
         """
         if ( df['yyyy_mm'][ind] in month_task_actual ) & ( df['task'][ind] in month_task_actual[df['yyyy_mm'][ind]] ):
             month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])] = df['amount'][ind] \
