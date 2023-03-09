@@ -110,9 +110,9 @@ def create_monthly_display():
         month_task_actual[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = 0
 
     ###jjj
-    print('plan=> ',month_task_plan)
-    print('actual=> ',month_task_actual)
-    time.sleep(10)
+    #print('plan=> ',month_task_plan)
+    #print('actual=> ',month_task_actual)
+    #time.sleep(10)
 
     default_gap = 50
     task_width = 100
@@ -213,6 +213,15 @@ def create_monthly_display():
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
         print("this is the next row to be processed: ", df_date)
+
+        """
+        if ( df['yyyy_mm'][ind] in month_task_actual ) & ( df['task'][ind] in month_task_actual[df['yyyy_mm'][ind]] ):
+            month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])] = df['amount'][ind] \
+                + month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])]
+            print(month_task_actual)
+            time.sleep(10)
+        """
+
         if current_month != df['yyyy_mm'][ind]:
             if drawing_obj_flag:
                 # totals found from previous months
