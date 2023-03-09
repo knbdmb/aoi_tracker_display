@@ -45,6 +45,7 @@ def create_monthly_display():
 
     # filter rows without dates and prep data
     df = df[df['date'].notna()]
+    ###jjj
     df = df[df['date'] >= "2020-01-01"]
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
     df["yyyy_mm"] = df['date'].str[0:4] \
@@ -214,6 +215,9 @@ def create_monthly_display():
         df_date = datetime.date.fromisoformat(df['date'][ind])
         print("this is the next row to be processed: ", df_date)
 
+        print(df['yyyy_mm'][ind]," = ",df['task'][ind])
+        print((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual)
+        #time.sleep(1)
         """
         if ( df['yyyy_mm'][ind] in month_task_actual ) & ( df['task'][ind] in month_task_actual[df['yyyy_mm'][ind]] ):
             month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])] = df['amount'][ind] \
