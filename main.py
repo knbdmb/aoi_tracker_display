@@ -66,9 +66,7 @@ def create_monthly_display():
                    inplace=True)
 
 
-    ###jjj
-    #print(dfmp[["yyyy_mm", "task"]])
-    #time.sleep(10)
+
 
     # Set up required variables before the for loop
     current_month = "yyyy_mm"
@@ -105,11 +103,16 @@ def create_monthly_display():
     else:
         number_of_tot_proj = number_of_tot_proj_min
 
+    month_task_plan = {}
+    month_task_actual = {}
     for ind in dfmp.index:
-        month_task_plan = 0
-        month_task_actual = 0
+        month_task_plan[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = dfmp['planned_hours'][ind]
+        month_task_actual[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = 0
 
-    #time.sleep(10)
+    ###jjj
+    print('plan=> ',month_task_plan)
+    print('actual=> ',month_task_actual)
+    time.sleep(10)
 
     default_gap = 50
     task_width = 100
