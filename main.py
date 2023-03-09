@@ -213,18 +213,19 @@ def create_monthly_display():
     # Step through dataframe and generate charts
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
-        print("this is the next row to be processed: ", df_date)
+        #print("this is the next row to be processed: ", df_date)
 
-        print(df['yyyy_mm'][ind]," = ",df['task'][ind])
-        print((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual)
-        time.sleep(1)
-        """
-        if ( df['yyyy_mm'][ind] in month_task_actual ) & ( df['task'][ind] in month_task_actual[df['yyyy_mm'][ind]] ):
+        #print(df['yyyy_mm'][ind]," = ",df['task'][ind])
+        #print((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual)
+        #time.sleep(1)
+
+        if ((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual):
             month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])] = df['amount'][ind] \
                 + month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])]
+            print(df_date)
             print(month_task_actual)
-            time.sleep(10)
-        """
+            time.sleep(1)
+
 
         if current_month != df['yyyy_mm'][ind]:
             if drawing_obj_flag:
@@ -259,8 +260,8 @@ def create_monthly_display():
             #df_date = datetime.date.fromisoformat(df['date'][ind])
             (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
                                                                      int(df_date.strftime("%m")))
-            print(df_date,starting_day_number, month_number_of_days)
-            print(current_month)
+            #print(df_date,starting_day_number, month_number_of_days)
+            #print(current_month)
             available_hours[0] = 0
             available_cumulative_hours[0] = 0
             available_hours_logged[0] = 0
@@ -679,7 +680,7 @@ def create_years_display():
     current_day = 99
     number_of_months = 0
 
-    print("start through dataframe")
+    #print("start through dataframe")
     # Step through dataframe and generate chart
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
@@ -765,7 +766,7 @@ def create_years_display():
 
 
 
-        #"""
+        """
         print(dow_month_offset_x)
         print(df['date'][ind],
               df_date.year,
@@ -776,7 +777,7 @@ def create_years_display():
               df['project'][ind],
               df['task'][ind],
               df['amount'][ind])
-        #"""
+        """
 
     """
     # the following rectangles are used for testing
@@ -829,7 +830,7 @@ def create_years_display():
 
 
 
-    print("done with years display")
+    #print("done with years display")
 
 
 
