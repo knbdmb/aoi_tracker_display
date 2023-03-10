@@ -11,7 +11,7 @@ def create_monthly_display():
     # step through data and create chart
     # finish chart and start on next one
 
-    #import pandas as pd
+    import pandas as pd
     from pandas_ods_reader import read_ods
     #import numpy as np
 
@@ -104,11 +104,24 @@ def create_monthly_display():
     else:
         number_of_tot_proj = number_of_tot_proj_min
 
+    task_list = {}
     month_task_plan = {}
     month_task_actual = {}
     for ind in dfmp.index:
         month_task_plan[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = dfmp['planned_hours'][ind]
         month_task_actual[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = 0
+        if ((dfmp['task'][ind]) in task_list.keys()):
+            task_list[dfmp['task'][ind]] = 1 + task_list[dfmp['task'][ind]]
+        else:
+            task_list[dfmp['task'][ind]] = 1
+
+    #print(task_list)
+    #task_list_keys = list(sorted(task_list.keys()))
+    #print("list of keys: ",task_list_keys)
+    #for i in task_list_keys:
+    #    print(i)
+    #time.sleep(10)
+
 
     ###jjj
     #print('plan=> ',month_task_plan)
@@ -222,9 +235,12 @@ def create_monthly_display():
         if ((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual):
             month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])] = df['amount'][ind] \
                 + month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])]
-            print(df_date)
-            print(month_task_actual)
-            time.sleep(1)
+
+            mtadf = pd.DataFrame.from_dict(month_task_actual, orient ='index')
+            #print(month_task_actual)
+            #print(mtadf)
+            #print(df_date)
+            #time.sleep(1)
 
 
         if current_month != df['yyyy_mm'][ind]:
