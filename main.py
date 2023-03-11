@@ -502,8 +502,7 @@ def create_monthly_display():
                                balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
             d.append(draw.Rectangle(balances_offset_x,
                                     balances_offset_y + 3 * balances_height/4 + 5,
-                                    40, 55,
-                                    fill=task_display[0][2]))
+                                    45, 55, fill=task_display[0][2]))
             d.append(draw.Text(task_display[1][0], 25, balances_offset_x + 5,
                                balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
             d.append(draw.Text(task_display[1][1], 25, balances_offset_x + 5,
