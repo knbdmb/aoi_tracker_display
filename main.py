@@ -74,12 +74,15 @@ def create_monthly_display():
     current_project = "xxxxxxxxxx"
     starting_day_number    = 0
     month_number_of_days   = 0
-    available_hours        = [0]*32
+    available_hours            = [0]*32
     available_cumulative_hours = [0]*32
-    available_hours_logged = [0]*32
-    focus_hours            = [0]*32
-    focus_cumulative_hours = [0] * 32
-    focus_hours_logged     =  [0]*32
+    available_hours_logged     = [0]*32
+    focus_hours                = [0]*32
+    focus_cumulative_hours     = [0]*32
+    focus_hours_logged         = [0]*32
+    planned_hours              = [0]*32
+    planned_cumulative_hours   = [0]*32
+    planned_hours_logged       = [0]*32
 
     current_number_of_projects = 0
     number_of_projects_per_month = 0
@@ -149,10 +152,11 @@ def create_monthly_display():
     #time.sleep(10)
 
     #initialize the task display array
-    task_display = [[0 for x in range(2)] for y in range(16)]
+    task_display = [[0 for x in range(3)] for y in range(16)]
     for y in range(16):
         task_display[y][0] = "-"
         task_display[y][1] = "-"
+        task_display[y][2] = "#DDDDDD"
         print(task_display)
     #time.sleep(10)
 
@@ -304,6 +308,9 @@ def create_monthly_display():
             focus_hours[0] = 0
             focus_cumulative_hours[0] = 0
             focus_hours_logged[0] = 0
+            planned_hours[0] = 0
+            planned_cumulative_hours[0] = 0
+            planned_hours_logged[0] = 0
             for i in range(1, month_number_of_days + 1):
                 cm_date = datetime.date.fromisoformat(str(df_date.year)
                                               + "-" + str(df_date.month).zfill(2)
@@ -314,23 +321,25 @@ def create_monthly_display():
                     available_cumulative_hours[i] = available_hours[i] + available_cumulative_hours[i-1]
                     focus_hours[i] = 3
                     focus_cumulative_hours[i] = focus_hours[i] + focus_cumulative_hours[i-1]
+                    planned_hours[i] = 2
+                    planned_cumulative_hours[i] = planned_hours[i] + planned_cumulative_hours[i-1]
 
                 else:
                     available_hours[i] = 10
                     available_cumulative_hours[i] = available_hours[i] + available_cumulative_hours[i - 1]
                     focus_hours[i] = 5
                     focus_cumulative_hours[i] = focus_hours[i] + focus_cumulative_hours[i - 1]
+                    planned_hours[i] = 2.5
+                    planned_cumulative_hours[i] = planned_hours[i] + planned_cumulative_hours[i-1]
 
                 available_hours_logged[i] = 0
                 focus_hours_logged[i] = 0
+                planned_hours_logged[i] = 0
+
             #print(available_hours)
-
             #print(available_cumulative_hours)
-
             #print(focus_hours)
-
             #print(focus_cumulative_hours)
-
             #time.sleep(2)
 
             # clean previous month info and chart
@@ -487,10 +496,14 @@ def create_monthly_display():
 
 
             # fill in Balance area
-            d.append(draw.Text(task_display[0][0], 25, balances_offset_x + 5,
+            d.append(draw.Text(task_display[0][0], 25, balances_offset_x + 50,
                                balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[0][1], 25, balances_offset_x + 5,
+            d.append(draw.Text(task_display[0][1], 25, balances_offset_x + 50,
                                balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x,
+                                    balances_offset_y + 3 * balances_height/4 + 5,
+                                    40, 55,
+                                    fill=task_display[0][2]))
             d.append(draw.Text(task_display[1][0], 25, balances_offset_x + 5,
                                balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
             d.append(draw.Text(task_display[1][1], 25, balances_offset_x + 5,
@@ -555,10 +568,13 @@ def create_monthly_display():
             d.append(draw.Text(task_display[15][1], 25, balances_offset_x + balances_width*3/4 + 5,
                                balances_offset_y + 5, fill='black'))
 
+
+
             # reinitialize the task display array
             for y in range(16):
                 task_display[y][0] = "-"
                 task_display[y][1] = "-"
+                task_display[y][2] = "#DDDDDD"
                 #print(task_display)
 
 
