@@ -85,6 +85,26 @@ def create_monthly_display():
     number_of_projects_per_month = 0
     number_of_projects_per_month_max = 0
 
+    # Set up the month_task dictionaries for use going through the action df
+    task_list = {}
+    month_task_plan = {}
+    month_task_actual = {}
+    for ind in dfmp.index:
+        month_task_plan[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = dfmp['planned_hours'][ind]
+        month_task_actual[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = 0
+        if ((dfmp['task'][ind]) in task_list.keys()):
+            task_list[dfmp['task'][ind]] = 1 + task_list[dfmp['task'][ind]]
+        else:
+            task_list[dfmp['task'][ind]] = 1
+    task_list_keys = list(sorted(task_list.keys()))
+
+    #print(task_list)
+    #print("list of keys: ",task_list_keys)
+    #for i in task_list_keys:
+    #    print(i)
+
+
+
     print("start through dataframe to determine max projects in a month")
     # Step through dataframe and calculate hours arrays and totals
     for ind in df.index:
@@ -98,34 +118,42 @@ def create_monthly_display():
             number_of_projects_per_month += 1
             #print(df['date'][ind], number_of_projects_per_month, ", ", number_of_projects_per_month_max)
 
+        if ((df['yyyy_mm'][ind], df['task'][ind]) in month_task_actual):
+            month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])] = df['amount'][ind] \
+                                                                       + month_task_actual[
+                                                                           (df['yyyy_mm'][ind], df['task'][ind])]
+
+            # mtadf = pd.DataFrame.from_dict(month_task_actual, orient ='index')
+            # print(month_task_actual)
+            # print(mtadf)
+            # print(df_date)
+            # time.sleep(1)
+
+
+
+
+
     number_of_tot_proj_min = 25
     if number_of_projects_per_month_max > number_of_tot_proj_min:
         number_of_tot_proj = number_of_projects_per_month_max
     else:
         number_of_tot_proj = number_of_tot_proj_min
 
-    task_list = {}
-    month_task_plan = {}
-    month_task_actual = {}
-    for ind in dfmp.index:
-        month_task_plan[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = dfmp['planned_hours'][ind]
-        month_task_actual[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = 0
-        if ((dfmp['task'][ind]) in task_list.keys()):
-            task_list[dfmp['task'][ind]] = 1 + task_list[dfmp['task'][ind]]
-        else:
-            task_list[dfmp['task'][ind]] = 1
 
-    #print(task_list)
-    #task_list_keys = list(sorted(task_list.keys()))
-    #print("list of keys: ",task_list_keys)
-    #for i in task_list_keys:
-    #    print(i)
-    #time.sleep(10)
+
 
 
     ###jjj
     #print('plan=> ',month_task_plan)
     #print('actual=> ',month_task_actual)
+    #time.sleep(10)
+
+    #initialize the task display array
+    task_display = [[0 for x in range(2)] for y in range(16)]
+    for y in range(16):
+        task_display[y][0] = "-"
+        task_display[y][1] = "-"
+        print(task_display)
     #time.sleep(10)
 
     default_gap = 50
@@ -232,15 +260,7 @@ def create_monthly_display():
         #print((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual)
         #time.sleep(1)
 
-        if ((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual):
-            month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])] = df['amount'][ind] \
-                + month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])]
 
-            mtadf = pd.DataFrame.from_dict(month_task_actual, orient ='index')
-            #print(month_task_actual)
-            #print(mtadf)
-            #print(df_date)
-            #time.sleep(1)
 
 
         if current_month != df['yyyy_mm'][ind]:
@@ -446,40 +466,101 @@ def create_monthly_display():
                                     balances_offset_x,
                                     balances_width, balances_height,
                                     fill=day_color))
+
+            ###month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])]
+            ###month_task_plan[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])]
+            ###task_list[dfmp['task'][ind]]
+            ###    #for i in task_list_keys:
+            ###    #    print(i)
+
+            tdindex = 0
+            for i in task_list_keys:
+                if ((current_month, i) in month_task_plan):
+                    task_balance = month_task_plan[(current_month, i)] - \
+                                   month_task_actual[(current_month, i)]
+                    task_display[tdindex][0] = df['task'][ind]
+                    task_display[tdindex][1] = str(month_task_plan[(current_month, i)]) + \
+                                                " - " + \
+                                               str(month_task_actual[(current_month, i)]) + \
+                                                " = " + str(task_balance)
+                    tdindex = tdindex + 1
+
+
             # fill in Balance area
-            d.append(draw.Text("project 1.3t", 30, balances_offset_x + 5,
+            d.append(draw.Text(task_display[0][0], 25, balances_offset_x + 5,
+                               balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[0][1], 25, balances_offset_x + 5,
+                               balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[1][0], 25, balances_offset_x + 5,
+                               balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[1][1], 25, balances_offset_x + 5,
+                               balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[2][0], 25, balances_offset_x + 5,
+                               balances_offset_y + balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[2][1], 25, balances_offset_x + 5,
+                               balances_offset_y + balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[3][0], 25, balances_offset_x + 5,
                                balances_offset_y + 40, fill='black'))
-            d.append(draw.Text("project 1.3d", 30, balances_offset_x + 5,
+            d.append(draw.Text(task_display[3][1], 25, balances_offset_x + 5,
                                balances_offset_y + 5, fill='black'))
-            d.append(draw.Text("project 1.2t", 30, balances_offset_x + 5,
-                               balances_offset_y + balances_height/3 + 40, fill='black'))
-            d.append(draw.Text("project 1.2d", 30, balances_offset_x + 5,
-                               balances_offset_y + balances_height/3 + 5, fill='black'))
-            d.append(draw.Text("project 1.1t", 30, balances_offset_x + 5,
-                               balances_offset_y + 2 * balances_height/3 + 40, fill='black'))
-            d.append(draw.Text("project 1.1d", 30, balances_offset_x + 5,
-                               balances_offset_y + 2 * balances_height/3 + 5, fill='black'))
 
-            d.append(draw.Text("project 2.3", 30, balances_offset_x + balances_width/4 + 5,
+            d.append(draw.Text(task_display[4][0], 25, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[4][1], 25, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[5][0], 25, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[5][1], 25, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[6][0], 25, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[6][1], 25, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[7][0], 25, balances_offset_x + balances_width/4 + 5,
+                               balances_offset_y + 40, fill='black'))
+            d.append(draw.Text(task_display[7][1], 25, balances_offset_x + balances_width/4 + 5,
                                balances_offset_y + 5, fill='black'))
-            d.append(draw.Text("project 2.2", 30, balances_offset_x + balances_width/4 + 5,
-                               balances_offset_y + balances_height/3 + 5, fill='black'))
-            d.append(draw.Text("project 2.1", 30, balances_offset_x + balances_width/4 + 5,
-                               balances_offset_y + 2 * balances_height/3 + 5, fill='black'))
 
-            d.append(draw.Text("project 3.3", 30, balances_offset_x + balances_width/2,
+            d.append(draw.Text(task_display[8][0], 25, balances_offset_x + balances_width/2 + 5,
+                               balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[8][1], 25, balances_offset_x + balances_width/2 + 5,
+                               balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[9][0], 25, balances_offset_x + balances_width/2 + 5,
+                               balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[9][1], 25, balances_offset_x + balances_width/2 + 5,
+                               balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[10][0], 25, balances_offset_x + balances_width/2 + 5,
+                               balances_offset_y + balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[10][1], 25, balances_offset_x + balances_width/2 + 5,
+                               balances_offset_y + balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[11][0], 25, balances_offset_x + balances_width/2 + 5,
+                               balances_offset_y + 40, fill='black'))
+            d.append(draw.Text(task_display[11][1], 25, balances_offset_x + balances_width/2 + 5,
                                balances_offset_y + 5, fill='black'))
-            d.append(draw.Text("project 3.2", 30, balances_offset_x + balances_width/2,
-                               balances_offset_y + balances_height/3 + 5, fill='black'))
-            d.append(draw.Text("project 3.1", 30, balances_offset_x + balances_width/2,
-                               balances_offset_y + 2 * balances_height/3, fill='black'))
 
-            d.append(draw.Text("project 4.3", 30, balances_offset_x + balances_width*3/4,
+            d.append(draw.Text(task_display[12][0], 25, balances_offset_x + balances_width*3/4 + 5,
+                               balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[12][1], 25, balances_offset_x + balances_width*3/4 + 5,
+                               balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[13][0], 25, balances_offset_x + balances_width*3/4 + 5,
+                               balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[13][1], 25, balances_offset_x + balances_width*3/4 + 5,
+                               balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[14][0], 25, balances_offset_x + balances_width*3/4 + 5,
+                               balances_offset_y + balances_height/4 + 40, fill='black'))
+            d.append(draw.Text(task_display[14][1], 25, balances_offset_x + balances_width*3/4 + 5,
+                               balances_offset_y + balances_height/4 + 5, fill='black'))
+            d.append(draw.Text(task_display[15][0], 25, balances_offset_x + balances_width*3/4 + 5,
+                               balances_offset_y + 40, fill='black'))
+            d.append(draw.Text(task_display[15][1], 25, balances_offset_x + balances_width*3/4 + 5,
                                balances_offset_y + 5, fill='black'))
-            d.append(draw.Text("project 4.2", 30, balances_offset_x + balances_width*3/4,
-                               balances_offset_y + balances_height/3 + 5, fill='black'))
-            d.append(draw.Text("project 4.1", 30, balances_offset_x + balances_width*3/4,
-                               balances_offset_y + 2 * balances_height/3, fill='black'))
+
+            # reinitialize the task display array
+            for y in range(16):
+                task_display[y][0] = "-"
+                task_display[y][1] = "-"
+                #print(task_display)
+
 
 
             # date created label
