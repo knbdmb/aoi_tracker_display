@@ -478,7 +478,7 @@ def create_monthly_display():
                 if ((current_month, i) in month_task_plan):
                     task_balance = month_task_plan[(current_month, i)] - \
                                    month_task_actual[(current_month, i)]
-                    task_display[tdindex][0] = df['task'][ind]
+                    task_display[tdindex][0] = i
                     task_display[tdindex][1] = str(month_task_plan[(current_month, i)]) + \
                                                 " - " + \
                                                str(month_task_actual[(current_month, i)]) + \
