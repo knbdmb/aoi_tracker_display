@@ -492,6 +492,16 @@ def create_monthly_display():
                                                 " - " + \
                                                str(month_task_actual[(current_month, i)]) + \
                                                 " = " + str(task_balance)
+                    month_task_pa_ratio = month_task_actual[(current_month, i) / month_task_plan[(current_month, i)]
+                    if month_task_pa_ratio > 1.3:
+                        task_display[tdindex][2] = '#CD3232'  # light red
+                    elif month_task_pa_ratio > 1.1:
+                        task_display[tdindex][2] = '#CDC532'  # light yellow
+                    elif month_task_pa_ratio > .6:
+                        task_display[tdindex][2] = '#32CD32'  # light green
+                    else:
+                        task_display[tdindex][2] = '#00C0F0'  # light blue
+
                     tdindex = tdindex + 1
 
 
