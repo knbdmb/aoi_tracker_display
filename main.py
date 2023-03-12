@@ -438,7 +438,7 @@ def create_monthly_display():
                                         available_hours_offset_y + avail_hrs_zero_height,
                                         avail_hrs_charts_width,
                                         focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
-                                        fill="#00C0F0")) # #FFC0CB
+                                        fill="#00C0F0"))  # light blue
 
                 avail_hrs_diff_height = available_cumulative_hours[month_number_of_days - today_day_of_month] \
                                         - focus_cumulative_hours[month_number_of_days - today_day_of_month]
@@ -449,7 +449,7 @@ def create_monthly_display():
                                         + focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
                                         avail_hrs_charts_width,
                                         avail_hrs_diff_height * task_height,
-                                        fill="#32CD32"))
+                                        fill="#32CD32"))  # light green
 
 
             # determine calendar shape and plot
