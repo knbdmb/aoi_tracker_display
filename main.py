@@ -572,38 +572,57 @@ def create_monthly_display():
                                balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
             d.append(draw.Text(task_display[9][1], 25, balances_offset_x + balances_width/2 + 50,
                                balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
-
+            d.append(draw.Rectangle(balances_offset_x,
+                                    balances_offset_y + 2 * balances_height/4 + 5,
+                                    45, 55, fill=task_display[9][2]))
 
             d.append(draw.Text(task_display[10][0], 25, balances_offset_x + balances_width/2 + 50,
                                balances_offset_y + balances_height/4 + 40, fill='black'))
             d.append(draw.Text(task_display[10][1], 25, balances_offset_x + balances_width/2 + 50,
                                balances_offset_y + balances_height/4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x,
+                                    balances_offset_y + balances_height/4 + 5,
+                                    45, 55, fill=task_display[10][2]))
 
             d.append(draw.Text(task_display[11][0], 25, balances_offset_x + balances_width/2 + 50,
                                balances_offset_y + 40, fill='black'))
             d.append(draw.Text(task_display[11][1], 25, balances_offset_x + balances_width/2 + 50,
                                balances_offset_y + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x,
+                                    balances_offset_y + 5,
+                                    45, 55, fill=task_display[11][2]))
 
             d.append(draw.Text(task_display[12][0], 25, balances_offset_x + balances_width*3/4 + 50,
                                balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
             d.append(draw.Text(task_display[12][1], 25, balances_offset_x + balances_width*3/4 + 50,
                                balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x,
+                                    balances_offset_y + 3 * balances_height/4 + 5,
+                                    45, 55, fill=task_display[12][2]))
 
             d.append(draw.Text(task_display[13][0], 25, balances_offset_x + balances_width*3/4 + 50,
                                balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
             d.append(draw.Text(task_display[13][1], 25, balances_offset_x + balances_width*3/4 + 50,
                                balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x,
+                                    balances_offset_y + 2 * balances_height/4 + 5,
+                                    45, 55, fill=task_display[13][2]))
 
             d.append(draw.Text(task_display[14][0], 25, balances_offset_x + balances_width*3/4 + 50,
                                balances_offset_y + balances_height/4 + 40, fill='black'))
             d.append(draw.Text(task_display[14][1], 25, balances_offset_x + balances_width*3/4 + 50,
                                balances_offset_y + balances_height/4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x,
+                                    balances_offset_y + balances_height/4 + 5,
+                                    45, 55, fill=task_display[14][2]))
 
             d.append(draw.Text(task_display[15][0], 25, balances_offset_x + balances_width*3/4 + 50,
                                balances_offset_y + 40, fill='black'))
             d.append(draw.Text(task_display[15][1], 25, balances_offset_x + balances_width*3/4 + 50,
                                balances_offset_y + 5, fill='black'))
-
+            d.append(draw.Rectangle(balances_offset_x,
+                                    balances_offset_y + 5,
+                                    45, 55, fill=task_display[15][2]))
 
 
             # reinitialize the task display array
