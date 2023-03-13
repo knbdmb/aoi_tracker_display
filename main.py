@@ -92,14 +92,17 @@ def create_monthly_display():
     task_list = {}
     month_task_plan = {}
     month_task_actual = {}
+    month_task_total_actual_hours = {}
     for ind in dfmp.index:
         month_task_plan[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = dfmp['planned_hours'][ind]
         month_task_actual[(dfmp['yyyy_mm'][ind], dfmp['task'][ind])] = 0
+        month_task_total_actual_hours[dfmp['yyyy_mm'][ind]] = 0
         if ((dfmp['task'][ind]) in task_list.keys()):
             task_list[dfmp['task'][ind]] = 1 + task_list[dfmp['task'][ind]]
         else:
             task_list[dfmp['task'][ind]] = 1
     task_list_keys = list(sorted(task_list.keys()))
+
 
     #print(task_list)
     #print("list of keys: ",task_list_keys)
@@ -123,8 +126,9 @@ def create_monthly_display():
 
         if ((df['yyyy_mm'][ind], df['task'][ind]) in month_task_actual):
             month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])] = df['amount'][ind] \
-                                                                       + month_task_actual[
-                                                                           (df['yyyy_mm'][ind], df['task'][ind])]
+                                                + month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])]
+            month_task_total_actual_hours[df['yyyy_mm'][ind]] = df['amount'][ind] \
+                                                + month_task_total_actual_hours[df['yyyy_mm'][ind]]
 
             # mtadf = pd.DataFrame.from_dict(month_task_actual, orient ='index')
             # print(month_task_actual)
@@ -451,6 +455,20 @@ def create_monthly_display():
                                         avail_hrs_diff_height * task_height,
                                         fill="#32CD32"))  # light green
 
+                current_mp_y_offset = available_hours_offset_y + avail_hrs_zero_height
+                d.append(draw.Rectangle(available_hours_offset_x+10,
+                                        current_mp_y_offset,
+                                        task_width,
+                                        planned_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
+                                        stroke = "black", fill="#FFC0F0"))  # light blue
+
+                d.append(draw.Rectangle(available_hours_offset_x + 150,
+                                        available_hours_offset_y + avail_hrs_zero_height,
+                                        50,
+                                        planned_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
+                                        stroke = "black", fill="#FFC0F0"))  # light blue
+
+
 
             # determine calendar shape and plot
             # calendar
@@ -467,7 +485,7 @@ def create_monthly_display():
             # fill in title area
             d.append(draw.Text(current_month, 50, title_offset_x + title_width/2, title_offset_y + title_height/2,
                                fill='black'))
-            today_date_label = "Created on: " + str(today_date)
+            today_date_label = "Date created: " + str(today_date)
             d.append(draw.Text(today_date_label, 50, title_offset_x, title_offset_y,
                                fill='black'))
             # Balances
