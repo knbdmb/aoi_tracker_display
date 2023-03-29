@@ -301,11 +301,12 @@ def create_monthly_display():
 
             current_month = df['yyyy_mm'][ind]
             # start new month
-            #df_date = datetime.date.fromisoformat(df['date'][ind])
+            df_date = datetime.date.fromisoformat(df['date'][ind])
             (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
                                                                      int(df_date.strftime("%m")))
-            #print(df_date,starting_day_number, month_number_of_days)
-            #print(current_month)
+            print(df_date,starting_day_number, month_number_of_days)
+            print(current_month)
+            #time.sleep(5)
             available_hours[0] = 0
             available_cumulative_hours[0] = 0
             available_hours_logged[0] = 0
@@ -528,8 +529,15 @@ def create_monthly_display():
 
                     tdindex = tdindex + 1
 
+                print("mnod= ", month_number_of_days)
+                print("tdom= ",today_day_of_month)
+                print("pch=", planned_cumulative_hours)
+                print("pch2=", planned_cumulative_hours[2])
+                print("pch1=", planned_cumulative_hours[1])
+                print("pch0=", planned_cumulative_hours[0])
+
                 month_task_pa_total_ratio = month_task_pa_total_balance \
-                                            / planned_cumulative_hours[month_number_of_days - today_day_of_month]
+                                            / planned_cumulative_hours[(month_number_of_days - today_day_of_month)]
                 if month_task_pa_total_ratio > 1.3:
                     month_task_pa_total_ratio_color = '#FFB6C1'  # light red
                 elif month_task_pa_total_ratio > 1.0:
