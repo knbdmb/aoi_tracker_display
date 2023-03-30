@@ -517,27 +517,31 @@ def create_monthly_display():
                     if month_task_pa_ratio < 1.0:  # completed tasks are not shown needing more time on graph
                         month_task_pa_total_balance = task_balance + month_task_pa_total_balance
                         #print("draw amount: ", task_display[tdindex][0])
-                        d.append(draw.Rectangle(available_hours_offset_x + 10,
+                        d.append(draw.Rectangle(available_hours_offset_x - 15,
                                             current_mp_y_offset,
                                             task_width,
                                             task_balance * task_height,
                                             stroke="black", fill=task_display[tdindex][2]))
-                        d.append(draw.Text(task_display[tdindex][0], 6, available_hours_offset_x + 10,
+                        d.append(draw.Text(task_display[tdindex][0], 6, available_hours_offset_x - 15,
                                            current_mp_y_offset, fill='black'))
 
                         current_mp_y_offset = task_balance * task_height + current_mp_y_offset
 
                     tdindex = tdindex + 1
 
-                print("mnod= ", month_number_of_days)
-                print("tdom= ",today_day_of_month)
-                print("pch=", planned_cumulative_hours)
-                print("pch2=", planned_cumulative_hours[2])
-                print("pch1=", planned_cumulative_hours[1])
-                print("pch0=", planned_cumulative_hours[0])
+                #print("mnod= ", month_number_of_days)
+                #print("tdom= ",today_day_of_month)
+                #print("pch=", planned_cumulative_hours)
+                #print("pch2=", planned_cumulative_hours[2])
+                #print("pch1=", planned_cumulative_hours[1])
+                #print("pch0=", planned_cumulative_hours[0])
 
-                month_task_pa_total_ratio = month_task_pa_total_balance \
+                if month_number_of_days >  today_day_of_month:
+                    month_task_pa_total_ratio = month_task_pa_total_balance \
                                             / planned_cumulative_hours[(month_number_of_days - today_day_of_month)]
+                else:
+                    month_task_pa_total_ratio = 1
+
                 if month_task_pa_total_ratio > 1.3:
                     month_task_pa_total_ratio_color = '#FFB6C1'  # light red
                 elif month_task_pa_total_ratio > 1.0:
@@ -547,7 +551,7 @@ def create_monthly_display():
                 else:
                     month_task_pa_total_ratio_color = '#CCCCEA'  # light blue
 
-                d.append(draw.Rectangle(available_hours_offset_x + 150,
+                d.append(draw.Rectangle(available_hours_offset_x + 165,
                                 available_hours_offset_y + avail_hrs_zero_height,
                                 50,
                                 planned_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
