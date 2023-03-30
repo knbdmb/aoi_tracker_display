@@ -548,6 +548,8 @@ def create_monthly_display():
                     month_task_pa_total_ratio_color = '#FFFDD0'  # light yellow
                 elif month_task_pa_total_ratio > .6:
                     month_task_pa_total_ratio_color = '#C7F6B6'  # light green
+                elif month_task_pa_total_ratio == 1.0:
+                    month_task_pa_total_ratio_color = '#00FF00'  # light green
                 else:
                     month_task_pa_total_ratio_color = '#CCCCEA'  # light blue
 
