@@ -282,7 +282,7 @@ def create_monthly_display():
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
                 print("\nNumber of weeks the month: ", week_number_of_month(df_date), "\n")
                 if week_number_of_month(df_date) <= 0:
-                    time.sleep(5)
+                    time.sleep(2)
                 # fill in balance focus details
                 # save drawing obj to file
                 file_output = current_month + "_rpt.svg"
