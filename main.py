@@ -204,7 +204,7 @@ def create_monthly_display():
     border_height            = title_offset_y + title_height + default_gap
     drawing_height           = border_height + default_gap
 
-
+    #start changing chart
 
     dow_month_offset_x = 0
     month_offset_y = 0
