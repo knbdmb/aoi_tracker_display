@@ -103,13 +103,10 @@ def create_monthly_display():
             task_list[dfmp['task'][ind]] = 1
     task_list_keys = list(sorted(task_list.keys()))
 
-
     #print(task_list)
     #print("list of keys: ",task_list_keys)
     #for i in task_list_keys:
     #    print(i)
-
-
 
     print("start through dataframe to determine max projects in a month")
     # Step through dataframe and calculate hours arrays and totals
@@ -136,19 +133,11 @@ def create_monthly_display():
             # print(df_date)
             # time.sleep(1)
 
-
-
-
-
     number_of_tot_proj_min = 25
     if number_of_projects_per_month_max > number_of_tot_proj_min:
         number_of_tot_proj = number_of_projects_per_month_max
     else:
         number_of_tot_proj = number_of_tot_proj_min
-
-
-
-
 
     ###jjj
     #print('plan=> ',month_task_plan)
@@ -164,45 +153,59 @@ def create_monthly_display():
         print(task_display)
     #time.sleep(10)
 
-    default_gap = 50
     task_width = 100
     task_height = 8
-    cal_details_offset_x = 2
-    cal_details_offset_y = 10
-    balances_height = 300
+    default_gap = 50
+    paper_to_border_offset_x = default_gap
+    paper_to_border_offset_y = default_gap
+
+    cal_offset_x = paper_to_border_offset_x + default_gap
+    cal_offset_y = paper_to_border_offset_y + default_gap
+    cal_day_width = 110
+    cal_day_height = 110
+    cal_total_width = cal_day_width * 7
+    cal_total_height = cal_day_height * 6
+
+    available_hours_offset_x = cal_offset_x
+    available_hours_offset_y = cal_offset_y + cal_total_height + default_gap
     available_hours_width = 200
     available_hours_height = 3000  # 31 days * task_height * 12 h/day rounded up
-    month_chart_height = available_hours_height
-    month_chart_label_height = 100
-    title_height = 200
-    current_available_offset_y = 0
-    starting_day_number = 0
-    month_number_of_days = 0
+    avail_hrs_zero_height = 500  # allows for more time logged than normal
 
-    paper_to_border_offset_x = default_gap
-    available_hours_offset_x = paper_to_border_offset_x + default_gap
-    month_chart_offset_x     = available_hours_offset_x + available_hours_width + default_gap
-    month_chart_width        = task_width * number_of_tot_proj
-    balances_offset_x        = paper_to_border_offset_x + default_gap
-    balances_width           = available_hours_width + default_gap + month_chart_width
-    cal_offset_x             = paper_to_border_offset_x + default_gap + cal_details_offset_x
-    title_offset_x           = month_chart_offset_x
-    title_width              = month_chart_width
-    border_width             = balances_offset_x + balances_width + default_gap
-    drawing_width            = paper_to_border_offset_x + border_width
+    current_available_offset_y = 0
     avail_hrs_charts_offset_x = available_hours_offset_x - default_gap / 2
     avail_hrs_charts_width    = available_hours_width + default_gap
 
-    paper_to_border_offset_y = default_gap
-    balances_offset_y        = paper_to_border_offset_y + default_gap
-    available_hours_offset_y = balances_offset_y + balances_height + month_chart_label_height + default_gap
-    avail_hrs_zero_height  = 500
+    balances_offset_x = available_hours_offset_x + available_hours_width + default_gap
+    balances_offset_y = available_hours_offset_y
+    balances_width = task_width * number_of_tot_proj
+    balances_height = 350
+
+    # the month chart label positions are calculated while the month chart is generated
+    month_chart_label_height = 100  # this provides the gap where the labels are printed
+    # the month chart label x offsets are calculated while the month chart is generated
+    # the month chart label y offsets are calculated while the month chart is generated
+
+    month_chart_offset_x = balances_offset_x
+    month_chart_offset_y = balances_offset_y + balances_height + default_gap + month_chart_label_height
+    month_chart_width = task_width * number_of_tot_proj
+    month_chart_height = available_hours_height - avail_hrs_zero_height
+
+    title_offset_x = cal_offset_x + cal_total_width + default_gap
+    title_offset_y = cal_offset_y
+    title_width = balances_offset_x + balances_width - title_offset_x
+    title_height = cal_total_height
+
+    border_width             = balances_offset_x + balances_width + default_gap
+    border_height            = available_hours_offset_y + available_hours_height + default_gap
+
+    drawing_width            = border_width + paper_to_border_offset_x
+    drawing_height           = border_height + paper_to_border_offset_y
+
+
+    starting_day_number = 0
+    month_number_of_days = 0
     avail_hrs_diff_height = 10
-    cal_offset_y             = available_hours_offset_y + available_hours_height + default_gap + cal_details_offset_y
-    month_chart_offset_y     = available_hours_offset_y
-    title_offset_y           = available_hours_offset_y + available_hours_height + default_gap
-    border_height            = title_offset_y + title_height + default_gap
-    drawing_height           = border_height + default_gap
 
     #start changing chart
 
@@ -464,14 +467,13 @@ def create_monthly_display():
 
             # determine calendar shape and plot
             # calendar
-            d.append(draw.Rectangle(cal_offset_x,
-                                    cal_offset_y,
-                                    196, 168,
+            d.append(draw.Rectangle(cal_offset_x, cal_offset_y,
+                                    cal_total_width, cal_total_height,
                                     fill=day_color))
+            # this is where the calendar day details will be created ......
 
             # title
-            d.append(draw.Rectangle(title_offset_x,
-                                    title_offset_y,
+            d.append(draw.Rectangle(title_offset_x, title_offset_y,
                                     title_width, title_height,
                                     fill=day_color))
             # fill in title area
@@ -481,8 +483,7 @@ def create_monthly_display():
             d.append(draw.Text(today_date_label, 50, title_offset_x, title_offset_y,
                                fill='black'))
             # Balances
-            d.append(draw.Rectangle(balances_offset_x,
-                                    balances_offset_x,
+            d.append(draw.Rectangle(balances_offset_x, balances_offset_y,
                                     balances_width, balances_height,
                                     fill=day_color))
 
