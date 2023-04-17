@@ -436,6 +436,7 @@ def create_monthly_display():
                                     current_available_offset_y,
                                     avail_hrs_charts_width, task_height,
                                     fill="#555555"))
+
             # draw zero offset area
             d.append(draw.Rectangle(avail_hrs_charts_offset_x,
                                     available_hours_offset_y,
@@ -444,22 +445,34 @@ def create_monthly_display():
             # draw available hours and focus hours
             if today_yyyy_mm == current_month:
                 d.append(draw.Rectangle(avail_hrs_charts_offset_x,
-                                        available_hours_offset_y + avail_hrs_zero_height,
-                                        avail_hrs_charts_width,
-                                        focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
-                                        fill="#00C0F0"))  # light blue
+                                available_hours_offset_y + avail_hrs_zero_height,
+                                avail_hrs_charts_width,
+                                focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
+                                fill="#00C0F0"))  # light blue
+                d.append(draw.Text(str(focus_cumulative_hours[month_number_of_days - today_day_of_month]), 25,
+                                avail_hrs_charts_offset_x,
+                                available_hours_offset_y + avail_hrs_zero_height + \
+                                focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height - 30,
+                                fill='black'))
 
                 avail_hrs_diff_height = available_cumulative_hours[month_number_of_days - today_day_of_month] \
                                         - focus_cumulative_hours[month_number_of_days - today_day_of_month]
 
                 d.append(draw.Rectangle(avail_hrs_charts_offset_x,
-                                        available_hours_offset_y 
-                                        + avail_hrs_zero_height 
-                                        + focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
-                                        avail_hrs_charts_width,
-                                        avail_hrs_diff_height * task_height,
-                                        fill="#32CD32"))  # light green
-
+                                available_hours_offset_y
+                                + avail_hrs_zero_height
+                                + focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
+                                avail_hrs_charts_width,
+                                avail_hrs_diff_height * task_height,
+                                fill="#32CD32"))  # light green
+                d.append(draw.Text(str(available_cumulative_hours[month_number_of_days - today_day_of_month]), 25,
+                                avail_hrs_charts_offset_x,
+                                available_hours_offset_y
+                                + avail_hrs_zero_height
+                                + focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height
+                                + avail_hrs_diff_height * task_height
+                                - 30,
+                                fill='black'))
 
 
 
