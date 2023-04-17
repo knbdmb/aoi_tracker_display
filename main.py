@@ -477,10 +477,12 @@ def create_monthly_display():
                                     title_width, title_height,
                                     fill=day_color))
             # fill in title area
-            d.append(draw.Text(current_month, 50, title_offset_x + title_width/2, title_offset_y + title_height/2,
+            d.append(draw.Text("Month Chart:" + current_month, 50,
+                               title_offset_x, title_offset_y + title_height - 50,
                                fill='black'))
             today_date_label = "Date created: " + str(today_date)
-            d.append(draw.Text(today_date_label, 50, title_offset_x, title_offset_y,
+            d.append(draw.Text(today_date_label, 50,
+                               title_offset_x, title_offset_y,
                                fill='black'))
             # Balances
             d.append(draw.Rectangle(balances_offset_x, balances_offset_y,
@@ -555,12 +557,22 @@ def create_monthly_display():
                 else:
                     month_task_pa_total_ratio_color = '#CCCCEA'  # light blue
 
-                d.append(draw.Rectangle(available_hours_offset_x + 165,
+            # draw planned cumulative hours box and label
+            d.append(draw.Rectangle(available_hours_offset_x + 115,
                                 available_hours_offset_y + avail_hrs_zero_height,
-                                50,
+                                100,
                                 planned_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
                                 stroke = "black", fill=month_task_pa_total_ratio_color))  # light red
-
+            d.append(draw.Text(str(planned_cumulative_hours[month_number_of_days - today_day_of_month]), 25,
+                                available_hours_offset_x + 115, available_hours_offset_y + avail_hrs_zero_height -30,
+                                fill='black'))
+            d.append(draw.Text('{0:.2f}'.format(month_task_pa_total_ratio), 25,
+                                available_hours_offset_x + 115, available_hours_offset_y + avail_hrs_zero_height -60,
+                                fill='black'))
+            # label current month task pa total balance
+            d.append(draw.Text(str(month_task_pa_total_balance), 25,
+                                available_hours_offset_x - 15, available_hours_offset_y + avail_hrs_zero_height -30,
+                                fill='black'))
 
             # fill in Balance area
             d.append(draw.Text(task_display[0][0], 25, balances_offset_x + 50,
