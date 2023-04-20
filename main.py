@@ -436,7 +436,10 @@ def create_monthly_display():
                                     current_available_offset_y,
                                     avail_hrs_charts_width, task_height,
                                     fill="#555555"))
-
+            d.append(draw.Text(str(available_cumulative_hours[month_number_of_days]), 25,
+                               available_hours_offset_x,
+                               current_available_offset_y + 2 * task_height,
+                               fill='black'))
             # draw zero offset area
             d.append(draw.Rectangle(avail_hrs_charts_offset_x,
                                     available_hours_offset_y,
@@ -454,6 +457,7 @@ def create_monthly_display():
                                 available_hours_offset_y + avail_hrs_zero_height + \
                                 focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height - 30,
                                 fill='black'))
+
 
                 avail_hrs_diff_height = available_cumulative_hours[month_number_of_days - today_day_of_month] \
                                         - focus_cumulative_hours[month_number_of_days - today_day_of_month]
@@ -493,6 +497,20 @@ def create_monthly_display():
             d.append(draw.Text("Month Chart:" + current_month, 50,
                                title_offset_x, title_offset_y + title_height - 50,
                                fill='black'))
+            d.append(draw.Text("Total Loggable Hours Available: " + str(available_cumulative_hours[month_number_of_days]), 50,
+                               title_offset_x, title_offset_y + title_height - 100,
+                               fill='black'))
+
+            if today_yyyy_mm == current_month:
+                d.append(draw.Text("Current Loggable Hours Available: "
+                                   + str(available_cumulative_hours[month_number_of_days - today_day_of_month]), 50,
+                                   title_offset_x, title_offset_y + title_height - 150,
+                                   fill='black'))
+                d.append(draw.Text("Current Focus Hours Available: "
+                                   + str(focus_cumulative_hours[month_number_of_days - today_day_of_month]), 50,
+                                   title_offset_x, title_offset_y + title_height - 200,
+                                   fill='black'))
+
             today_date_label = "Date created: " + str(today_date)
             d.append(draw.Text(today_date_label, 50,
                                title_offset_x, title_offset_y,
@@ -582,10 +600,22 @@ def create_monthly_display():
             d.append(draw.Text('{0:.2f}'.format(month_task_pa_total_ratio), 25,
                                 available_hours_offset_x + 115, available_hours_offset_y + avail_hrs_zero_height -60,
                                 fill='black'))
+            d.append(draw.Text("Hours Available For Planned Tasks: "
+                               + str(planned_cumulative_hours[month_number_of_days - today_day_of_month]), 50,
+                               title_offset_x, title_offset_y + title_height - 250,
+                               fill='black'))
             # label current month task pa total balance
             d.append(draw.Text(str(month_task_pa_total_balance), 25,
                                 available_hours_offset_x - 15, available_hours_offset_y + avail_hrs_zero_height -30,
                                 fill='black'))
+            d.append(draw.Text("Balance of Actual Task Hours: "
+                               + str(month_task_pa_total_balance), 50,
+                               title_offset_x, title_offset_y + title_height - 300,
+                               fill='black'))
+            d.append(draw.Text("Actual to Planned Ratio: "
+                               + '{0:.2f}'.format(month_task_pa_total_ratio), 50,
+                               title_offset_x, title_offset_y + title_height - 350,
+                               fill='black'))
 
             # fill in Balance area
             d.append(draw.Text(task_display[0][0], 25, balances_offset_x + 50,
