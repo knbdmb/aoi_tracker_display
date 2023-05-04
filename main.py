@@ -27,6 +27,8 @@ def create_monthly_display():
     import drawSvg as draw
     import time
 
+    import mixbox
+
     today_date = datetime.date.today()
     today_day_of_month = today_date.day
     today_yyyy_mm = str(today_date.year) + "-" + str(today_date.month).zfill(2)
@@ -56,7 +58,6 @@ def create_monthly_display():
     dfmp = dfmp[dfmp["yyyy_mm"].notna()]
 
 
-
     # Using the sorting function
     df.sort_values(by=["yyyy_mm", "types_of_thought", "project_date"],
                    axis=0, ascending=[True, True, True],
@@ -65,8 +66,6 @@ def create_monthly_display():
     dfmp.sort_values(by=["yyyy_mm", "task"],
                    axis=0, ascending=[True, True],
                    inplace=True)
-
-
 
 
     # Set up required variables before the for loop
@@ -83,6 +82,10 @@ def create_monthly_display():
     planned_hours              = [0]*32
     planned_cumulative_hours   = [0]*32
     planned_hours_logged       = [0]*32
+
+    tot_totals_rows = 6
+    tot_totals_cols = 32
+    tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
 
     current_number_of_projects = 0
     number_of_projects_per_month = 0
@@ -436,7 +439,7 @@ def create_monthly_display():
                                     current_available_offset_y,
                                     avail_hrs_charts_width, task_height,
                                     fill="#555555"))
-            d.append(draw.Text(str(available_cumulative_hours[month_number_of_days]), 25,
+            d.append(draw.Text("TLA: " + str(available_cumulative_hours[month_number_of_days]), 25,
                                available_hours_offset_x,
                                current_available_offset_y + 2 * task_height,
                                fill='black'))
@@ -452,7 +455,8 @@ def create_monthly_display():
                                 avail_hrs_charts_width,
                                 focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
                                 fill="#00C0F0"))  # light blue
-                d.append(draw.Text(str(focus_cumulative_hours[month_number_of_days - today_day_of_month]), 25,
+                d.append(draw.Text("CFA: " + str(focus_cumulative_hours[month_number_of_days - today_day_of_month]),
+                                25,
                                 avail_hrs_charts_offset_x,
                                 available_hours_offset_y + avail_hrs_zero_height + \
                                 focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height - 30,
@@ -469,7 +473,8 @@ def create_monthly_display():
                                 avail_hrs_charts_width,
                                 avail_hrs_diff_height * task_height,
                                 fill="#32CD32"))  # light green
-                d.append(draw.Text(str(available_cumulative_hours[month_number_of_days - today_day_of_month]), 25,
+                d.append(draw.Text("CLA: " + str(available_cumulative_hours[month_number_of_days - today_day_of_month]),
+                                25,
                                 avail_hrs_charts_offset_x,
                                 available_hours_offset_y
                                 + avail_hrs_zero_height
@@ -487,34 +492,35 @@ def create_monthly_display():
             d.append(draw.Rectangle(cal_offset_x, cal_offset_y,
                                     cal_total_width, cal_total_height,
                                     fill=day_color))
+
             # this is where the calendar day details will be created ......
 
-            # title
+            # draw title area
             d.append(draw.Rectangle(title_offset_x, title_offset_y,
                                     title_width, title_height,
                                     fill=day_color))
             # fill in title area
-            d.append(draw.Text("Month Chart:" + current_month, 50,
-                               title_offset_x, title_offset_y + title_height - 50,
-                               fill='black'))
-            d.append(draw.Text("Total Loggable Hours Available: " + str(available_cumulative_hours[month_number_of_days]), 50,
-                               title_offset_x, title_offset_y + title_height - 100,
-                               fill='black'))
-
-            if today_yyyy_mm == current_month:
-                d.append(draw.Text("Current Loggable Hours Available: "
-                                   + str(available_cumulative_hours[month_number_of_days - today_day_of_month]), 50,
-                                   title_offset_x, title_offset_y + title_height - 150,
-                                   fill='black'))
-                d.append(draw.Text("Current Focus Hours Available: "
-                                   + str(focus_cumulative_hours[month_number_of_days - today_day_of_month]), 50,
-                                   title_offset_x, title_offset_y + title_height - 200,
-                                   fill='black'))
-
             today_date_label = "Date created: " + str(today_date)
             d.append(draw.Text(today_date_label, 50,
                                title_offset_x, title_offset_y,
                                fill='black'))
+            d.append(draw.Text("Month Chart:" + current_month, 50,
+                               title_offset_x, title_offset_y + title_height - 50,
+                               fill='black'))
+            d.append(draw.Text("Total Loggable Hours Available (TLA): " + str(available_cumulative_hours[month_number_of_days]), 50,
+                               title_offset_x, title_offset_y + title_height - 100,
+                               fill='black'))
+
+            if today_yyyy_mm == current_month:
+                d.append(draw.Text("Current Loggable Hours Available (CLA): "
+                                   + str(available_cumulative_hours[month_number_of_days - today_day_of_month]), 50,
+                                   title_offset_x, title_offset_y + title_height - 150,
+                                   fill='black'))
+                d.append(draw.Text("Current Focus Hours Available (CFA): "
+                                   + str(focus_cumulative_hours[month_number_of_days - today_day_of_month]), 50,
+                                   title_offset_x, title_offset_y + title_height - 200,
+                                   fill='black'))
+
             # Balances
             d.append(draw.Rectangle(balances_offset_x, balances_offset_y,
                                     balances_width, balances_height,
@@ -573,6 +579,9 @@ def create_monthly_display():
                 #print("pch1=", planned_cumulative_hours[1])
                 #print("pch0=", planned_cumulative_hours[0])
 
+                month_task_pa_total_diff = month_task_pa_total_balance \
+                                            - planned_cumulative_hours[(month_number_of_days - today_day_of_month)]
+
                 if month_number_of_days >  today_day_of_month:
                     month_task_pa_total_ratio = month_task_pa_total_balance \
                                             / planned_cumulative_hours[(month_number_of_days - today_day_of_month)]
@@ -594,27 +603,34 @@ def create_monthly_display():
                                 100,
                                 planned_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
                                 stroke = "black", fill=month_task_pa_total_ratio_color))  # light red
-            d.append(draw.Text(str(planned_cumulative_hours[month_number_of_days - today_day_of_month]), 25,
+            d.append(draw.Text("ATP: " + str(planned_cumulative_hours[month_number_of_days - today_day_of_month]), 20,
                                 available_hours_offset_x + 115, available_hours_offset_y + avail_hrs_zero_height -30,
                                 fill='black'))
-            d.append(draw.Text('{0:.2f}'.format(month_task_pa_total_ratio), 25,
+            d.append(draw.Text("APR: " + '{0:.2f}'.format(month_task_pa_total_ratio), 20,
                                 available_hours_offset_x + 115, available_hours_offset_y + avail_hrs_zero_height -60,
                                 fill='black'))
-            d.append(draw.Text("Hours Available For Planned Tasks: "
+            d.append(draw.Text("Hours Available For Planned Tasks (APT): "
                                + str(planned_cumulative_hours[month_number_of_days - today_day_of_month]), 50,
                                title_offset_x, title_offset_y + title_height - 250,
                                fill='black'))
             # label current month task pa total balance
-            d.append(draw.Text(str(month_task_pa_total_balance), 25,
+            d.append(draw.Text("BAT: " + str(month_task_pa_total_balance), 20,
                                 available_hours_offset_x - 15, available_hours_offset_y + avail_hrs_zero_height -30,
                                 fill='black'))
-            d.append(draw.Text("Balance of Actual Task Hours: "
+            d.append(draw.Text("APD: " + str(month_task_pa_total_diff), 20,
+                                available_hours_offset_x - 15, available_hours_offset_y + avail_hrs_zero_height -60,
+                                fill='black'))
+            d.append(draw.Text("Balance of Actual Task Hours (BAT): "
                                + str(month_task_pa_total_balance), 50,
                                title_offset_x, title_offset_y + title_height - 300,
                                fill='black'))
-            d.append(draw.Text("Actual to Planned Ratio: "
+            d.append(draw.Text("Actual to Planned Ratio (APR): "
                                + '{0:.2f}'.format(month_task_pa_total_ratio), 50,
                                title_offset_x, title_offset_y + title_height - 350,
+                               fill='black'))
+            d.append(draw.Text("Actual to Planned Difference (APD): "
+                               + '{0:.2f}'.format(month_task_pa_total_diff), 50,
+                               title_offset_x, title_offset_y + title_height - 400,
                                fill='black'))
 
             # fill in Balance area
@@ -754,7 +770,8 @@ def create_monthly_display():
                 task_display[y][2] = "#AAAAAA"
                 #print(task_display)
 
-
+            # reinitialize the array for summing type of tasks array for the next month
+            tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
 
             # date created label
             d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
