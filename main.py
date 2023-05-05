@@ -138,6 +138,10 @@ def create_monthly_display():
             # print(mtadf)
             # print(df_date)
             # time.sleep(1)
+        if today_yyyy_mm == current_month:
+            #tot_totals_arr[][]
+            day_of_month = 1
+            index_of_tot = 1
 
     number_of_tot_proj_min = 25
     if number_of_projects_per_month_max > number_of_tot_proj_min:
