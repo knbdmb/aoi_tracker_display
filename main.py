@@ -121,6 +121,7 @@ def create_monthly_display():
             if (number_of_projects_per_month > number_of_projects_per_month_max):
                 number_of_projects_per_month_max = number_of_projects_per_month
             number_of_projects_per_month = 0
+
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             number_of_projects_per_month += 1
@@ -500,7 +501,8 @@ def create_monthly_display():
             d.append(draw.Text("Month Chart:" + current_month, 50,
                                title_offset_x, title_offset_y + title_height - 50,
                                fill='black'))
-            d.append(draw.Text("Total Loggable Hours Available (TLA): " + str(available_cumulative_hours[month_number_of_days]), 50,
+            d.append(draw.Text("Total Loggable Hours Available (TLA): "
+                               + str(available_cumulative_hours[month_number_of_days]), 50,
                                title_offset_x, title_offset_y + title_height - 100,
                                fill='black'))
 
