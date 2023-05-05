@@ -133,15 +133,17 @@ def create_monthly_display():
             month_task_total_actual_hours[df['yyyy_mm'][ind]] = df['amount'][ind] \
                                                 + month_task_total_actual_hours[df['yyyy_mm'][ind]]
 
-            # mtadf = pd.DataFrame.from_dict(month_task_actual, orient ='index')
-            # print(month_task_actual)
-            # print(mtadf)
-            # print(df_date)
-            # time.sleep(1)
         if today_yyyy_mm == current_month:
-            #tot_totals_arr[][]
-            day_of_month = 1
-            index_of_tot = 1
+            index_of_tot = int(df['types_of_thought'][ind][0:1])
+            #print(index_of_tot)
+            day_of_month = datetime.date.fromisoformat(df['date'][ind]).day
+            #print("day of the month"+str(day_of_month))
+            tot_totals_arr[index_of_tot][day_of_month] = tot_totals_arr[index_of_tot][day_of_month] + df['amount'][ind]
+            tot_totals_arr[0][day_of_month] = tot_totals_arr[0][day_of_month] + df['amount'][ind]
+            tot_totals_arr[index_of_tot][0] = tot_totals_arr[index_of_tot][0] + df['amount'][ind]
+            tot_totals_arr[0][0] = tot_totals_arr[0][0] + df['amount'][ind]
+            print(tot_totals_arr)
+            time.sleep(1)
 
     number_of_tot_proj_min = 25
     if number_of_projects_per_month_max > number_of_tot_proj_min:
