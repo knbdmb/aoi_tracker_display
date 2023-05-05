@@ -86,6 +86,8 @@ def create_monthly_display():
     tot_totals_rows = 6
     tot_totals_cols = 32
     tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
+    #print(tot_totals_arr)
+    #time.sleep(5)
 
     current_number_of_projects = 0
     number_of_projects_per_month = 0
@@ -274,16 +276,11 @@ def create_monthly_display():
         #print((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual)
         #time.sleep(1)
 
-
-
-
         if current_month != df['yyyy_mm'][ind]:
             if drawing_obj_flag:
                 # totals found from previous months
                 # fill in available hours stats
                 # fill in calender hours and focus hours stats
-
-
 
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
                 print("\nNumber of weeks the month: ", week_number_of_month(df_date), "\n")
@@ -482,10 +479,6 @@ def create_monthly_display():
                                 + avail_hrs_diff_height * task_height
                                 - 30,
                                 fill='black'))
-
-
-
-
 
             # determine calendar shape and plot
             # calendar
@@ -817,7 +810,6 @@ def create_monthly_display():
                                current_month_y_offset - 100,
                                fill='black'))
 
-        # jjj
         # for current row of df
         # plot task box and description in the month chart
         d.append(draw.Rectangle(current_month_x_offset,
