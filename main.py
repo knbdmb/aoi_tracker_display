@@ -83,13 +83,39 @@ def create_monthly_display():
     planned_cumulative_hours   = [0]*32
     planned_hours_logged       = [0]*32
 
+    color_border    = "#999999"
+    color_even_year = "#CCCCCC"
+    color_odd_year  = "#DDDDDD"
+    color_weekday   = "#FFFFFF"
+    color_weekend   = "#EEEEEE"
+    day_color       = "#EEEEEE" # this set to highlight weekends
+    year_color      = "#EEEEEE" # this set to highlight years
+    task_color      = "gray"    # this is set for each task
+    day_number_color = "#B9B9B9"
+    year_month_color = "#696969"
+    tot_color_array = {
+                      "5": "#6C0BA9",
+                      "4": "red",
+                      "3": "orange",
+                      "2": "green",
+                      "1": "#4141FF",
+                      "x": "gray"
+                      }
+    # the following values must match the tot_color_array values
+    tot_rgb5 = (108, 11, 169)
+    tot_rgb3 = (255, 0, 0)
+    tot_rgb3 = (255, 165, 0)
+    tot_rgb2 = (0, 255, 0)
+    tot_rgb1 = (65, 65, 255)
+    day_gray_level = 63 # sets the default level of gray of a calendar day
+
     tot_totals_rows = 6
     tot_totals_cols = 32
     tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
     tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
     tot_color_rows = 3 # 0 = red, 1 = green, 2 = blue
     # the following sets the default color to gray
-    tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
+    tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
     #print(tot_color_arr)
     #time.sleep(5)
 
@@ -157,16 +183,20 @@ def create_monthly_display():
             for j in range(1, tot_totals_rows):
                 tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
                 #print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
-    print(tot_percents_arr)
+    #print(tot_percents_arr)
     #tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
-    time.sleep(5)
+
 
     # use the type of task percentages array to determine color per month and day
     #tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
+    for i in range(0, tot_totals_cols):
+        if tot_percents_arr[0][i] == 1:
+            for j in range(1, tot_totals_rows):
+                print(tot_percents_arr[j][i])
 
 
-
-
+    #jjj
+    time.sleep(5)
 
 
 
@@ -267,24 +297,7 @@ def create_monthly_display():
     year_month_offset_x = 10
     year_month_offset_y = 200
 
-    color_border    = "#999999"
-    color_even_year = "#CCCCCC"
-    color_odd_year  = "#DDDDDD"
-    color_weekday   = "#FFFFFF"
-    color_weekend   = "#EEEEEE"
-    day_color       = "#EEEEEE" # this set to highlight weekends
-    year_color      = "#EEEEEE" # this set to highlight years
-    task_color      = "gray"    # this is set for each task
-    day_number_color = "#B9B9B9"
-    year_month_color = "#696969"
-    tot_color_array = {
-                      "5": "#6C0BA9",
-                      "4": "red",
-                      "3": "orange",
-                      "2": "green",
-                      "1": "#4141FF",
-                      "x": "gray"
-                      }
+
 
     max_char = 53
     tot_max = 14
