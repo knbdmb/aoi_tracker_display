@@ -86,7 +86,11 @@ def create_monthly_display():
     tot_totals_rows = 6
     tot_totals_cols = 32
     tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
-    #print(tot_totals_arr)
+    tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
+    tot_color_rows = 3 # 0 = red, 1 = green, 2 = blue
+    # the following sets the default color to gray
+    tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
+    #print(tot_color_arr)
     #time.sleep(5)
 
     current_number_of_projects = 0
@@ -133,6 +137,7 @@ def create_monthly_display():
             month_task_total_actual_hours[df['yyyy_mm'][ind]] = df['amount'][ind] \
                                                 + month_task_total_actual_hours[df['yyyy_mm'][ind]]
 
+        # fill out type of task array with totals by day and month
         if today_yyyy_mm == current_month:
             index_of_tot = int(df['types_of_thought'][ind][0:1])
             #print(index_of_tot)
@@ -142,8 +147,28 @@ def create_monthly_display():
             tot_totals_arr[0][day_of_month] = tot_totals_arr[0][day_of_month] + df['amount'][ind]
             tot_totals_arr[index_of_tot][0] = tot_totals_arr[index_of_tot][0] + df['amount'][ind]
             tot_totals_arr[0][0] = tot_totals_arr[0][0] + df['amount'][ind]
-            print(tot_totals_arr)
-            time.sleep(1)
+            #print(tot_totals_arr)
+            #time.sleep(1)
+
+    # use the filled out type of task array to determine percentages per month and day
+    for i in range(0, tot_totals_cols):
+        if tot_totals_arr[0][i] > 0:
+            tot_percents_arr[0][i] = 1
+            for j in range(1, tot_totals_rows):
+                tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
+                #print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
+    print(tot_percents_arr)
+    #tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
+    time.sleep(5)
+
+    # use the type of task percentages array to determine color per month and day
+    #tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
+
+
+
+
+
+
 
     number_of_tot_proj_min = 25
     if number_of_projects_per_month_max > number_of_tot_proj_min:
@@ -162,7 +187,7 @@ def create_monthly_display():
         task_display[y][0] = "-"
         task_display[y][1] = "-"
         task_display[y][2] = "#AAAAAA"
-        print(task_display)
+        #print(task_display)
     #time.sleep(10)
 
     task_width = 100
