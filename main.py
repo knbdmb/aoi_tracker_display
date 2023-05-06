@@ -189,13 +189,10 @@ def create_monthly_display():
             for j in range(1, tot_totals_rows):
                 tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
                 #print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
-    #print(tot_percents_arr)
-    #tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
-
 
     # use the type of task percentages array to determine color per month and day
     #tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
-    for i in range(0, tot_totals_cols):
+    for i in range(0, tot_totals_cols): # then range has to be adjusted per month
         if tot_percents_arr[0][i] == 1:
             #for j in range(1, tot_totals_rows):
             #    print(tot_percents_arr[j][i])
@@ -208,6 +205,14 @@ def create_monthly_display():
             print(i)
             rgb_mix = mixbox.latent_to_rgb(z_mix)
             print(rgb_mix)
+            print(rgb_mix[0])
+            tot_color_arr[0][i] = rgb_mix[0]
+            print(rgb_mix[1])
+            tot_color_arr[1][i] = rgb_mix[1]
+            print(rgb_mix[2])
+            tot_color_arr[2][i] = rgb_mix[2]
+    print(tot_color_arr)
+
     #jjj
     time.sleep(5)
 
