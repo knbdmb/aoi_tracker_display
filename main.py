@@ -103,11 +103,17 @@ def create_monthly_display():
                       }
     # the following values must match the tot_color_array values
     tot_rgb5 = (108, 11, 169)
-    tot_rgb3 = (255, 0, 0)
+    tot_rgb4 = (255, 0, 0)
     tot_rgb3 = (255, 165, 0)
     tot_rgb2 = (0, 255, 0)
     tot_rgb1 = (65, 65, 255)
     day_gray_level = 63 # sets the default level of gray of a calendar day
+    z5 = mixbox.rgb_to_latent(tot_rgb5)
+    z4 = mixbox.rgb_to_latent(tot_rgb4)
+    z3 = mixbox.rgb_to_latent(tot_rgb3)
+    z2 = mixbox.rgb_to_latent(tot_rgb2)
+    z1 = mixbox.rgb_to_latent(tot_rgb1)
+    z_mix = [0] * mixbox.LATENT_SIZE
 
     tot_totals_rows = 6
     tot_totals_cols = 32
@@ -191,10 +197,17 @@ def create_monthly_display():
     #tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
     for i in range(0, tot_totals_cols):
         if tot_percents_arr[0][i] == 1:
-            for j in range(1, tot_totals_rows):
-                print(tot_percents_arr[j][i])
-
-
+            #for j in range(1, tot_totals_rows):
+            #    print(tot_percents_arr[j][i])
+            for k in range(len(z_mix)):  # mix together:
+                z_mix[k] = (tot_percents_arr[1][i] * z1[k] +
+                            tot_percents_arr[2][i] * z2[k] +
+                            tot_percents_arr[3][i] * z3[k] +
+                            tot_percents_arr[4][i] * z4[k] +
+                            tot_percents_arr[5][i] * z5[k])
+            print(i)
+            rgb_mix = mixbox.latent_to_rgb(z_mix)
+            print(rgb_mix)
     #jjj
     time.sleep(5)
 
