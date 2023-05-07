@@ -169,7 +169,7 @@ def create_monthly_display():
             month_task_total_actual_hours[df['yyyy_mm'][ind]] = df['amount'][ind] \
                                                 + month_task_total_actual_hours[df['yyyy_mm'][ind]]
 
-        # fill out type of task array with totals by day and month
+        # fill out type of task array with totals by day and month #jjj move
         if today_yyyy_mm == current_month:
             index_of_tot = int(df['types_of_thought'][ind][0:1])
             #print(index_of_tot)
@@ -182,7 +182,7 @@ def create_monthly_display():
             #print(tot_totals_arr)
             #time.sleep(1)
 
-    # use the filled out type of task array to determine percentages per month and day
+    # use the filled out type of task array to determine percentages per month and day #jjj move
     for i in range(0, tot_totals_cols):
         if tot_totals_arr[0][i] > 0:
             tot_percents_arr[0][i] = 1
@@ -190,7 +190,7 @@ def create_monthly_display():
                 tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
                 #print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
 
-    # use the type of task percentages array to determine color per month and day
+    # use the type of task percentages array to determine color per month and day #jjj move
     #tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
     for i in range(0, tot_totals_cols): # then range has to be adjusted per month
         if tot_percents_arr[0][i] == 1:
@@ -214,7 +214,7 @@ def create_monthly_display():
     print(tot_color_arr)
 
     #jjj
-    time.sleep(5)
+    #time.sleep(5)
 
 
 
@@ -334,6 +334,9 @@ def create_monthly_display():
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
         #print("this is the next row to be processed: ", df_date)
+
+        # this is where the calendar day tot totals array is acclumated ......
+        #jjj
 
         #print(df['yyyy_mm'][ind]," = ",df['task'][ind])
         #print((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual)
@@ -549,7 +552,12 @@ def create_monthly_display():
                                     cal_total_width, cal_total_height,
                                     fill=day_color))
 
-            # this is where the calendar day details will be created ......
+            # this is where the calendar day is drawing for current month data ......
+            # fill out percentages array
+            # fill out color array
+            # draw each day with color, high light border of today in green
+            # reset tot_totals_arr, percentages array and color array
+            #jjj
 
             # draw title area
             d.append(draw.Rectangle(title_offset_x, title_offset_y,
