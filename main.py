@@ -616,9 +616,11 @@ def create_monthly_display():
                     elif month_task_pa_ratio > 1.0:
                         task_display[tdindex][2] = '#FFFDD0'  # light yellow
                     elif month_task_pa_ratio == 1.0:
-                        task_display[tdindex][2] = '#00FF00'  # light green
-                    elif month_task_pa_ratio > .6:
+                        task_display[tdindex][2] = '#00FF00'  # green
+                    elif month_task_pa_ratio >= .6:
                         task_display[tdindex][2] = '#C7F6B6'  # light green
+                    elif month_task_pa_ratio == 0:
+                        task_display[tdindex][2] = '#6e6ec4'  # darker blue
                     else:
                         task_display[tdindex][2] = '#CCCCEA'  # light blue
 
@@ -659,6 +661,8 @@ def create_monthly_display():
                     month_task_pa_total_ratio_color = '#FFFDD0'  # light yellow
                 elif month_task_pa_total_ratio > .6:
                     month_task_pa_total_ratio_color = '#C7F6B6'  # light green
+                elif month_task_pa_total_ratio == 0:
+                    month_task_pa_total_ratio_color = '#6e6ec4'  # darker blue
                 else:
                     month_task_pa_total_ratio_color = '#CCCCEA'  # light blue
 
