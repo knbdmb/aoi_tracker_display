@@ -280,6 +280,7 @@ def create_monthly_display():
     current_project = "xxxxxxxxxx"
     print("start through dataframe to plot tasks")
     # Step through dataframe and generate charts
+
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
         #print("this is the next row to be processed: ", df_date)
@@ -518,13 +519,19 @@ def create_monthly_display():
             # jjj fill out percentages array
             # jjj move the following block to # jjj fill out percentages array
             # use the filled out type of task array to determine percentages per month and day
+            print("totals just before cal percents: ", tot_totals_arr)
+            print("percents just before cal percents: ", tot_percents_arr)
+
+
             for i in range(0, tot_totals_cols):
                 if tot_totals_arr[0][i] > 0:
                     tot_percents_arr[0][i] = 1
                     for j in range(1, tot_totals_rows):
                         tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
                         # print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
-
+            print("totals just after cal percents: ", tot_totals_arr)
+            print("percents just after cal percents: ", tot_percents_arr)
+            time.sleep(1)
             # jjj fill out color array
             # jjj move the following block to # jjj fill out color array
             # use the type of task percentages array to determine color per month and day
@@ -856,7 +863,9 @@ def create_monthly_display():
             tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
             tot_totals_rows_rgb = 3 # 3 for each rgb value
             tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows_rgb)]
-
+            print("print totals arr after reinilize: ",tot_totals_arr)
+            print("print percents arr after reinilize: ",tot_percents_arr)
+            print("print color arr after reinilize: ",tot_color_arr)
 
             # date created label
             d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
