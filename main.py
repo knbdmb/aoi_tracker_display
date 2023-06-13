@@ -564,12 +564,7 @@ def create_monthly_display():
             # by stepping through tot_color_arr[][] up to month_number_of_days
 
 
-            # reset tot_totals_arr, percentages array and color array
-            # reinitialize the array for summing type of tasks array for the next month
-            tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
-            tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
-            tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
-            # jjj
+
 
             # draw title area
             d.append(draw.Rectangle(title_offset_x, title_offset_y,
@@ -716,6 +711,8 @@ def create_monthly_display():
                                title_offset_x, title_offset_y + title_height - 400,
                                fill='black'))
 
+            # jjj make box for color of month and title, percentages of each type of thought
+
             # fill in Balance area
             d.append(draw.Text(task_display[0][0], 25, balances_offset_x + 50,
                                balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
@@ -845,6 +842,7 @@ def create_monthly_display():
                                     balances_offset_y + 5,
                                     45, 55, stroke = "black", fill=task_display[15][2]))
 
+            # reinitialize the various variables to start new month after they have been used.
 
             # reinitialize the task display array
             for y in range(16):
@@ -852,6 +850,11 @@ def create_monthly_display():
                 task_display[y][1] = "-"
                 task_display[y][2] = "#AAAAAA"
                 #print(task_display)
+
+            # reset tot_totals_arr, percentages array and color array after use in cal and title areas
+            tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
+            tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
+            tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
 
 
             # date created label
