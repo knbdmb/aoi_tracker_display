@@ -124,7 +124,7 @@ def create_monthly_display():
     #print(tot_color_arr)
     #time.sleep(5)
 
-    def fill_in_calendar_area(tot_totals_arr):
+    def fill_in_calendar_area(previous_month, tot_totals_arr):
         print("got to calendar filling functinn")
         # jjj move calendar calcs and creation s to here
 
@@ -132,8 +132,8 @@ def create_monthly_display():
         # jjj fill out percentages array
         # jjj move the following block to # jjj fill out percentages array
         # use the filled out type of task array to determine percentages per month and day
-        print("totals just before cal percents: ", tot_totals_arr)
-        print("percents just before cal percents: ", tot_percents_arr)
+        #print("totals just before cal percents: ", tot_totals_arr)
+        #print("percents just before cal percents: ", tot_percents_arr)
 
         for i in range(0, tot_totals_cols):
             if tot_totals_arr[0][i] > 0:
@@ -141,8 +141,8 @@ def create_monthly_display():
                 for j in range(1, tot_totals_rows):
                     tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
                     # print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
-        print("totals just after cal percents: ", tot_totals_arr)
-        print("percents just after cal percents: ", tot_percents_arr)
+        #print("totals just after cal percents: ", tot_totals_arr)
+        #print("percents just after cal percents: ", tot_percents_arr)
         # time.sleep(1)
         # jjj fill out color array
         # jjj move the following block to # jjj fill out color array
@@ -180,7 +180,7 @@ def create_monthly_display():
             print(i, end=" ")
         print("on to next month")
 
-
+        # jjj working on this area
 
 
 
@@ -352,11 +352,12 @@ def create_monthly_display():
         #print("this is the next row to be processed: ", df_date)
 
         if current_month != df['yyyy_mm'][ind]:
+            previous_month = current_month
             if drawing_obj_flag:
                 # totals found from previous months
                 # fill in available hours stats
                 # fill in calendar hours by calling  function
-                fill_in_calendar_area(tot_totals_arr)
+                fill_in_calendar_area(previous_month, tot_totals_arr)
 
 
 
@@ -956,6 +957,8 @@ def create_monthly_display():
         #print(df['yyyy_mm'][ind], " _-_ ", df['project'][ind], " _-_ ", df['task'][ind])
 
     if drawing_obj_flag:
+        fill_in_calendar_area(current_month, tot_totals_arr)
+
         file_output = current_month + "_rpt.svg"
         d.saveSvg(path_output + "/" + file_output)
         d.saveSvg(path_output + "/current_month_rpt.svg")
