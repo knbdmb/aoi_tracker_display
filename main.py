@@ -531,7 +531,7 @@ def create_monthly_display():
                         # print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
             print("totals just after cal percents: ", tot_totals_arr)
             print("percents just after cal percents: ", tot_percents_arr)
-            time.sleep(1)
+            #time.sleep(1)
             # jjj fill out color array
             # jjj move the following block to # jjj fill out color array
             # use the type of task percentages array to determine color per month and day
