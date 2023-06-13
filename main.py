@@ -118,9 +118,9 @@ def create_monthly_display():
     tot_totals_cols = 32
     tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
     tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
-    tot_color_rows = 3 # 0 = red, 1 = green, 2 = blue
+    tot_color_rows_rgb = 3 # 0 = red, 1 = green, 2 = blue
     # the following sets the default color to gray
-    tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
+    tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows_rgb)]
     #print(tot_color_arr)
     #time.sleep(5)
 
@@ -167,60 +167,6 @@ def create_monthly_display():
                                                 + month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])]
             month_task_total_actual_hours[df['yyyy_mm'][ind]] = df['amount'][ind] \
                                                 + month_task_total_actual_hours[df['yyyy_mm'][ind]]
-
-        # fill out type of task array with totals by day and month #jjj move to #jjj accumulate
-        if today_yyyy_mm == current_month:
-            index_of_tot = int(df['types_of_thought'][ind][0:1]) # this pulls first char from types of thought
-            #print(index_of_tot)
-            day_of_month = datetime.date.fromisoformat(df['date'][ind]).day
-            #print("day of the month"+str(day_of_month))
-            tot_totals_arr[index_of_tot][day_of_month] = tot_totals_arr[index_of_tot][day_of_month] + df['amount'][ind]
-            tot_totals_arr[0][day_of_month] = tot_totals_arr[0][day_of_month] + df['amount'][ind]
-            tot_totals_arr[index_of_tot][0] = tot_totals_arr[index_of_tot][0] + df['amount'][ind]
-            tot_totals_arr[0][0] = tot_totals_arr[0][0] + df['amount'][ind]
-            #print(tot_totals_arr)
-            #time.sleep(1)
-
-    #jjj move the following block to # jjj fill out percentages array
-    # use the filled out type of task array to determine percentages per month and day
-    for i in range(0, tot_totals_cols):
-        if tot_totals_arr[0][i] > 0:
-            tot_percents_arr[0][i] = 1
-            for j in range(1, tot_totals_rows):
-                tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
-                #print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
-
-    # jjj move the following block to # jjj fill out color array
-    # use the type of task percentages array to determine color per month and day
-    #tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
-    for i in range(0, tot_totals_cols): # then range has to be adjusted per month
-        if tot_percents_arr[0][i] == 1:
-            #for j in range(1, tot_totals_rows):
-            #    print(tot_percents_arr[j][i])
-            for k in range(len(z_mix)):  # mix together:
-                z_mix[k] = (tot_percents_arr[1][i] * z1[k] +
-                            tot_percents_arr[2][i] * z2[k] +
-                            tot_percents_arr[3][i] * z3[k] +
-                            tot_percents_arr[4][i] * z4[k] +
-                            tot_percents_arr[5][i] * z5[k])
-            print(i)
-            rgb_mix = mixbox.latent_to_rgb(z_mix)
-            print(rgb_mix)
-            print(rgb_mix[0])
-            tot_color_arr[0][i] = rgb_mix[0]
-            print(rgb_mix[1])
-            tot_color_arr[1][i] = rgb_mix[1]
-            print(rgb_mix[2])
-            tot_color_arr[2][i] = rgb_mix[2]
-    print(i)
-    print(tot_color_arr)
-    time.sleep(2)
-
-
-    #jjj
-    #time.sleep(5)
-
-
 
     number_of_tot_proj_min = 25
     if number_of_projects_per_month_max > number_of_tot_proj_min:
@@ -338,8 +284,20 @@ def create_monthly_display():
         df_date = datetime.date.fromisoformat(df['date'][ind])
         #print("this is the next row to be processed: ", df_date)
 
-        # this is where the calendar day tot totals array is accumulate ......
+        # this is where the calendar day tot totals array are accumulated ......
         #jjj accumulate
+        # fill out type of task array with totals by day and month #jjj move to #jjj accumulate
+
+        index_of_tot = int(df['types_of_thought'][ind][0:1]) # this pulls first char from types of thought
+        #print(index_of_tot)
+        day_of_month = datetime.date.fromisoformat(df['date'][ind]).day
+        #print("day of the month"+str(day_of_month))
+        tot_totals_arr[index_of_tot][day_of_month] = tot_totals_arr[index_of_tot][day_of_month] + df['amount'][ind]
+        tot_totals_arr[0][day_of_month] = tot_totals_arr[0][day_of_month] + df['amount'][ind]
+        tot_totals_arr[index_of_tot][0] = tot_totals_arr[index_of_tot][0] + df['amount'][ind]
+        tot_totals_arr[0][0] = tot_totals_arr[0][0] + df['amount'][ind]
+        #print(tot_totals_arr)
+        #time.sleep(1)
 
         #print(df['yyyy_mm'][ind]," = ",df['task'][ind])
         #print((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual)
@@ -377,6 +335,7 @@ def create_monthly_display():
             df_date = datetime.date.fromisoformat(df['date'][ind])
             (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
                                                                      int(df_date.strftime("%m")))
+            # jjj
             print(df_date,starting_day_number, month_number_of_days)
             print(current_month)
             #time.sleep(5)
@@ -389,7 +348,7 @@ def create_monthly_display():
             planned_hours[0] = 0
             planned_cumulative_hours[0] = 0
             planned_hours_logged[0] = 0
-            for i in range(1, month_number_of_days + 1):
+            for i in range(1, month_number_of_days + 1): # jjj need to add 1 to get full month
                 cm_date = datetime.date.fromisoformat(str(df_date.year)
                                               + "-" + str(df_date.month).zfill(2)
                                               + "-" + str(i).zfill(2))
@@ -557,11 +516,50 @@ def create_monthly_display():
 
             # this is where the calendar day is drawing for current month data ......
             # jjj fill out percentages array
+            # jjj move the following block to # jjj fill out percentages array
+            # use the filled out type of task array to determine percentages per month and day
+            for i in range(0, tot_totals_cols):
+                if tot_totals_arr[0][i] > 0:
+                    tot_percents_arr[0][i] = 1
+                    for j in range(1, tot_totals_rows):
+                        tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
+                        # print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
 
             # jjj fill out color array
+            # jjj move the following block to # jjj fill out color array
+            # use the type of task percentages array to determine color per month and day
+            # tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
+            for i in range(0, tot_totals_cols):  # then range has to be adjusted per month
+                if tot_percents_arr[0][i] == 1:
+                    # for j in range(1, tot_totals_rows):
+                    #    print(tot_percents_arr[j][i])
+                    for k in range(len(z_mix)):  # mix together:
+                        z_mix[k] = (tot_percents_arr[1][i] * z1[k] +
+                                    tot_percents_arr[2][i] * z2[k] +
+                                    tot_percents_arr[3][i] * z3[k] +
+                                    tot_percents_arr[4][i] * z4[k] +
+                                    tot_percents_arr[5][i] * z5[k])
+                    #print(i)
+                    rgb_mix = mixbox.latent_to_rgb(z_mix)
+                    #print(rgb_mix)
+                    #print(rgb_mix[0])
+                    tot_color_arr[0][i] = rgb_mix[0]
+                    #print(rgb_mix[1])
+                    tot_color_arr[1][i] = rgb_mix[1]
+                    #print(rgb_mix[2])
+                    tot_color_arr[2][i] = rgb_mix[2]
+            print("number of columns in tot_color_arr, ",i)
+            print(tot_color_arr)
+            #time.sleep(3)
 
             # draw each day with color, high light border of today in green
             # by stepping through tot_color_arr[][] up to month_number_of_days
+            print(current_month)
+            for i in range(1, month_number_of_days + 1): # jjj need to add 1 to get full month
+                # date_value.replace(day=1).isocalendar()[1]
+
+                print(i, end=" ")
+            print("on to next month")
 
 
 
@@ -852,9 +850,12 @@ def create_monthly_display():
                 #print(task_display)
 
             # reset tot_totals_arr, percentages array and color array after use in cal and title areas
+            tot_totals_rows = 6 # 1 for month and 5 for each type of thought
+            tot_totals_cols = 32
             tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
             tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
-            tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
+            tot_totals_rows_rgb = 3 # 3 for each rgb value
+            tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows_rgb)]
 
 
             # date created label
