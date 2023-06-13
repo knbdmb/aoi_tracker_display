@@ -173,11 +173,24 @@ def create_monthly_display():
 
         # draw each day with color, high light border of today in green
         # by stepping through tot_color_arr[][] up to month_number_of_days
-        print(current_month)
+        print(previous_month)
         for i in range(1, month_number_of_days + 1):  # jjj need to add 1 to get full month
-            # date_value.replace(day=1).isocalendar()[1]
 
-            print(i, end=" ")
+            day_to_process = previous_month + "-" + str(i).zfill(2)
+            date_to_process = datetime.date.fromisoformat(day_to_process)
+            #print(day_to_process)
+            print(str(date_to_process))
+            print("Number of week in the month: ", week_number_of_month(date_to_process))
+            df_dtp = pd.Timestamp(day_to_process)
+            print("Day position in week: ",df_dtp.dayofweek)
+            #print("Day position in week: ",str(datetime.weekday(date_to_process)))
+            (pm_starting_day_number, pm_month_number_of_days) = monthrange(int(date_to_process.strftime("%y")),
+                                                                     int(date_to_process.strftime("%m")))
+            # jjj
+            print(date_to_process,pm_starting_day_number, pm_month_number_of_days)
+            print(previous_month)
+
+            #print(i, end=" ")
         print("on to next month")
 
         # jjj working on this area
