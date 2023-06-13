@@ -1,7 +1,5 @@
-# This is a sample Python script.
+# This is processes the aoi tracking spreadsheet in to various reports
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 def create_monthly_display():
     print('trying to print out monthly display')  # Press ⌘F8 to toggle the breakpoint.
     # get data, filter and sort data
@@ -23,7 +21,9 @@ def create_monthly_display():
     from calendar import monthrange
     import datetime
     def week_number_of_month(date_value):
-        return (date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1] + 1)
+        #return (date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1] + 1)
+        week = date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1] + 1
+        return date_value.isocalendar()[1] if week < 0 else week
     import drawSvg as draw
     import time
 
@@ -47,7 +47,6 @@ def create_monthly_display():
 
     # filter rows without dates and prep data
     df = df[df['date'].notna()]
-    ###jjj
     df = df[df['date'] >= "2020-01-01"]
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
     df["yyyy_mm"] = df['date'].str[0:4] \
@@ -169,9 +168,9 @@ def create_monthly_display():
             month_task_total_actual_hours[df['yyyy_mm'][ind]] = df['amount'][ind] \
                                                 + month_task_total_actual_hours[df['yyyy_mm'][ind]]
 
-        # fill out type of task array with totals by day and month #jjj move
+        # fill out type of task array with totals by day and month #jjj move to #jjj accumulate
         if today_yyyy_mm == current_month:
-            index_of_tot = int(df['types_of_thought'][ind][0:1])
+            index_of_tot = int(df['types_of_thought'][ind][0:1]) # this pulls first char from types of thought
             #print(index_of_tot)
             day_of_month = datetime.date.fromisoformat(df['date'][ind]).day
             #print("day of the month"+str(day_of_month))
@@ -182,7 +181,8 @@ def create_monthly_display():
             #print(tot_totals_arr)
             #time.sleep(1)
 
-    # use the filled out type of task array to determine percentages per month and day #jjj move
+    #jjj move the following block to # jjj fill out percentages array
+    # use the filled out type of task array to determine percentages per month and day
     for i in range(0, tot_totals_cols):
         if tot_totals_arr[0][i] > 0:
             tot_percents_arr[0][i] = 1
@@ -190,7 +190,8 @@ def create_monthly_display():
                 tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
                 #print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
 
-    # use the type of task percentages array to determine color per month and day #jjj move
+    # jjj move the following block to # jjj fill out color array
+    # use the type of task percentages array to determine color per month and day
     #tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
     for i in range(0, tot_totals_cols): # then range has to be adjusted per month
         if tot_percents_arr[0][i] == 1:
@@ -211,7 +212,10 @@ def create_monthly_display():
             tot_color_arr[1][i] = rgb_mix[1]
             print(rgb_mix[2])
             tot_color_arr[2][i] = rgb_mix[2]
+    print(i)
     print(tot_color_arr)
+    time.sleep(2)
+
 
     #jjj
     #time.sleep(5)
@@ -224,7 +228,6 @@ def create_monthly_display():
     else:
         number_of_tot_proj = number_of_tot_proj_min
 
-    ###jjj
     #print('plan=> ',month_task_plan)
     #print('actual=> ',month_task_actual)
     #time.sleep(10)
@@ -335,8 +338,8 @@ def create_monthly_display():
         df_date = datetime.date.fromisoformat(df['date'][ind])
         #print("this is the next row to be processed: ", df_date)
 
-        # this is where the calendar day tot totals array is acclumated ......
-        #jjj
+        # this is where the calendar day tot totals array is accumulate ......
+        #jjj accumulate
 
         #print(df['yyyy_mm'][ind]," = ",df['task'][ind])
         #print((df['yyyy_mm'][ind],df['task'][ind]) in month_task_actual)
@@ -349,8 +352,8 @@ def create_monthly_display():
                 # fill in calender hours and focus hours stats
 
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
-                print("\nNumber of weeks the month: ", week_number_of_month(df_date), "\n")
-                if week_number_of_month(df_date) <= 0:
+                print("\nNumber of week in the month: ", week_number_of_month(df_date), "\n")
+                if week_number_of_month(df_date) == 6:
                     time.sleep(1)
                 # fill in balance focus details
                 # save drawing obj to file
@@ -553,11 +556,20 @@ def create_monthly_display():
                                     fill=day_color))
 
             # this is where the calendar day is drawing for current month data ......
-            # fill out percentages array
-            # fill out color array
+            # jjj fill out percentages array
+
+            # jjj fill out color array
+
             # draw each day with color, high light border of today in green
+            # by stepping through tot_color_arr[][] up to month_number_of_days
+
+
             # reset tot_totals_arr, percentages array and color array
-            #jjj
+            # reinitialize the array for summing type of tasks array for the next month
+            tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
+            tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
+            tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
+            # jjj
 
             # draw title area
             d.append(draw.Rectangle(title_offset_x, title_offset_y,
@@ -841,8 +853,6 @@ def create_monthly_display():
                 task_display[y][2] = "#AAAAAA"
                 #print(task_display)
 
-            # reinitialize the array for summing type of tasks array for the next month
-            tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
 
             # date created label
             d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
