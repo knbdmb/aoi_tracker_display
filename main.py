@@ -182,17 +182,14 @@ def create_monthly_display():
             date_to_process = datetime.date.fromisoformat(day_to_process)
             #print(day_to_process)
             print(str(date_to_process))
-            dtp_day_index = pd.Timestamp(day_to_process)
-            dtp_week_index = week_number_of_month(date_to_process)
-
-            print("Number of week in the month: ", week_number_of_month(date_to_process))
-            df_dtp = pd.Timestamp(day_to_process)
-            print("Day position in week: ",df_dtp.dayofweek)
-            #print("Day position in week: ",str(datetime.weekday(date_to_process)))
+            dtp_day_index = pd.Timestamp(day_to_process).weekday()
+            dtp_week_index = 5 - week_number_of_month(date_to_process)
             (pm_starting_day_number, pm_month_number_of_days) = monthrange(int(date_to_process.strftime("%y")),
                                                                      int(date_to_process.strftime("%m")))
             # jjj
-            print(date_to_process,pm_starting_day_number, pm_month_number_of_days)
+            print("day to process day index: ", dtp_day_index)
+            print("day to process week index: ", dtp_week_index)
+            print("number of days in month: ", pm_month_number_of_days)
             print(previous_month)
 
             #print(i, end=" ")
