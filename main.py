@@ -21,9 +21,11 @@ def create_monthly_display():
     from calendar import monthrange
     import datetime
     def week_number_of_month(date_value):
-        #return (date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1] + 1)
-        week = date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1] + 1
-        return date_value.isocalendar()[1] if week < 0 else week
+        #return (date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1])
+        week = date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1]
+        if week < 0:
+            week = week + 52
+        return week
     import drawSvg as draw
     import time
 
@@ -180,6 +182,9 @@ def create_monthly_display():
             date_to_process = datetime.date.fromisoformat(day_to_process)
             #print(day_to_process)
             print(str(date_to_process))
+            dtp_day_index = pd.Timestamp(day_to_process)
+            dtp_week_index = week_number_of_month(date_to_process)
+
             print("Number of week in the month: ", week_number_of_month(date_to_process))
             df_dtp = pd.Timestamp(day_to_process)
             print("Day position in week: ",df_dtp.dayofweek)
