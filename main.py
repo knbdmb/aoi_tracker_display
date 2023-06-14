@@ -613,7 +613,7 @@ def create_monthly_display():
             d.append(draw.Text("300 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 300 * task_height + 12,
                                fill='black'))
             # jjj working on this area
-            d.append(draw.Text("Month Chart: " + current_month, 120, month_chart_offset_x + month_chart_width/2 - 600,
+            d.append(draw.Text("Month Chart: " + current_month, 120, month_chart_offset_x + month_chart_width/2 - 620,
                                month_chart_offset_y + 280 * task_height + 12, fill='black'))
 
 
