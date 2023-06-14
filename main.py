@@ -108,7 +108,8 @@ def create_monthly_display():
     tot_rgb3 = (255, 165, 0)
     tot_rgb2 = (0, 255, 0)
     tot_rgb1 = (65, 65, 255)
-    day_gray_level = 63 # sets the default level of gray of a calendar day
+    #jjj
+    day_gray_level = 210 # sets the default level of gray of a calendar day
     z5 = mixbox.rgb_to_latent(tot_rgb5)
     z4 = mixbox.rgb_to_latent(tot_rgb4)
     z3 = mixbox.rgb_to_latent(tot_rgb3)
@@ -128,11 +129,9 @@ def create_monthly_display():
 
     def fill_in_calendar_area(previous_month, tot_totals_arr):
         print("got to calendar filling functinn")
-        # jjj move calendar calcs and creation s to here
 
         # this is where the calendar day is drawing for current month data ......
-        # jjj fill out percentages array
-        # jjj move the following block to # jjj fill out percentages array
+        # fill out percentages array
         # use the filled out type of task array to determine percentages per month and day
         #print("totals just before cal percents: ", tot_totals_arr)
         #print("percents just before cal percents: ", tot_percents_arr)
@@ -146,8 +145,7 @@ def create_monthly_display():
         #print("totals just after cal percents: ", tot_totals_arr)
         #print("percents just after cal percents: ", tot_percents_arr)
         # time.sleep(1)
-        # jjj fill out color array
-        # jjj move the following block to # jjj fill out color array
+        # fill out color array
         # use the type of task percentages array to determine color per month and day
         # tot_color_arr = [[63 for j in range(tot_totals_cols)] for i in range(tot_color_rows)]
         for i in range(0, tot_totals_cols):  # then range has to be adjusted per month
@@ -176,7 +174,7 @@ def create_monthly_display():
         # draw each day with color, high light border of today in green
         # by stepping through tot_color_arr[][] up to month_number_of_days
         print(previous_month)
-        for i in range(1, month_number_of_days + 1):  # jjj need to add 1 to get full month
+        for i in range(1, month_number_of_days + 1):  # need to add 1 to get full month
 
             day_to_process = previous_month + "-" + str(i).zfill(2)
             date_to_process = datetime.date.fromisoformat(day_to_process)
@@ -195,26 +193,113 @@ def create_monthly_display():
             dtp_week_offset_y = cal_offset_y + dtp_week_index * cal_day_height
             dtp_color = "rgb(" + str(tot_color_arr[0][i]) + "," + str(tot_color_arr[1][i]) + "," + str(tot_color_arr[2][i]) + ")"
             #print(dtp_color)
+            if date_to_process == today_date:
+                today_color = 'green'
+                today_size = 10
+            else:
+                today_color = 'black'
+                today_size = 1
             d.append(draw.Rectangle(dtp_day_offset_x, dtp_week_offset_y,
                                     cal_day_width, cal_day_height,
-                                    fill=dtp_color, stroke='black'))
+                                    fill=dtp_color, stroke=today_color, stroke_width=today_size))
             d.append(draw.Text(str(i), 50, dtp_day_offset_x + 5, dtp_week_offset_y + 12,
-                               fill='black'))
+                               fill=today_color))
+            d.append(draw.Text(pd.to_datetime(date_to_process).day_name(), 18, dtp_day_offset_x + 5,
+                               dtp_week_offset_y + 90, fill=today_color))
+
+            tot_percent_amount = "%.1f" % (tot_percents_arr[1][i] * 100)
+            tot_info = "A: " + str(tot_totals_arr[1][i]) + " hrs, " + str(tot_percent_amount) + " %"
+            d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 52,
+                               fill=today_color))
+
+            tot_percent_amount = "%.1f" % (tot_percents_arr[2][i] * 100)
+            tot_info = "I: " + str(tot_totals_arr[2][i]) + " hrs, " + str(tot_percent_amount) + " %"
+            d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 42,
+                               fill=today_color))
+
+            tot_percent_amount = "%.1f" % (tot_percents_arr[3][i] * 100)
+            tot_info = "P: " + str(tot_totals_arr[3][i]) + " hrs, " + str(tot_percent_amount) + " %"
+            d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 32,
+                               fill=today_color))
+
+            tot_percent_amount = "%.1f" % (tot_percents_arr[4][i] * 100)
+            tot_info = "E: " + str(tot_totals_arr[4][i]) + " hrs, " + str(tot_percent_amount) + " %"
+            d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 22,
+                               fill=today_color))
+
+            tot_percent_amount = "%.1f" % (tot_percents_arr[5][i] * 100)
+            tot_info = "M: " + str(tot_totals_arr[5][i]) + " hrs, " + str(tot_percent_amount) + " %"
+            d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 12,
+                               fill=today_color))
+
 
             #print(previous_month)
             #print(i, end=" ")
-        # jjj print box in title area showing color of the month
+
+        # print box in title area showing color of the month
         dtp_color = "rgb(" + str(tot_color_arr[0][0]) + "," + str(tot_color_arr[1][0]) + "," + str(tot_color_arr[2][0]) + ")"
         # print(dtp_color)
-        d.append(draw.Rectangle(title_offset_x, title_offset_y + title_height - 620,
-                                    600, 200,
+        d.append(draw.Rectangle(title_offset_x, title_offset_y + title_height - 600,
+                                    600, 180,
                                     fill=dtp_color, stroke='black'))
-        d.append(draw.Text("Color of current month: ", 50,
-                           title_offset_x, title_offset_y + title_height - 450,
+        d.append(draw.Text("Color of Month: ", 50,
+                           title_offset_x, title_offset_y + title_height - 480,
                            fill='black'))
-        print("on to next month")
+
+        # Details on types of thoughts statistics
+        d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 5 * 30,
+                                    30, 30,
+                                    fill=tot_color_array["1"], stroke='black'))
+        tot_percent_amount = "%.1f" % (tot_percents_arr[1][0] * 100)
+        tot_info = "Active: " + str(tot_totals_arr[1][0]) + " hrs, " + str(tot_percent_amount) + " %"
+        d.append(draw.Text(tot_info, 30,
+                           title_offset_x + 635, title_offset_y + title_height - 600 + 5 * 30,
+                           fill='black'))
+
+        d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 4 * 30,
+                                    30, 30,
+                                    fill=tot_color_array["2"], stroke='black'))
+        tot_percent_amount = "%.1f" % (tot_percents_arr[2][0] * 100)
+        tot_info = "Interactive: " + str(tot_totals_arr[2][0]) + " hrs, " + str(tot_percent_amount) + " %"
+        d.append(draw.Text(tot_info, 30,
+                           title_offset_x + 635, title_offset_y + title_height - 600 + 4 * 30,
+                           fill='black'))
+
+        d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 3 * 30,
+                                    30, 30,
+                                    fill=tot_color_array["3"], stroke='black'))
+        tot_percent_amount = "%.1f" % (tot_percents_arr[3][0] * 100)
+        tot_info = "Passive: " + str(tot_totals_arr[3][0]) + " hrs, " + str(tot_percent_amount) + " %"
+        d.append(draw.Text(tot_info, 30,
+                           title_offset_x + 635, title_offset_y + title_height - 600 + 3 * 30,
+                           fill='black'))
+
+        d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 2 * 30,
+                                    30, 30,
+                                    fill=tot_color_array["4"], stroke='black'))
+        tot_percent_amount = "%.1f" % (tot_percents_arr[4][0] * 100)
+        tot_info = "Exercise: " + str(tot_totals_arr[4][0]) + " hrs, " + str(tot_percent_amount) + " %"
+        d.append(draw.Text(tot_info, 30,
+                           title_offset_x + 635, title_offset_y + title_height - 600 + 2 * 30,
+                           fill='black'))
+
+        d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 1 * 30,
+                                    30, 30,
+                                    fill=tot_color_array["5"], stroke='black'))
+        tot_percent_amount = "%.1f" % (tot_percents_arr[5][0] * 100)
+        tot_info = "Maintenance: " + str(tot_totals_arr[5][0]) + " hrs, " + str(tot_percent_amount) + " %"
+        d.append(draw.Text(tot_info, 30,
+                           title_offset_x + 635, title_offset_y + title_height - 600 + 1 * 30,
+                           fill='black'))
+        tot_info = "Total Logged for Month: " + str(tot_totals_arr[0][0]) + " hrs, "
+        d.append(draw.Text(tot_info, 30,
+                           title_offset_x + 635, title_offset_y + title_height - 600 + 0 * 30,
+                           fill='black'))
 
         # jjj working on this area
+        print("on to next month")
+
+
 
 
 
@@ -431,7 +516,7 @@ def create_monthly_display():
             planned_hours[0] = 0
             planned_cumulative_hours[0] = 0
             planned_hours_logged[0] = 0
-            for i in range(1, month_number_of_days + 1): # jjj need to add 1 to get full month
+            for i in range(1, month_number_of_days + 1):  # need to add 1 to get full month
                 cm_date = datetime.date.fromisoformat(str(df_date.year)
                                               + "-" + str(df_date.month).zfill(2)
                                               + "-" + str(i).zfill(2))
@@ -745,7 +830,6 @@ def create_monthly_display():
                                title_offset_x, title_offset_y + title_height - 400,
                                fill='black'))
 
-            # jjj make box for color of month and title, percentages of each type of thought
 
             # fill in Balance area
             d.append(draw.Text(task_display[0][0], 25, balances_offset_x + 50,
