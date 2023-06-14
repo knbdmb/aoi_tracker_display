@@ -201,9 +201,17 @@ def create_monthly_display():
             d.append(draw.Text(str(i), 50, dtp_day_offset_x + 5, dtp_week_offset_y + 12,
                                fill='black'))
 
-            print(previous_month)
-
+            #print(previous_month)
             #print(i, end=" ")
+        # jjj print box in title area showing color of the month
+        dtp_color = "rgb(" + str(tot_color_arr[0][0]) + "," + str(tot_color_arr[1][0]) + "," + str(tot_color_arr[2][0]) + ")"
+        # print(dtp_color)
+        d.append(draw.Rectangle(title_offset_x, title_offset_y - 500,
+                                    400, 100,
+                                    fill='yellow', stroke='black'))
+        d.append(draw.Text("Color of current month: ", 50,
+                           title_offset_x, title_offset_y + title_height - 450,
+                           fill='black'))
         print("on to next month")
 
         # jjj working on this area
@@ -385,8 +393,6 @@ def create_monthly_display():
                 # fill in calendar hours by calling  function
                 fill_in_calendar_area(previous_month, tot_totals_arr)
 
-
-
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
                 print("\nNumber of week in the month: ", week_number_of_month(df_date), "\n")
                 if week_number_of_month(df_date) == 6:
@@ -413,7 +419,6 @@ def create_monthly_display():
             df_date = datetime.date.fromisoformat(df['date'][ind])
             (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
                                                                      int(df_date.strftime("%m")))
-            # jjj
             print(df_date,starting_day_number, month_number_of_days)
             print(current_month)
             #time.sleep(5)
