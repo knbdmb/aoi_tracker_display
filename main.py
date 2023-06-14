@@ -169,8 +169,8 @@ def create_monthly_display():
                 tot_color_arr[1][i] = rgb_mix[1]
                 # print(rgb_mix[2])
                 tot_color_arr[2][i] = rgb_mix[2]
-        print("number of columns in tot_color_arr, ", i)
-        print(tot_color_arr)
+        #print("number of columns in tot_color_arr, ", i)
+        #print(tot_color_arr)
         # time.sleep(3)
 
         # draw each day with color, high light border of today in green
@@ -181,15 +181,26 @@ def create_monthly_display():
             day_to_process = previous_month + "-" + str(i).zfill(2)
             date_to_process = datetime.date.fromisoformat(day_to_process)
             #print(day_to_process)
-            print(str(date_to_process))
+            #print(str(date_to_process))
             dtp_day_index = pd.Timestamp(day_to_process).weekday()
             dtp_week_index = 5 - week_number_of_month(date_to_process)
             (pm_starting_day_number, pm_month_number_of_days) = monthrange(int(date_to_process.strftime("%y")),
                                                                      int(date_to_process.strftime("%m")))
-            # jjj
-            print("day to process day index: ", dtp_day_index)
-            print("day to process week index: ", dtp_week_index)
-            print("number of days in month: ", pm_month_number_of_days)
+
+            #print("day to process day index: ", dtp_day_index)
+            #print("day to process week index: ", dtp_week_index)
+            #print("number of days in month: ", pm_month_number_of_days)
+
+            dtp_day_offset_x = cal_offset_x + dtp_day_index * cal_day_width
+            dtp_week_offset_y = cal_offset_y + dtp_week_index * cal_day_height
+            dtp_color = "rgb(" + str(tot_color_arr[0][i]) + "," + str(tot_color_arr[1][i]) + "," + str(tot_color_arr[2][i]) + ")"
+            #print(dtp_color)
+            d.append(draw.Rectangle(dtp_day_offset_x, dtp_week_offset_y,
+                                    cal_day_width, cal_day_height,
+                                    fill=dtp_color, stroke='black'))
+            d.append(draw.Text(str(i), 50, dtp_day_offset_x + 5, dtp_week_offset_y + 12,
+                               fill='black'))
+
             print(previous_month)
 
             #print(i, end=" ")
