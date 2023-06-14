@@ -206,9 +206,9 @@ def create_monthly_display():
         # jjj print box in title area showing color of the month
         dtp_color = "rgb(" + str(tot_color_arr[0][0]) + "," + str(tot_color_arr[1][0]) + "," + str(tot_color_arr[2][0]) + ")"
         # print(dtp_color)
-        d.append(draw.Rectangle(title_offset_x, title_offset_y - 500,
-                                    400, 100,
-                                    fill='yellow', stroke='black'))
+        d.append(draw.Rectangle(title_offset_x, title_offset_y + title_height - 620,
+                                    600, 200,
+                                    fill=dtp_color, stroke='black'))
         d.append(draw.Text("Color of current month: ", 50,
                            title_offset_x, title_offset_y + title_height - 450,
                            fill='black'))
