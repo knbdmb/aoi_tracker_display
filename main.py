@@ -108,7 +108,6 @@ def create_monthly_display():
     tot_rgb3 = (255, 165, 0)
     tot_rgb2 = (0, 255, 0)
     tot_rgb1 = (65, 65, 255)
-    #jjj
     day_gray_level = 210 # sets the default level of gray of a calendar day
     z5 = mixbox.rgb_to_latent(tot_rgb5)
     z4 = mixbox.rgb_to_latent(tot_rgb4)
@@ -295,13 +294,7 @@ def create_monthly_display():
         d.append(draw.Text(tot_info, 30,
                            title_offset_x + 635, title_offset_y + title_height - 600 + 0 * 30,
                            fill='black'))
-
-        # jjj working on this area
         print("on to next month")
-
-
-
-
 
 
     current_number_of_projects = 0
@@ -619,6 +612,9 @@ def create_monthly_display():
                                     month_chart_width, task_height, fill="#555555"))
             d.append(draw.Text("300 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 300 * task_height + 12,
                                fill='black'))
+            # jjj working on this area
+
+
 
             # determine available hours and focus hours and plot
             # Available hours
