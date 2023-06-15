@@ -209,27 +209,27 @@ def create_monthly_display():
             tot_percent_amount = "%.1f" % (tot_percents_arr[1][i] * 100)
             tot_info = "A: " + str(tot_totals_arr[1][i]) + " hrs, " + str(tot_percent_amount) + " %"
             d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 52,
-                               fill=today_color))
+                               fill='black'))
 
             tot_percent_amount = "%.1f" % (tot_percents_arr[2][i] * 100)
             tot_info = "I: " + str(tot_totals_arr[2][i]) + " hrs, " + str(tot_percent_amount) + " %"
             d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 42,
-                               fill=today_color))
+                               fill='black'))
 
             tot_percent_amount = "%.1f" % (tot_percents_arr[3][i] * 100)
             tot_info = "P: " + str(tot_totals_arr[3][i]) + " hrs, " + str(tot_percent_amount) + " %"
             d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 32,
-                               fill=today_color))
+                               fill='black'))
 
             tot_percent_amount = "%.1f" % (tot_percents_arr[4][i] * 100)
             tot_info = "E: " + str(tot_totals_arr[4][i]) + " hrs, " + str(tot_percent_amount) + " %"
             d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 22,
-                               fill=today_color))
+                               fill='black'))
 
             tot_percent_amount = "%.1f" % (tot_percents_arr[5][i] * 100)
             tot_info = "M: " + str(tot_totals_arr[5][i]) + " hrs, " + str(tot_percent_amount) + " %"
             d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 12,
-                               fill=today_color))
+                               fill='black'))
 
 
             #print(previous_month)
