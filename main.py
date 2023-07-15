@@ -26,7 +26,7 @@ def create_monthly_display():
         if week < 0:
             week = week + 52
         return week
-    import drawSvg as draw
+    import drawsvg as draw
     import time
 
     import mixbox
@@ -473,13 +473,13 @@ def create_monthly_display():
 
                 #date_given = datetime.datetime(year=2019, month=7, day=30).date()
                 print("\nNumber of week in the month: ", week_number_of_month(df_date), "\n")
-                if week_number_of_month(df_date) == 6:
-                    time.sleep(1)
+                #if week_number_of_month(df_date) == 6:
+                    #time.sleep(1)
                 # fill in balance focus details
                 # save drawing obj to file
                 file_output = current_month + "_rpt.svg"
-                d.saveSvg(path_output + "/" + file_output)
-                d.saveSvg(path_output_web + "/" + file_output)
+                d.save_svg(path_output + "/" + file_output)
+                d.save_svg(path_output_web + "/" + file_output)
                 # del drawing_object
                 del d
                 drawing_obj_flag = False
@@ -1072,10 +1072,10 @@ def create_monthly_display():
         fill_in_calendar_area(current_month, tot_totals_arr)
 
         file_output = current_month + "_rpt.svg"
-        d.saveSvg(path_output + "/" + file_output)
-        d.saveSvg(path_output + "/current_month_rpt.svg")
-        d.saveSvg(path_output_web + "/" + file_output)
-        d.saveSvg(path_output_web + "/current_month_rpt.svg")
+        d.save_svg(path_output + "/" + file_output)
+        d.save_svg(path_output + "/current_month_rpt.svg")
+        d.save_svg(path_output_web + "/" + file_output)
+        d.save_svg(path_output_web + "/current_month_rpt.svg")
     print("done with monthly display")
 
 def create_years_display():
@@ -1089,7 +1089,7 @@ def create_years_display():
     import matplotlib.pyplot as plt
     import seaborn as sns
     import datetime
-    import drawSvg as draw
+    import drawsvg as draw
 
     # get data from spreadsheet
     path = "../aoi_tracker.ods"
@@ -1352,7 +1352,7 @@ def create_years_display():
 
 
 
-    d.saveSvg('yearsdisp.svg')
+    d.save_svg('yearsdisp.svg')
 
 
 
