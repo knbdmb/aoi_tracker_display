@@ -366,27 +366,31 @@ def create_monthly_display():
     paper_to_border_offset_x = default_gap
     paper_to_border_offset_y = default_gap
 
-    cal_offset_x = paper_to_border_offset_x + default_gap
-    cal_offset_y = paper_to_border_offset_y + default_gap
+    available_hours_width = 200
+    available_hours_height = 3000  # 31 days * task_height * 12 h/day rounded up
+    avail_hrs_zero_height = 500  # allows for more time logged than normal
+    available_hours_offset_x = paper_to_border_offset_x
+    available_hours_offset_y = paper_to_border_offset_y + available_hours_height + avail_hrs_zero_height
+
     cal_day_width = 110
     cal_day_height = 110
     cal_total_width = cal_day_width * 7
     cal_total_height = cal_day_height * 6
+    cal_offset_x = available_hours_offset_x
+    cal_offset_y = available_hours_offset_y + cal_total_height + default_gap
 
-    available_hours_offset_x = cal_offset_x
-    available_hours_offset_y = cal_offset_y + cal_total_height + default_gap
-    available_hours_width = 200
-    available_hours_height = 3000  # 31 days * task_height * 12 h/day rounded up
-    avail_hrs_zero_height = 500  # allows for more time logged than normal
 
+
+    avail_hrs_charts_width    = available_hours_width + default_gap
     current_available_offset_y = 0
     avail_hrs_charts_offset_x = available_hours_offset_x - default_gap / 2
-    avail_hrs_charts_width    = available_hours_width + default_gap
 
-    balances_offset_x = available_hours_offset_x + available_hours_width + default_gap
-    balances_offset_y = available_hours_offset_y
+
     balances_width = task_width * number_of_tot_proj
     balances_height = 350
+    balances_offset_x = available_hours_offset_x + available_hours_width + default_gap
+    balances_offset_y = available_hours_offset_y
+
 
     # the month chart label positions are calculated while the month chart is generated
     month_chart_label_height = 100  # this provides the gap where the labels are printed
