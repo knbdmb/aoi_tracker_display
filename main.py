@@ -11,21 +11,22 @@ def create_monthly_display():
 
     import pandas as pd
     from pandas_ods_reader import read_ods
-    #import numpy as np
+    # import numpy as np
 
-    #import matplotlib as mpl
+    # import matplotlib as mpl
 
-    #import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
 
-    #import seaborn as sns
+    # import seaborn as sns
     from calendar import monthrange
     import datetime
     def week_number_of_month(date_value):
-        #return (date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1])
+        # return (date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1])
         week = date_value.isocalendar()[1] - date_value.replace(day=1).isocalendar()[1]
         if week < 0:
             week = week + 52
         return week
+
     import drawsvg as draw
     import time
 
@@ -58,57 +59,55 @@ def create_monthly_display():
 
     dfmp = dfmp[dfmp["yyyy_mm"].notna()]
 
-
     # Using the sorting function
     df.sort_values(by=["yyyy_mm", "types_of_thought", "project_date"],
                    axis=0, ascending=[True, True, True],
                    inplace=True)
 
     dfmp.sort_values(by=["yyyy_mm", "task"],
-                   axis=0, ascending=[True, True],
-                   inplace=True)
-
+                     axis=0, ascending=[True, True],
+                     inplace=True)
 
     # Set up required variables before the for loop
     current_month = "yyyy_mm"
     current_project = "xxxxxxxxxx"
-    starting_day_number    = 0
-    month_number_of_days   = 0
-    available_hours            = [0]*32
-    available_cumulative_hours = [0]*32
-    available_hours_logged     = [0]*32
-    focus_hours                = [0]*32
-    focus_cumulative_hours     = [0]*32
-    focus_hours_logged         = [0]*32
-    planned_hours              = [0]*32
-    planned_cumulative_hours   = [0]*32
-    planned_hours_logged       = [0]*32
+    starting_day_number = 0
+    month_number_of_days = 0
+    available_hours = [0] * 32
+    available_cumulative_hours = [0] * 32
+    available_hours_logged = [0] * 32
+    focus_hours = [0] * 32
+    focus_cumulative_hours = [0] * 32
+    focus_hours_logged = [0] * 32
+    planned_hours = [0] * 32
+    planned_cumulative_hours = [0] * 32
+    planned_hours_logged = [0] * 32
 
-    color_border    = "#999999"
+    color_border = "#999999"
     color_even_year = "#CCCCCC"
-    color_odd_year  = "#DDDDDD"
-    color_weekday   = "#FFFFFF"
-    color_weekend   = "#EEEEEE"
-    day_color       = "#EEEEEE" # this set to highlight weekends
-    year_color      = "#EEEEEE" # this set to highlight years
-    task_color      = "gray"    # this is set for each task
+    color_odd_year = "#DDDDDD"
+    color_weekday = "#FFFFFF"
+    color_weekend = "#EEEEEE"
+    day_color = "#EEEEEE"  # this set to highlight weekends
+    year_color = "#EEEEEE"  # this set to highlight years
+    task_color = "gray"  # this is set for each task
     day_number_color = "#B9B9B9"
     year_month_color = "#696969"
     tot_color_array = {
-                      "5": "#6C0BA9",
-                      "4": "red",
-                      "3": "orange",
-                      "2": "green",
-                      "1": "#4141FF",
-                      "x": "gray"
-                      }
+        "5": "#6C0BA9",
+        "4": "red",
+        "3": "orange",
+        "2": "green",
+        "1": "#4141FF",
+        "x": "gray"
+    }
     # the following values must match the tot_color_array values
     tot_rgb5 = (108, 11, 169)
     tot_rgb4 = (255, 0, 0)
     tot_rgb3 = (255, 165, 0)
     tot_rgb2 = (0, 255, 0)
     tot_rgb1 = (65, 65, 255)
-    day_gray_level = 210 # sets the default level of gray of a calendar day
+    day_gray_level = 210  # sets the default level of gray of a calendar day
     z5 = mixbox.rgb_to_latent(tot_rgb5)
     z4 = mixbox.rgb_to_latent(tot_rgb4)
     z3 = mixbox.rgb_to_latent(tot_rgb3)
@@ -120,11 +119,12 @@ def create_monthly_display():
     tot_totals_cols = 32
     tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
     tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
-    tot_color_rows_rgb = 3 # 0 = red, 1 = green, 2 = blue
+    tot_color_rows_rgb = 3  # 0 = red, 1 = green, 2 = blue
     # the following sets the default color to gray
     tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows_rgb)]
-    #print(tot_color_arr)
-    #time.sleep(5)
+
+    # print(tot_color_arr)
+    # time.sleep(5)
 
     def fill_in_calendar_area(previous_month, tot_totals_arr):
         print("got to calendar filling functinn")
@@ -132,8 +132,8 @@ def create_monthly_display():
         # this is where the calendar day is drawing for current month data ......
         # fill out percentages array
         # use the filled out type of task array to determine percentages per month and day
-        #print("totals just before cal percents: ", tot_totals_arr)
-        #print("percents just before cal percents: ", tot_percents_arr)
+        # print("totals just before cal percents: ", tot_totals_arr)
+        # print("percents just before cal percents: ", tot_percents_arr)
 
         for i in range(0, tot_totals_cols):
             if tot_totals_arr[0][i] > 0:
@@ -141,8 +141,8 @@ def create_monthly_display():
                 for j in range(1, tot_totals_rows):
                     tot_percents_arr[j][i] = tot_totals_arr[j][i] / tot_totals_arr[0][i]
                     # print(tot_totals_arr[j][i]," divide by ",tot_totals_arr[0][i])
-        #print("totals just after cal percents: ", tot_totals_arr)
-        #print("percents just after cal percents: ", tot_percents_arr)
+        # print("totals just after cal percents: ", tot_totals_arr)
+        # print("percents just after cal percents: ", tot_percents_arr)
         # time.sleep(1)
         # fill out color array
         # use the type of task percentages array to determine color per month and day
@@ -166,8 +166,8 @@ def create_monthly_display():
                 tot_color_arr[1][i] = rgb_mix[1]
                 # print(rgb_mix[2])
                 tot_color_arr[2][i] = rgb_mix[2]
-        #print("number of columns in tot_color_arr, ", i)
-        #print(tot_color_arr)
+        # print("number of columns in tot_color_arr, ", i)
+        # print(tot_color_arr)
         # time.sleep(3)
 
         # draw each day with color, high light border of today in green
@@ -177,21 +177,22 @@ def create_monthly_display():
 
             day_to_process = previous_month + "-" + str(i).zfill(2)
             date_to_process = datetime.date.fromisoformat(day_to_process)
-            #print(day_to_process)
-            #print(str(date_to_process))
+            # print(day_to_process)
+            # print(str(date_to_process))
             dtp_day_index = pd.Timestamp(day_to_process).weekday()
             dtp_week_index = 5 - week_number_of_month(date_to_process)
             (pm_starting_day_number, pm_month_number_of_days) = monthrange(int(date_to_process.strftime("%y")),
-                                                                     int(date_to_process.strftime("%m")))
+                                                                           int(date_to_process.strftime("%m")))
 
-            #print("day to process day index: ", dtp_day_index)
-            #print("day to process week index: ", dtp_week_index)
-            #print("number of days in month: ", pm_month_number_of_days)
+            # print("day to process day index: ", dtp_day_index)
+            # print("day to process week index: ", dtp_week_index)
+            # print("number of days in month: ", pm_month_number_of_days)
 
             dtp_day_offset_x = cal_offset_x + dtp_day_index * cal_day_width
             dtp_week_offset_y = cal_offset_y + dtp_week_index * cal_day_height
-            dtp_color = "rgb(" + str(tot_color_arr[0][i]) + "," + str(tot_color_arr[1][i]) + "," + str(tot_color_arr[2][i]) + ")"
-            #print(dtp_color)
+            dtp_color = "rgb(" + str(tot_color_arr[0][i]) + "," + str(tot_color_arr[1][i]) + "," + str(
+                tot_color_arr[2][i]) + ")"
+            # print(dtp_color)
             if date_to_process == today_date:
                 today_color = 'green'
                 today_size = 10
@@ -231,24 +232,24 @@ def create_monthly_display():
             d.append(draw.Text(tot_info, 5, dtp_day_offset_x + 62, dtp_week_offset_y + 12,
                                fill='black'))
 
-
-            #print(previous_month)
-            #print(i, end=" ")
+            # print(previous_month)
+            # print(i, end=" ")
 
         # print box in title area showing color of the month
-        dtp_color = "rgb(" + str(tot_color_arr[0][0]) + "," + str(tot_color_arr[1][0]) + "," + str(tot_color_arr[2][0]) + ")"
+        dtp_color = "rgb(" + str(tot_color_arr[0][0]) + "," + str(tot_color_arr[1][0]) + "," + str(
+            tot_color_arr[2][0]) + ")"
         # print(dtp_color)
         d.append(draw.Rectangle(title_offset_x, title_offset_y + title_height - 600,
-                                    600, 180,
-                                    fill=dtp_color, stroke='black'))
+                                600, 180,
+                                fill=dtp_color, stroke='black'))
         d.append(draw.Text("Color of Month: ", 50,
                            title_offset_x, title_offset_y + title_height - 480,
                            fill='black'))
 
         # Details on types of thoughts statistics
         d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 5 * 30,
-                                    30, 30,
-                                    fill=tot_color_array["1"], stroke='black'))
+                                30, 30,
+                                fill=tot_color_array["1"], stroke='black'))
         tot_percent_amount = "%.1f" % (tot_percents_arr[1][0] * 100)
         tot_info = "Active: " + str(tot_totals_arr[1][0]) + " hrs, " + str(tot_percent_amount) + " %"
         d.append(draw.Text(tot_info, 30,
@@ -256,8 +257,8 @@ def create_monthly_display():
                            fill='black'))
 
         d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 4 * 30,
-                                    30, 30,
-                                    fill=tot_color_array["2"], stroke='black'))
+                                30, 30,
+                                fill=tot_color_array["2"], stroke='black'))
         tot_percent_amount = "%.1f" % (tot_percents_arr[2][0] * 100)
         tot_info = "Interactive: " + str(tot_totals_arr[2][0]) + " hrs, " + str(tot_percent_amount) + " %"
         d.append(draw.Text(tot_info, 30,
@@ -265,8 +266,8 @@ def create_monthly_display():
                            fill='black'))
 
         d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 3 * 30,
-                                    30, 30,
-                                    fill=tot_color_array["3"], stroke='black'))
+                                30, 30,
+                                fill=tot_color_array["3"], stroke='black'))
         tot_percent_amount = "%.1f" % (tot_percents_arr[3][0] * 100)
         tot_info = "Passive: " + str(tot_totals_arr[3][0]) + " hrs, " + str(tot_percent_amount) + " %"
         d.append(draw.Text(tot_info, 30,
@@ -274,8 +275,8 @@ def create_monthly_display():
                            fill='black'))
 
         d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 2 * 30,
-                                    30, 30,
-                                    fill=tot_color_array["4"], stroke='black'))
+                                30, 30,
+                                fill=tot_color_array["4"], stroke='black'))
         tot_percent_amount = "%.1f" % (tot_percents_arr[4][0] * 100)
         tot_info = "Exercise: " + str(tot_totals_arr[4][0]) + " hrs, " + str(tot_percent_amount) + " %"
         d.append(draw.Text(tot_info, 30,
@@ -283,8 +284,8 @@ def create_monthly_display():
                            fill='black'))
 
         d.append(draw.Rectangle(title_offset_x + 600, title_offset_y + title_height - 600 + 1 * 30,
-                                    30, 30,
-                                    fill=tot_color_array["5"], stroke='black'))
+                                30, 30,
+                                fill=tot_color_array["5"], stroke='black'))
         tot_percent_amount = "%.1f" % (tot_percents_arr[5][0] * 100)
         tot_info = "Maintenance: " + str(tot_totals_arr[5][0]) + " hrs, " + str(tot_percent_amount) + " %"
         d.append(draw.Text(tot_info, 30,
@@ -295,7 +296,6 @@ def create_monthly_display():
                            title_offset_x + 635, title_offset_y + title_height - 600 + 0 * 30,
                            fill='black'))
         print("on to next month")
-
 
     current_number_of_projects = 0
     number_of_projects_per_month = 0
@@ -316,9 +316,9 @@ def create_monthly_display():
             task_list[dfmp['task'][ind]] = 1
     task_list_keys = list(sorted(task_list.keys()))
 
-    #print(task_list)
-    #print("list of keys: ",task_list_keys)
-    #for i in task_list_keys:
+    # print(task_list)
+    # print("list of keys: ",task_list_keys)
+    # for i in task_list_keys:
     #    print(i)
 
     print("start through dataframe to determine max projects in a month")
@@ -333,13 +333,14 @@ def create_monthly_display():
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             number_of_projects_per_month += 1
-            #print(df['date'][ind], number_of_projects_per_month, ", ", number_of_projects_per_month_max)
+            # print(df['date'][ind], number_of_projects_per_month, ", ", number_of_projects_per_month_max)
 
         if ((df['yyyy_mm'][ind], df['task'][ind]) in month_task_actual):
             month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])] = df['amount'][ind] \
-                                                + month_task_actual[(df['yyyy_mm'][ind], df['task'][ind])]
+                                                                       + month_task_actual[
+                                                                           (df['yyyy_mm'][ind], df['task'][ind])]
             month_task_total_actual_hours[df['yyyy_mm'][ind]] = df['amount'][ind] \
-                                                + month_task_total_actual_hours[df['yyyy_mm'][ind]]
+                                                                + month_task_total_actual_hours[df['yyyy_mm'][ind]]
 
     number_of_tot_proj_min = 25
     if number_of_projects_per_month_max > number_of_tot_proj_min:
@@ -347,18 +348,18 @@ def create_monthly_display():
     else:
         number_of_tot_proj = number_of_tot_proj_min
 
-    #print('plan=> ',month_task_plan)
-    #print('actual=> ',month_task_actual)
-    #time.sleep(10)
+    # print('plan=> ',month_task_plan)
+    # print('actual=> ',month_task_actual)
+    # time.sleep(10)
 
-    #initialize the task display array
+    # initialize the task display array
     task_display = [[0 for x in range(3)] for y in range(16)]
     for y in range(16):
         task_display[y][0] = "-"
         task_display[y][1] = "-"
         task_display[y][2] = "#AAAAAA"
-        #print(task_display)
-    #time.sleep(10)
+        # print(task_display)
+    # time.sleep(10)
 
     task_width = 100
     task_height = 8
@@ -369,61 +370,56 @@ def create_monthly_display():
     available_hours_width = 200
     available_hours_height = 3000  # 31 days * task_height * 12 h/day rounded up
     avail_hrs_zero_height = 500  # allows for more time logged than normal
-    available_hours_offset_x = paper_to_border_offset_x
-    available_hours_offset_y = paper_to_border_offset_y + available_hours_height + avail_hrs_zero_height
+    available_hours_offset_x = paper_to_border_offset_x + default_gap
+    available_hours_offset_y = paper_to_border_offset_y + default_gap
 
     cal_day_width = 110
     cal_day_height = 110
     cal_total_width = cal_day_width * 7
     cal_total_height = cal_day_height * 6
     cal_offset_x = available_hours_offset_x
-    cal_offset_y = available_hours_offset_y + cal_total_height + default_gap
+    cal_offset_y = available_hours_offset_y + available_hours_height + avail_hrs_zero_height + default_gap
 
-
-
-    avail_hrs_charts_width    = available_hours_width + default_gap
-    current_available_offset_y = 0
+    avail_hrs_charts_width = available_hours_width + default_gap
     avail_hrs_charts_offset_x = available_hours_offset_x - default_gap / 2
+    current_available_offset_y = 0
 
-
-    balances_width = task_width * number_of_tot_proj
-    balances_height = 350
     balances_offset_x = available_hours_offset_x + available_hours_width + default_gap
     balances_offset_y = available_hours_offset_y
-
+    balances_width = task_width * number_of_tot_proj
+    balances_height = 350
 
     # the month chart label positions are calculated while the month chart is generated
     month_chart_label_height = 100  # this provides the gap where the labels are printed
     # the month chart label x offsets are calculated while the month chart is generated
     # the month chart label y offsets are calculated while the month chart is generated
 
-    month_chart_offset_x = balances_offset_x
-    month_chart_offset_y = balances_offset_y + balances_height + default_gap + month_chart_label_height
     month_chart_width = task_width * number_of_tot_proj
     month_chart_height = available_hours_height - avail_hrs_zero_height
+    month_chart_offset_x = balances_offset_x
+    month_chart_offset_y = balances_offset_y + balances_height + default_gap + month_chart_label_height
 
     title_offset_x = cal_offset_x + cal_total_width + default_gap
     title_offset_y = cal_offset_y
     title_width = balances_offset_x + balances_width - title_offset_x
     title_height = cal_total_height
 
-    border_width             = balances_offset_x + balances_width + default_gap
-    border_height            = available_hours_offset_y + available_hours_height + default_gap
+    border_width = balances_offset_x + balances_width + default_gap
+    border_height = cal_offset_y + cal_total_height + default_gap
 
-    drawing_width            = border_width + paper_to_border_offset_x
-    drawing_height           = border_height + paper_to_border_offset_y
-
+    drawing_width = border_width + paper_to_border_offset_x + default_gap
+    drawing_height = border_height + paper_to_border_offset_y + default_gap
 
     starting_day_number = 0
     month_number_of_days = 0
     avail_hrs_diff_height = 10
 
-    #start changing chart
+    # start changing chart
 
     dow_month_offset_x = 0
     month_offset_y = 0
-    #current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
-    #current_day_postion_y = paper_to_border_offset_y + border_to_chart_offset_y + month_offset_y
+    # current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
+    # current_day_postion_y = paper_to_border_offset_y + border_to_chart_offset_y + month_offset_y
     current_task_offset_y = 0
 
     f6text_offset_x = 1
@@ -440,8 +436,6 @@ def create_monthly_display():
     day_number_offset_y = 100
     year_month_offset_x = 10
     year_month_offset_y = 200
-
-
 
     max_char = 53
     tot_max = 14
@@ -465,7 +459,7 @@ def create_monthly_display():
     # else the step through the dataframe continues.
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
-        #print("this is the next row to be processed: ", df_date)
+        # print("this is the next row to be processed: ", df_date)
 
         if current_month != df['yyyy_mm'][ind]:
             previous_month = current_month
@@ -475,10 +469,10 @@ def create_monthly_display():
                 # fill in calendar hours by calling  function
                 fill_in_calendar_area(previous_month, tot_totals_arr)
 
-                #date_given = datetime.datetime(year=2019, month=7, day=30).date()
+                # date_given = datetime.datetime(year=2019, month=7, day=30).date()
                 print("\nNumber of week in the month: ", week_number_of_month(df_date), "\n")
-                #if week_number_of_month(df_date) == 6:
-                    #time.sleep(1)
+                # if week_number_of_month(df_date) == 6:
+                # time.sleep(1)
                 # fill in balance focus details
                 # save drawing obj to file
                 file_output = current_month + "_rpt.svg"
@@ -501,9 +495,9 @@ def create_monthly_display():
             df_date = datetime.date.fromisoformat(df['date'][ind])
             (starting_day_number, month_number_of_days) = monthrange(int(df_date.strftime("%y")),
                                                                      int(df_date.strftime("%m")))
-            print(df_date,starting_day_number, month_number_of_days)
+            print(df_date, starting_day_number, month_number_of_days)
             print(current_month)
-            #time.sleep(5)
+            # time.sleep(5)
             available_hours[0] = 0
             available_cumulative_hours[0] = 0
             available_hours_logged[0] = 0
@@ -515,16 +509,16 @@ def create_monthly_display():
             planned_hours_logged[0] = 0
             for i in range(1, month_number_of_days + 1):  # need to add 1 to get full month
                 cm_date = datetime.date.fromisoformat(str(df_date.year)
-                                              + "-" + str(df_date.month).zfill(2)
-                                              + "-" + str(i).zfill(2))
-                #print(i,cm_date)
+                                                      + "-" + str(df_date.month).zfill(2)
+                                                      + "-" + str(i).zfill(2))
+                # print(i,cm_date)
                 if cm_date.weekday() == 6:
                     available_hours[i] = 8
-                    available_cumulative_hours[i] = available_hours[i] + available_cumulative_hours[i-1]
+                    available_cumulative_hours[i] = available_hours[i] + available_cumulative_hours[i - 1]
                     focus_hours[i] = 3
-                    focus_cumulative_hours[i] = focus_hours[i] + focus_cumulative_hours[i-1]
+                    focus_cumulative_hours[i] = focus_hours[i] + focus_cumulative_hours[i - 1]
                     planned_hours[i] = 2
-                    planned_cumulative_hours[i] = planned_hours[i] + planned_cumulative_hours[i-1]
+                    planned_cumulative_hours[i] = planned_hours[i] + planned_cumulative_hours[i - 1]
 
                 else:
                     available_hours[i] = 10
@@ -532,17 +526,17 @@ def create_monthly_display():
                     focus_hours[i] = 5
                     focus_cumulative_hours[i] = focus_hours[i] + focus_cumulative_hours[i - 1]
                     planned_hours[i] = 2.5
-                    planned_cumulative_hours[i] = planned_hours[i] + planned_cumulative_hours[i-1]
+                    planned_cumulative_hours[i] = planned_hours[i] + planned_cumulative_hours[i - 1]
 
                 available_hours_logged[i] = 0
                 focus_hours_logged[i] = 0
                 planned_hours_logged[i] = 0
 
-            #print(available_hours)
-            #print(available_cumulative_hours)
-            #print(focus_hours)
-            #print(focus_cumulative_hours)
-            #time.sleep(2)
+            # print(available_hours)
+            # print(available_cumulative_hours)
+            # print(focus_hours)
+            # print(focus_cumulative_hours)
+            # time.sleep(2)
 
             # clean previous month info and chart
             current_month_x_offset = month_chart_offset_x
@@ -553,12 +547,11 @@ def create_monthly_display():
                                          + available_cumulative_hours[month_number_of_days] * task_height
             # set up drawing size object
 
-            #start the grouping of the chart
-            #group = draw.Group()
+            # start the grouping of the chart
+            # group = draw.Group()
 
             # end the grouping of the chart
-            #d.append(group)
-
+            # d.append(group)
 
             # Draw an irregular polygon for border
             d.append(draw.Lines(paper_to_border_offset_x,
@@ -617,9 +610,8 @@ def create_monthly_display():
             d.append(draw.Text("300 hours", 20, month_chart_offset_x + 5, month_chart_offset_y + 300 * task_height + 12,
                                fill='black'))
             # jjj working on this area
-            d.append(draw.Text("Month Chart: " + current_month, 120, month_chart_offset_x + month_chart_width/2 - 620,
+            d.append(draw.Text("Month Chart: " + current_month, 120, month_chart_offset_x + month_chart_width / 2 - 620,
                                month_chart_offset_y + 280 * task_height + 12, fill='black'))
-
 
             # determine available hours and focus hours and plot
             # Available hours
@@ -645,37 +637,37 @@ def create_monthly_display():
             # draw available hours and focus hours
             if today_yyyy_mm == current_month:
                 d.append(draw.Rectangle(avail_hrs_charts_offset_x,
-                                available_hours_offset_y + avail_hrs_zero_height,
-                                avail_hrs_charts_width,
-                                focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
-                                fill="#00C0F0"))  # light blue
+                                        available_hours_offset_y + avail_hrs_zero_height,
+                                        avail_hrs_charts_width,
+                                        focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
+                                        fill="#00C0F0"))  # light blue
                 d.append(draw.Text("CFA: " + str(focus_cumulative_hours[month_number_of_days - today_day_of_month]),
-                                25,
-                                avail_hrs_charts_offset_x,
-                                available_hours_offset_y + avail_hrs_zero_height + \
-                                focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height - 30,
-                                fill='black'))
-
+                                   25,
+                                   avail_hrs_charts_offset_x,
+                                   available_hours_offset_y + avail_hrs_zero_height + \
+                                   focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height - 30,
+                                   fill='black'))
 
                 avail_hrs_diff_height = available_cumulative_hours[month_number_of_days - today_day_of_month] \
                                         - focus_cumulative_hours[month_number_of_days - today_day_of_month]
 
                 d.append(draw.Rectangle(avail_hrs_charts_offset_x,
-                                available_hours_offset_y
-                                + avail_hrs_zero_height
-                                + focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
-                                avail_hrs_charts_width,
-                                avail_hrs_diff_height * task_height,
-                                fill="#32CD32"))  # light green
+                                        available_hours_offset_y
+                                        + avail_hrs_zero_height
+                                        + focus_cumulative_hours[
+                                            month_number_of_days - today_day_of_month] * task_height,
+                                        avail_hrs_charts_width,
+                                        avail_hrs_diff_height * task_height,
+                                        fill="#32CD32"))  # light green
                 d.append(draw.Text("CLA: " + str(available_cumulative_hours[month_number_of_days - today_day_of_month]),
-                                25,
-                                avail_hrs_charts_offset_x,
-                                available_hours_offset_y
-                                + avail_hrs_zero_height
-                                + focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height
-                                + avail_hrs_diff_height * task_height
-                                - 30,
-                                fill='black'))
+                                   25,
+                                   avail_hrs_charts_offset_x,
+                                   available_hours_offset_y
+                                   + avail_hrs_zero_height
+                                   + focus_cumulative_hours[month_number_of_days - today_day_of_month] * task_height
+                                   + avail_hrs_diff_height * task_height
+                                   - 30,
+                                   fill='black'))
 
             # determine calendar shape and plot, calendar area is filled out
             # using the fill_in_calendar_area(tot_totals_arr) function just
@@ -683,8 +675,6 @@ def create_monthly_display():
             d.append(draw.Rectangle(cal_offset_x, cal_offset_y,
                                     cal_total_width, cal_total_height,
                                     fill=day_color))
-
-
 
             # draw title area
             d.append(draw.Rectangle(title_offset_x, title_offset_y,
@@ -733,9 +723,9 @@ def create_monthly_display():
                                    month_task_actual[(current_month, i)]
                     task_display[tdindex][0] = i
                     task_display[tdindex][1] = str(month_task_plan[(current_month, i)]) + \
-                                                " - " + \
+                                               " - " + \
                                                str(month_task_actual[(current_month, i)]) + \
-                                                " = " + str(task_balance)
+                                               " = " + str(task_balance)
                     month_task_pa_ratio = month_task_actual[(current_month, i)] / month_task_plan[(current_month, i)]
 
                     if month_task_pa_ratio > 1.3:
@@ -753,12 +743,12 @@ def create_monthly_display():
 
                     if month_task_pa_ratio < 1.0:  # completed tasks are not shown needing more time on graph
                         month_task_pa_total_balance = task_balance + month_task_pa_total_balance
-                        #print("draw amount: ", task_display[tdindex][0])
+                        # print("draw amount: ", task_display[tdindex][0])
                         d.append(draw.Rectangle(available_hours_offset_x - 15,
-                                            current_mp_y_offset,
-                                            task_width,
-                                            task_balance * task_height,
-                                            stroke="black", fill=task_display[tdindex][2]))
+                                                current_mp_y_offset,
+                                                task_width,
+                                                task_balance * task_height,
+                                                stroke="black", fill=task_display[tdindex][2]))
                         d.append(draw.Text(task_display[tdindex][0], 6, available_hours_offset_x - 15,
                                            current_mp_y_offset, fill='black'))
 
@@ -766,19 +756,19 @@ def create_monthly_display():
 
                     tdindex = tdindex + 1
 
-                #print("mnod= ", month_number_of_days)
-                #print("tdom= ",today_day_of_month)
-                #print("pch=", planned_cumulative_hours)
-                #print("pch2=", planned_cumulative_hours[2])
-                #print("pch1=", planned_cumulative_hours[1])
-                #print("pch0=", planned_cumulative_hours[0])
+                # print("mnod= ", month_number_of_days)
+                # print("tdom= ",today_day_of_month)
+                # print("pch=", planned_cumulative_hours)
+                # print("pch2=", planned_cumulative_hours[2])
+                # print("pch1=", planned_cumulative_hours[1])
+                # print("pch0=", planned_cumulative_hours[0])
 
                 month_task_pa_total_diff = month_task_pa_total_balance \
-                                            - planned_cumulative_hours[(month_number_of_days - today_day_of_month)]
+                                           - planned_cumulative_hours[(month_number_of_days - today_day_of_month)]
 
-                if month_number_of_days >  today_day_of_month:
+                if month_number_of_days > today_day_of_month:
                     month_task_pa_total_ratio = month_task_pa_total_balance \
-                                            / planned_cumulative_hours[(month_number_of_days - today_day_of_month)]
+                                                / planned_cumulative_hours[(month_number_of_days - today_day_of_month)]
                 else:
                     month_task_pa_total_ratio = 1
 
@@ -797,27 +787,27 @@ def create_monthly_display():
 
             # draw planned cumulative hours box and label
             d.append(draw.Rectangle(available_hours_offset_x + 115,
-                                available_hours_offset_y + avail_hrs_zero_height,
-                                100,
-                                planned_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
-                                stroke = "black", fill=month_task_pa_total_ratio_color))  # light red
+                                    available_hours_offset_y + avail_hrs_zero_height,
+                                    100,
+                                    planned_cumulative_hours[month_number_of_days - today_day_of_month] * task_height,
+                                    stroke="black", fill=month_task_pa_total_ratio_color))  # light red
             d.append(draw.Text("ATP: " + str(planned_cumulative_hours[month_number_of_days - today_day_of_month]), 20,
-                                available_hours_offset_x + 115, available_hours_offset_y + avail_hrs_zero_height -30,
-                                fill='black'))
+                               available_hours_offset_x + 115, available_hours_offset_y + avail_hrs_zero_height - 30,
+                               fill='black'))
             d.append(draw.Text("APR: " + '{0:.2f}'.format(month_task_pa_total_ratio), 20,
-                                available_hours_offset_x + 115, available_hours_offset_y + avail_hrs_zero_height -60,
-                                fill='black'))
+                               available_hours_offset_x + 115, available_hours_offset_y + avail_hrs_zero_height - 60,
+                               fill='black'))
             d.append(draw.Text("Hours Available For Planned Tasks (APT): "
                                + str(planned_cumulative_hours[month_number_of_days - today_day_of_month]), 50,
                                title_offset_x, title_offset_y + title_height - 250,
                                fill='black'))
             # label current month task pa total balance
             d.append(draw.Text("BAT: " + str(month_task_pa_total_balance), 20,
-                                available_hours_offset_x - 15, available_hours_offset_y + avail_hrs_zero_height -30,
-                                fill='black'))
+                               available_hours_offset_x - 15, available_hours_offset_y + avail_hrs_zero_height - 30,
+                               fill='black'))
             d.append(draw.Text("APD: " + str(month_task_pa_total_diff), 20,
-                                available_hours_offset_x - 15, available_hours_offset_y + avail_hrs_zero_height -60,
-                                fill='black'))
+                               available_hours_offset_x - 15, available_hours_offset_y + avail_hrs_zero_height - 60,
+                               fill='black'))
             d.append(draw.Text("Balance of Actual Task Hours (BAT): "
                                + str(month_task_pa_total_balance), 50,
                                title_offset_x, title_offset_y + title_height - 300,
@@ -831,31 +821,30 @@ def create_monthly_display():
                                title_offset_x, title_offset_y + title_height - 400,
                                fill='black'))
 
-
             # fill in Balance area
             d.append(draw.Text(task_display[0][0], 25, balances_offset_x + 50,
-                               balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
+                               balances_offset_y + 3 * balances_height / 4 + 40, fill='black'))
             d.append(draw.Text(task_display[0][1], 25, balances_offset_x + 50,
-                               balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
+                               balances_offset_y + 3 * balances_height / 4 + 5, fill='black'))
             d.append(draw.Rectangle(balances_offset_x,
-                                    balances_offset_y + 3 * balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[0][2]))
+                                    balances_offset_y + 3 * balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[0][2]))
 
             d.append(draw.Text(task_display[1][0], 25, balances_offset_x + 50,
-                               balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
+                               balances_offset_y + 2 * balances_height / 4 + 40, fill='black'))
             d.append(draw.Text(task_display[1][1], 25, balances_offset_x + 50,
-                               balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
+                               balances_offset_y + 2 * balances_height / 4 + 5, fill='black'))
             d.append(draw.Rectangle(balances_offset_x,
-                                    balances_offset_y + 2 * balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[1][2]))
+                                    balances_offset_y + 2 * balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[1][2]))
 
             d.append(draw.Text(task_display[2][0], 25, balances_offset_x + 50,
-                               balances_offset_y + balances_height/4 + 40, fill='black'))
+                               balances_offset_y + balances_height / 4 + 40, fill='black'))
             d.append(draw.Text(task_display[2][1], 25, balances_offset_x + 50,
-                               balances_offset_y + balances_height/4 + 5, fill='black'))
+                               balances_offset_y + balances_height / 4 + 5, fill='black'))
             d.append(draw.Rectangle(balances_offset_x,
-                                    balances_offset_y + balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[2][2]))
+                                    balances_offset_y + balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[2][2]))
 
             d.append(draw.Text(task_display[3][0], 25, balances_offset_x + 50,
                                balances_offset_y + 40, fill='black'))
@@ -863,103 +852,103 @@ def create_monthly_display():
                                balances_offset_y + 5, fill='black'))
             d.append(draw.Rectangle(balances_offset_x,
                                     balances_offset_y,
-                                    45, 55, stroke = "black", fill=task_display[3][2]))
+                                    45, 55, stroke="black", fill=task_display[3][2]))
 
-            d.append(draw.Text(task_display[4][0], 25, balances_offset_x + balances_width/4 + 50,
-                               balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[4][1], 25, balances_offset_x + balances_width/4 + 50,
-                               balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width/4,
-                                    balances_offset_y + 3 * balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[4][2]))
+            d.append(draw.Text(task_display[4][0], 25, balances_offset_x + balances_width / 4 + 50,
+                               balances_offset_y + 3 * balances_height / 4 + 40, fill='black'))
+            d.append(draw.Text(task_display[4][1], 25, balances_offset_x + balances_width / 4 + 50,
+                               balances_offset_y + 3 * balances_height / 4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x + balances_width / 4,
+                                    balances_offset_y + 3 * balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[4][2]))
 
-            d.append(draw.Text(task_display[5][0], 25, balances_offset_x + balances_width/4 + 50,
-                               balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[5][1], 25, balances_offset_x + balances_width/4 + 50,
-                               balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width/4,
-                                    balances_offset_y + 2 * balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[5][2]))
+            d.append(draw.Text(task_display[5][0], 25, balances_offset_x + balances_width / 4 + 50,
+                               balances_offset_y + 2 * balances_height / 4 + 40, fill='black'))
+            d.append(draw.Text(task_display[5][1], 25, balances_offset_x + balances_width / 4 + 50,
+                               balances_offset_y + 2 * balances_height / 4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x + balances_width / 4,
+                                    balances_offset_y + 2 * balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[5][2]))
 
-            d.append(draw.Text(task_display[6][0], 25, balances_offset_x + balances_width/4 + 50,
-                               balances_offset_y + balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[6][1], 25, balances_offset_x + balances_width/4 + 50,
-                               balances_offset_y + balances_height/4 + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width/4,
-                                    balances_offset_y + balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[6][2]))
+            d.append(draw.Text(task_display[6][0], 25, balances_offset_x + balances_width / 4 + 50,
+                               balances_offset_y + balances_height / 4 + 40, fill='black'))
+            d.append(draw.Text(task_display[6][1], 25, balances_offset_x + balances_width / 4 + 50,
+                               balances_offset_y + balances_height / 4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x + balances_width / 4,
+                                    balances_offset_y + balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[6][2]))
 
-            d.append(draw.Text(task_display[7][0], 25, balances_offset_x + balances_width/4 + 50,
+            d.append(draw.Text(task_display[7][0], 25, balances_offset_x + balances_width / 4 + 50,
                                balances_offset_y + 40, fill='black'))
-            d.append(draw.Text(task_display[7][1], 25, balances_offset_x + balances_width/4 + 50,
+            d.append(draw.Text(task_display[7][1], 25, balances_offset_x + balances_width / 4 + 50,
                                balances_offset_y + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width/4,
+            d.append(draw.Rectangle(balances_offset_x + balances_width / 4,
                                     balances_offset_y + 5,
-                                    45, 55, stroke = "black", fill=task_display[7][2]))
+                                    45, 55, stroke="black", fill=task_display[7][2]))
 
-            d.append(draw.Text(task_display[8][0], 25, balances_offset_x + balances_width/2 + 50,
-                               balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[8][1], 25, balances_offset_x + balances_width/2 + 50,
-                               balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width/2,
-                                    balances_offset_y + 3 * balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[8][2]))
+            d.append(draw.Text(task_display[8][0], 25, balances_offset_x + balances_width / 2 + 50,
+                               balances_offset_y + 3 * balances_height / 4 + 40, fill='black'))
+            d.append(draw.Text(task_display[8][1], 25, balances_offset_x + balances_width / 2 + 50,
+                               balances_offset_y + 3 * balances_height / 4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x + balances_width / 2,
+                                    balances_offset_y + 3 * balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[8][2]))
 
-            d.append(draw.Text(task_display[9][0], 25, balances_offset_x + balances_width/2 + 50,
-                               balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[9][1], 25, balances_offset_x + balances_width/2 + 50,
-                               balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width/2,
-                                    balances_offset_y + 2 * balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[9][2]))
+            d.append(draw.Text(task_display[9][0], 25, balances_offset_x + balances_width / 2 + 50,
+                               balances_offset_y + 2 * balances_height / 4 + 40, fill='black'))
+            d.append(draw.Text(task_display[9][1], 25, balances_offset_x + balances_width / 2 + 50,
+                               balances_offset_y + 2 * balances_height / 4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x + balances_width / 2,
+                                    balances_offset_y + 2 * balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[9][2]))
 
-            d.append(draw.Text(task_display[10][0], 25, balances_offset_x + balances_width/2 + 50,
-                               balances_offset_y + balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[10][1], 25, balances_offset_x + balances_width/2 + 50,
-                               balances_offset_y + balances_height/4 + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width/2,
-                                    balances_offset_y + balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[10][2]))
+            d.append(draw.Text(task_display[10][0], 25, balances_offset_x + balances_width / 2 + 50,
+                               balances_offset_y + balances_height / 4 + 40, fill='black'))
+            d.append(draw.Text(task_display[10][1], 25, balances_offset_x + balances_width / 2 + 50,
+                               balances_offset_y + balances_height / 4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x + balances_width / 2,
+                                    balances_offset_y + balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[10][2]))
 
-            d.append(draw.Text(task_display[11][0], 25, balances_offset_x + balances_width/2 + 50,
+            d.append(draw.Text(task_display[11][0], 25, balances_offset_x + balances_width / 2 + 50,
                                balances_offset_y + 40, fill='black'))
-            d.append(draw.Text(task_display[11][1], 25, balances_offset_x + balances_width/2 + 50,
+            d.append(draw.Text(task_display[11][1], 25, balances_offset_x + balances_width / 2 + 50,
                                balances_offset_y + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width/2,
+            d.append(draw.Rectangle(balances_offset_x + balances_width / 2,
                                     balances_offset_y + 5,
-                                    45, 55, stroke = "black", fill=task_display[11][2]))
+                                    45, 55, stroke="black", fill=task_display[11][2]))
 
-            d.append(draw.Text(task_display[12][0], 25, balances_offset_x + balances_width*3/4 + 50,
-                               balances_offset_y + 3 * balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[12][1], 25, balances_offset_x + balances_width*3/4 + 50,
-                               balances_offset_y + 3 * balances_height/4 + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width*3/4,
-                                    balances_offset_y + 3 * balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[12][2]))
+            d.append(draw.Text(task_display[12][0], 25, balances_offset_x + balances_width * 3 / 4 + 50,
+                               balances_offset_y + 3 * balances_height / 4 + 40, fill='black'))
+            d.append(draw.Text(task_display[12][1], 25, balances_offset_x + balances_width * 3 / 4 + 50,
+                               balances_offset_y + 3 * balances_height / 4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x + balances_width * 3 / 4,
+                                    balances_offset_y + 3 * balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[12][2]))
 
-            d.append(draw.Text(task_display[13][0], 25, balances_offset_x + balances_width*3/4 + 50,
-                               balances_offset_y + 2 * balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[13][1], 25, balances_offset_x + balances_width*3/4 + 50,
-                               balances_offset_y + 2 * balances_height/4 + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width*3/4,
-                                    balances_offset_y + 2 * balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[13][2]))
+            d.append(draw.Text(task_display[13][0], 25, balances_offset_x + balances_width * 3 / 4 + 50,
+                               balances_offset_y + 2 * balances_height / 4 + 40, fill='black'))
+            d.append(draw.Text(task_display[13][1], 25, balances_offset_x + balances_width * 3 / 4 + 50,
+                               balances_offset_y + 2 * balances_height / 4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x + balances_width * 3 / 4,
+                                    balances_offset_y + 2 * balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[13][2]))
 
-            d.append(draw.Text(task_display[14][0], 25, balances_offset_x + balances_width*3/4 + 50,
-                               balances_offset_y + balances_height/4 + 40, fill='black'))
-            d.append(draw.Text(task_display[14][1], 25, balances_offset_x + balances_width*3/4 + 50,
-                               balances_offset_y + balances_height/4 + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width*3/4,
-                                    balances_offset_y + balances_height/4 + 5,
-                                    45, 55, stroke = "black", fill=task_display[14][2]))
+            d.append(draw.Text(task_display[14][0], 25, balances_offset_x + balances_width * 3 / 4 + 50,
+                               balances_offset_y + balances_height / 4 + 40, fill='black'))
+            d.append(draw.Text(task_display[14][1], 25, balances_offset_x + balances_width * 3 / 4 + 50,
+                               balances_offset_y + balances_height / 4 + 5, fill='black'))
+            d.append(draw.Rectangle(balances_offset_x + balances_width * 3 / 4,
+                                    balances_offset_y + balances_height / 4 + 5,
+                                    45, 55, stroke="black", fill=task_display[14][2]))
 
-            d.append(draw.Text(task_display[15][0], 25, balances_offset_x + balances_width*3/4 + 50,
+            d.append(draw.Text(task_display[15][0], 25, balances_offset_x + balances_width * 3 / 4 + 50,
                                balances_offset_y + 40, fill='black'))
-            d.append(draw.Text(task_display[15][1], 25, balances_offset_x + balances_width*3/4 + 50,
+            d.append(draw.Text(task_display[15][1], 25, balances_offset_x + balances_width * 3 / 4 + 50,
                                balances_offset_y + 5, fill='black'))
-            d.append(draw.Rectangle(balances_offset_x + balances_width*3/4,
+            d.append(draw.Rectangle(balances_offset_x + balances_width * 3 / 4,
                                     balances_offset_y + 5,
-                                    45, 55, stroke = "black", fill=task_display[15][2]))
+                                    45, 55, stroke="black", fill=task_display[15][2]))
 
             # reinitialize the various variables to start new month after they have been used.
 
@@ -968,18 +957,18 @@ def create_monthly_display():
                 task_display[y][0] = "-"
                 task_display[y][1] = "-"
                 task_display[y][2] = "#AAAAAA"
-                #print(task_display)
+                # print(task_display)
 
             # reset tot_totals_arr, percentages array and color array after use in cal and title areas
             tot_totals_rows = 6  # 1 for month and 5 for each type of thought
             tot_totals_cols = 32
             tot_totals_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
             tot_percents_arr = [[0 for j in range(tot_totals_cols)] for i in range(tot_totals_rows)]
-            tot_totals_rows_rgb = 3 # 3 for each rgb value
+            tot_totals_rows_rgb = 3  # 3 for each rgb value
             tot_color_arr = [[day_gray_level for j in range(tot_totals_cols)] for i in range(tot_color_rows_rgb)]
-            #print("print totals arr after reinilize: ", tot_totals_arr)
-            #print("print percents arr after reinilize: ", tot_percents_arr)
-            #print("print color arr after reinilize: ", tot_color_arr)
+            # print("print totals arr after reinilize: ", tot_totals_arr)
+            # print("print percents arr after reinilize: ", tot_percents_arr)
+            # print("print color arr after reinilize: ", tot_color_arr)
 
             # date created label
             d.append(draw.Rectangle(200, 75, 200, 8, fill='#ffffff'))
@@ -1003,14 +992,13 @@ def create_monthly_display():
                                    current_month_y_offset - 100,
                                    fill='black'))
 
-
         if current_project != df['project'][ind]:
             current_project = df['project'][ind]
             # move to new column for task ploting
             # set column y offset to start position
             if first_record_of_df:
                 current_number_of_projects += 1
-            first_record_of_df = True # fix better name
+            first_record_of_df = True  # fix better name
 
             current_month_x_offset = month_chart_offset_x + current_number_of_projects * task_width
             current_month_y_offset = month_chart_offset_y
@@ -1029,16 +1017,16 @@ def create_monthly_display():
 
         # This is where the calendar day tot totals array are accumulated ......
         # this happens after the previous month's data is output.
-        index_of_tot = int(df['types_of_thought'][ind][0:1]) # this pulls first char from types of thought
-        #print(index_of_tot)
+        index_of_tot = int(df['types_of_thought'][ind][0:1])  # this pulls first char from types of thought
+        # print(index_of_tot)
         day_of_month = datetime.date.fromisoformat(df['date'][ind]).day
-        #print("day of the month"+str(day_of_month))
+        # print("day of the month"+str(day_of_month))
         tot_totals_arr[index_of_tot][day_of_month] = tot_totals_arr[index_of_tot][day_of_month] + df['amount'][ind]
         tot_totals_arr[0][day_of_month] = tot_totals_arr[0][day_of_month] + df['amount'][ind]
         tot_totals_arr[index_of_tot][0] = tot_totals_arr[index_of_tot][0] + df['amount'][ind]
         tot_totals_arr[0][0] = tot_totals_arr[0][0] + df['amount'][ind]
-        #print(tot_totals_arr)
-        #time.sleep(1)
+        # print(tot_totals_arr)
+        # time.sleep(1)
 
         # plot task box and description in the month chart
         d.append(draw.Rectangle(current_month_x_offset,
@@ -1057,9 +1045,9 @@ def create_monthly_display():
         # track hours per day
         df_date = datetime.date.fromisoformat(df['date'][ind])
         # plot task box and description in the available hours chart
-        #print("before avail: ",current_available_offset_y)
+        # print("before avail: ",current_available_offset_y)
         current_available_offset_y = current_available_offset_y - task_height * df['amount'][ind]
-        #print("just after: ",current_available_offset_y)
+        # print("just after: ",current_available_offset_y)
         d.append(draw.Rectangle(available_hours_offset_x,
                                 current_available_offset_y,
                                 available_hours_width,
@@ -1070,7 +1058,7 @@ def create_monthly_display():
                            available_hours_offset_x,
                            current_available_offset_y,
                            fill='black'))
-        #print(df['yyyy_mm'][ind], " _-_ ", df['project'][ind], " _-_ ", df['task'][ind])
+        # print(df['yyyy_mm'][ind], " _-_ ", df['project'][ind], " _-_ ", df['task'][ind])
 
     if drawing_obj_flag:
         fill_in_calendar_area(current_month, tot_totals_arr)
@@ -1081,6 +1069,7 @@ def create_monthly_display():
         d.save_svg(path_output_web + "/" + file_output)
         d.save_svg(path_output_web + "/current_month_rpt.svg")
     print("done with monthly display")
+
 
 def create_years_display():
     # Use a breakpoint in the code line below to debug your script.
@@ -1120,7 +1109,7 @@ def create_years_display():
     hour_height = 8
     hour_width = day_display_width
 
-    number_of_months = 3 * 12 # this determined later
+    number_of_months = 3 * 12  # this determined later
     dow_month_offset_x = 0
     month_offset_y = 0
     current_day_postion_x = paper_to_border_offset_x + border_to_chart_offset_x + dow_month_offset_x
@@ -1136,24 +1125,24 @@ def create_years_display():
     year_month_offset_x = 10
     year_month_offset_y = 200
 
-    color_border    = "#999999"
+    color_border = "#999999"
     color_even_year = "#CCCCCC"
-    color_odd_year  = "#DDDDDD"
-    color_weekday   = "#FFFFFF"
-    color_weekend   = "#EEEEEE"
-    day_color       = "#EEEEEE" # this set to highlight weekends
-    year_color      = "#EEEEEE" # this set to highlight years
-    task_color      = "gray"    # this is set for each task
+    color_odd_year = "#DDDDDD"
+    color_weekday = "#FFFFFF"
+    color_weekend = "#EEEEEE"
+    day_color = "#EEEEEE"  # this set to highlight weekends
+    year_color = "#EEEEEE"  # this set to highlight years
+    task_color = "gray"  # this is set for each task
     day_number_color = "#B9B9B9"
     year_month_color = "#696969"
     tot_color_array = {
-                      "5": "#6C0BA9",
-                      "4": "red",
-                      "3":  "orange",
-                      "2": "green",
-                      "1": "#4141FF",
-                      "x": "gray"
-                      }
+        "5": "#6C0BA9",
+        "4": "red",
+        "3": "orange",
+        "2": "green",
+        "1": "#4141FF",
+        "x": "gray"
+    }
 
     max_char = 53
     tot_max = 14
@@ -1175,34 +1164,32 @@ def create_years_display():
 
     chart_width = (7 - 1 + 31) * day_display_width
     # 7 = days in week, 1 day less of offset, 31 max days in month
-    chart_height = ( number_of_months ) * day_display_height
+    chart_height = (number_of_months) * day_display_height
     # 3 years, 12 months per year
 
-    drawing_width =(chart_width + 2*paper_to_border_offset_x + 2*border_to_chart_offset_x)
-    drawing_height =(chart_height + 2*paper_to_border_offset_y + 2*border_to_chart_offset_y)
+    drawing_width = (chart_width + 2 * paper_to_border_offset_x + 2 * border_to_chart_offset_x)
+    drawing_height = (chart_height + 2 * paper_to_border_offset_y + 2 * border_to_chart_offset_y)
 
-    d = draw.Drawing(drawing_width, drawing_height, origin=(0,0))
-
+    d = draw.Drawing(drawing_width, drawing_height, origin=(0, 0))
 
     # Draw an irregular polygon for border
     d.append(draw.Lines(paper_to_border_offset_x,
                         paper_to_border_offset_y,
 
                         paper_to_border_offset_x,
-                        paper_to_border_offset_y + chart_height + 2*border_to_chart_offset_y,
+                        paper_to_border_offset_y + chart_height + 2 * border_to_chart_offset_y,
 
-                        paper_to_border_offset_x + chart_width + 2*border_to_chart_offset_x,
-                        paper_to_border_offset_y + chart_height + 2*border_to_chart_offset_y,
+                        paper_to_border_offset_x + chart_width + 2 * border_to_chart_offset_x,
+                        paper_to_border_offset_y + chart_height + 2 * border_to_chart_offset_y,
 
-                        paper_to_border_offset_x + chart_width + 2*border_to_chart_offset_x,
+                        paper_to_border_offset_x + chart_width + 2 * border_to_chart_offset_x,
                         paper_to_border_offset_y,
 
                         paper_to_border_offset_x,
                         paper_to_border_offset_y,
-                        close = False,
-                        fill = color_border,
+                        close=False,
+                        fill=color_border,
                         stroke='black'))
-
 
     # Set up required variables before the for loop
     current_year = 9999
@@ -1210,7 +1197,7 @@ def create_years_display():
     current_day = 99
     number_of_months = 0
 
-    #print("start through dataframe")
+    # print("start through dataframe")
     # Step through dataframe and generate chart
     for ind in df.index:
         df_date = datetime.date.fromisoformat(df['date'][ind])
@@ -1235,17 +1222,16 @@ def create_years_display():
                 year_month_colected = str(df_date.year) + "-" + df_date.strftime("%m")
                 d.append(draw.Text(year_month_colected, 90,
                                    current_day_postion_x + year_month_offset_x,
-                                   current_day_postion_y + year_month_offset_y +\
-                                   int( number_of_months - 1) * day_display_height,
+                                   current_day_postion_y + year_month_offset_y + \
+                                   int(number_of_months - 1) * day_display_height,
                                    fill=year_month_color))
                 number_of_months += 1
 
-            dow_month_offset_x = first_of_month_offset_x + df_date.day - 1 # fix off by one in x
+            dow_month_offset_x = first_of_month_offset_x + df_date.day - 1  # fix off by one in x
 
-            #day_number_offset_x
-            #day_number_offset_y
-            #day_number_color = "#B9B9B9"
-
+            # day_number_offset_x
+            # day_number_offset_y
+            # day_number_color = "#B9B9B9"
 
             # draw day box
             if df_date.weekday() < 5:
@@ -1253,7 +1239,7 @@ def create_years_display():
             else:
                 day_color = color_weekend
             d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
-                                    current_day_postion_y + int(number_of_months -1 ) * day_display_height,
+                                    current_day_postion_y + int(number_of_months - 1) * day_display_height,
                                     day_display_width, day_display_height,
                                     fill=day_color))
             d.append(draw.Text(df['date'][ind], 6,
@@ -1262,19 +1248,22 @@ def create_years_display():
                                fill='black'))
             d.append(draw.Text(str(df_date.day), 100,
                                current_day_postion_x + dow_month_offset_x * day_display_width + day_number_offset_x,
-                               current_day_postion_y + int(number_of_months - 1) * day_display_height + day_number_offset_y,
+                               current_day_postion_y + int(
+                                   number_of_months - 1) * day_display_height + day_number_offset_y,
                                text_anchor="middle",
                                fill=day_number_color))
 
         # draw task
         d.append(draw.Rectangle(current_day_postion_x + dow_month_offset_x * day_display_width,
-                                current_day_postion_y + int(number_of_months - 1) * day_display_height + current_task_offset_y,
+                                current_day_postion_y + int(
+                                    number_of_months - 1) * day_display_height + current_task_offset_y,
                                 day_display_width, hour_height * df['amount'][ind],
                                 stroke='black',
                                 fill=tot_color_array[df['types_of_thought'][ind][0]]))
         d.append(draw.Text(df['types_of_thought'][ind][0:13], 6,
                            current_day_postion_x + dow_month_offset_x * day_display_width + f6text_offset_x + tot_offset_x,
-                           current_day_postion_y + int(number_of_months - 1) * day_display_height + f6text_offset_y + current_task_offset_y,
+                           current_day_postion_y + int(
+                               number_of_months - 1) * day_display_height + f6text_offset_y + current_task_offset_y,
                            fill='black'))
         d.append(draw.Text(df['project'][ind][0:13], 6,
                            current_day_postion_x + dow_month_offset_x * day_display_width + f6text_offset_x + proj_offset_x,
@@ -1287,14 +1276,7 @@ def create_years_display():
                                number_of_months - 1) * day_display_height + f6text_offset_y + current_task_offset_y,
                            fill='black'))
 
-
         current_task_offset_y = current_task_offset_y + hour_height * df['amount'][ind]
-
-
-
-
-
-
 
         """
         print(dow_month_offset_x)
@@ -1354,14 +1336,9 @@ def create_years_display():
     d.append(draw.Text(today_date_label, 6, 201, 77,
                        fill='black'))  # Text with font size 6
 
-
-
     d.save_svg('yearsdisp.svg')
 
-
-
-    #print("done with years display")
-
+    # print("done with years display")
 
 
 def create_heatmap():
@@ -1387,17 +1364,16 @@ def create_heatmap():
     df["tot_proj"] = df["types_of_thought"] + "_-_" + df["project"]
 
     pt_tot_proj_yyyy_mm_h = np.round(pd.pivot_table(df, values='amount',
-                                            index='tot_proj',
-                                            columns='yyyy-mm',
-                                            aggfunc=np.sum), 2)
+                                                    index='tot_proj',
+                                                    columns='yyyy-mm',
+                                                    aggfunc=np.sum), 2)
 
     plt.figure(figsize=(23, 20))
-    pt_plot_h = sns.heatmap(pt_tot_proj_yyyy_mm_h )
+    pt_plot_h = sns.heatmap(pt_tot_proj_yyyy_mm_h)
     fig_h = pt_plot_h.get_figure()
     fig_h.savefig("pt_tot_proj_yyyy_mm_h.png")
 
     print("done with heat map")
-
 
 
 def import_data():
@@ -1413,21 +1389,21 @@ def import_data():
     from pandas_ods_reader import read_ods
 
     path = "../aoi_tracker.ods"
-    #path = "../ooo_shiny_urls.ods"
+    # path = "../ooo_shiny_urls.ods"
 
     # by default the first sheet is imported
-    #df = read_ods(path)
+    # df = read_ods(path)
 
     # load a sheet based on its index (1 based)
-    #sheet_idx = 2
-    #df = read_ods(path, sheet_idx)
+    # sheet_idx = 2
+    # df = read_ods(path, sheet_idx)
 
     # load a sheet based on its name
-    #sheet_name = "urls"
+    # sheet_name = "urls"
     sheet_name = "actions"
     df = read_ods(path, sheet_name)
 
-    #print(df.columns)
+    # print(df.columns)
 
     # remove rows without dates
     df = df[df['date'].notna()]
@@ -1441,87 +1417,82 @@ def import_data():
                    inplace=True)
 
     pd.set_option('display.max_columns', 10)
-    #print(df)
-    #print(df.head(10))
-    #print(df.tail(10))
-
-
+    # print(df)
+    # print(df.head(10))
+    # print(df.tail(10))
 
     # pt_project total for each of the projects
     pt_tot_proj = np.round(pd.pivot_table(df, values='amount',
-                                    index='tot_proj',
-                                    aggfunc=np.sum), 2)
+                                          index='tot_proj',
+                                          aggfunc=np.sum), 2)
 
     html = pt_tot_proj.to_html(classes='table table-stripped')
     text_file = open("pt_tot_proj.html", "w")
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_tot_proj.plot.barh(figsize=(15,16))
+    pt_plot = pt_tot_proj.plot.barh(figsize=(15, 16))
     fig = pt_plot.get_figure()
     fig.savefig("pt_tot_proj.png")
 
-
-
-
-
     # pt_type_yyyy-mm vert bar chart of total for all catagories
     pt_yyyy_type = np.round(pd.pivot_table(df, values='amount',
-                                    index='yyyy-mm',
-                                    columns='types_of_thought',
-                                    aggfunc=np.sum), 2)
+                                           index='yyyy-mm',
+                                           columns='types_of_thought',
+                                           aggfunc=np.sum), 2)
 
     html = pt_yyyy_type.to_html(classes='table table-stripped')
     text_file = open("pt_yyyy_type.html", "w")
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_yyyy_type.plot.barh(figsize=(15,16), stacked=True)
+    pt_plot = pt_yyyy_type.plot.barh(figsize=(15, 16), stacked=True)
     fig = pt_plot.get_figure()
     fig.savefig("pt_yyyy_type.png")
 
     # pt_project_yyyy-mm
     pt_tot_proj_yyyy = np.round(pd.pivot_table(df, values='amount',
-                                    index='tot_proj',
-                                    columns='yyyy-mm',
-                                    aggfunc=np.sum), 2)
+                                               index='tot_proj',
+                                               columns='yyyy-mm',
+                                               aggfunc=np.sum), 2)
 
     html = pt_tot_proj_yyyy.to_html(classes='table table-stripped')
     text_file = open("pt_tot_proj_yyyy.html", "w")
     text_file.write(html)
     text_file.close()
 
-    pt_plot = pt_tot_proj_yyyy.plot.barh(figsize=(15,16), stacked=True)
+    pt_plot = pt_tot_proj_yyyy.plot.barh(figsize=(15, 16), stacked=True)
     fig = pt_plot.get_figure()
     fig.savefig("pt_tot_proj_yyyy.png")
 
     # pt_task_yyyy-mm stacked vertial bar chart
     pt_task_yyyy_mm = np.round(pd.pivot_table(df, values='amount',
-                                               index='task',
-                                               columns='yyyy-mm',
-                                               aggfunc=np.sum), 2)
+                                              index='task',
+                                              columns='yyyy-mm',
+                                              aggfunc=np.sum), 2)
 
     html = pt_task_yyyy_mm.to_html(classes='table table-stripped')
     text_file = open("pt_task_yyyy_mm.html", "w")
     text_file.write(html)
     text_file.close()
 
-    #pt_plot = pt_task_yyyy_mm.plot.barh(figsize=(60,100), stacked=True)
-    #fig = pt_plot.get_figure()
-    #fig.savefig("pt_task_yyyy_mm.png")
+    # pt_plot = pt_task_yyyy_mm.plot.barh(figsize=(60,100), stacked=True)
+    # fig = pt_plot.get_figure()
+    # fig.savefig("pt_task_yyyy_mm.png")
 
-    #pt_plot = plt.plot(pt_task_yyyy_m,figsize=(60,100))
-    #pt_plot = sns.heatmap(pt_task_yyyy_mm, square=True)
+    # pt_plot = plt.plot(pt_task_yyyy_m,figsize=(60,100))
+    # pt_plot = sns.heatmap(pt_task_yyyy_mm, square=True)
 
-    #pt_task_yyyy_mm_h = np.round(pd.pivot_table(df, values='amount',
+    # pt_task_yyyy_mm_h = np.round(pd.pivot_table(df, values='amount',
     #                                          index='task',
     #                                          columns='yyyy-mm',
     #                                          aggfunc=np.sum), 2)
-    #pt_plot_h = sns.heatmap(pt_task_yyyy_mm_h)
-    #fig_h = pt_plot_h.get_figure()
-    #fig_h.savefig("pt_task_yyyy_mm_h.png")
+    # pt_plot_h = sns.heatmap(pt_task_yyyy_mm_h)
+    # fig_h = pt_plot_h.get_figure()
+    # fig_h.savefig("pt_task_yyyy_mm_h.png")
 
     print("got to here")
+
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
