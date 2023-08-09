@@ -972,9 +972,9 @@ def create_monthly_display():
             # print("print color arr after reinilize: ", tot_color_arr)
 
             # date created label
-            d.append(draw.Rectangle(75, 75, 80, 8, fill='#ffffff'))
+            d.append(draw.Rectangle(2 * default_gap, border_height - 25,  80, 8, fill='#ffffff'))
             today_date_label = "Created on: " + str(today_date)
-            d.append(draw.Text(today_date_label, 6, 76, 81,
+            d.append(draw.Text(today_date_label, 6, 2 * default_gap + 3, border_height - 19,
                                fill='black'))  # Text with font size 6
             # set column x offset for task plotting to first column
             current_month_x_offset = month_chart_offset_x
